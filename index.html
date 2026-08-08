@@ -1109,8 +1109,8 @@
         // 重新畫出所有訊息
         messages.forEach(msg => {
           const content = msg.role === "admin"
-            ? msg.text
-            : `${msg.name || "Anonymous"}: ${msg.text}`;
+            ? `Kellan: ${msg.text}`
+            : `${msg.name}: ${msg.text}`;
     
           addMessage(
             content,
