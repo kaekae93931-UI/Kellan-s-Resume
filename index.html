@@ -2710,14 +2710,13 @@
   }
 
 
-    function handleEnter(event) {
-
-      if (event.key === "Enter") {
-        sendMessage();
-      }
-
+  function handleEnter(event) {
+    if (event.key === "Enter") {
+      sendMessage();
     }
-
+  }
+  
+  // ===== 新增這段 =====
   async function checkReply() {
     try {
       const res = await fetch(
@@ -2735,11 +2734,7 @@
     }
   }
   
-  // 每 2 秒檢查一次 LINE 是否有新回覆
-  setInterval(checkReply, 2000);    
-
-
-
+  setInterval(checkReply, 2000);
     
   </script>
 
