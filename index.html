@@ -1,1786 +1,990 @@
+html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#060912">
-  <meta name="description" content="Kellan Hung — Software Engineer specializing in system validation, automation engineering, enterprise infrastructure, firmware, BMC and server validation.">
-  <title>Kellan Hung — Software Engineer</title>
-
-  <style>
-    :root{
-      --bg:#060912;
-      --bg-2:#0a1020;
-      --surface:rgba(15,23,42,.68);
-      --surface-2:rgba(15,23,42,.9);
-      --line:rgba(148,163,184,.14);
-      --line-hover:rgba(56,189,248,.38);
-      --text:#f8fafc;
-      --text-2:#cbd5e1;
-      --muted:#7f8da5;
-      --cyan:#38bdf8;
-      --blue:#6366f1;
-      --purple:#a855f7;
-      --green:#22c55e;
-      --max:1180px;
-      --radius:24px;
-      --radius-sm:14px;
-      --shadow:0 24px 80px rgba(0,0,0,.35);
-    }
-
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-    }
-
-    html{
-      scroll-behavior:smooth;
-      scroll-padding-top:90px;
-    }
-
-    body{
-      min-width:320px;
-      overflow-x:hidden;
-      background:
-        radial-gradient(circle at 10% 5%,rgba(56,189,248,.08),transparent 28%),
-        radial-gradient(circle at 90% 15%,rgba(168,85,247,.08),transparent 30%),
-        var(--bg);
-      color:var(--text);
-      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      line-height:1.7;
-      -webkit-font-smoothing:antialiased;
-    }
-
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      z-index:-1;
-      pointer-events:none;
-      background-image:
-        linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
-      background-size:48px 48px;
-      mask-image:linear-gradient(to bottom,#000,transparent 85%);
-    }
-
-    a{
-      color:inherit;
-      text-decoration:none;
-    }
-
-    button,
-    input{
-      font:inherit;
-    }
-
-    button{
-      cursor:pointer;
-    }
-
-    img{
-      display:block;
-      max-width:100%;
-    }
-
-    .container{
-      width:min(calc(100% - 32px),var(--max));
-      margin-inline:auto;
-    }
-
-    .section{
-      position:relative;
-      padding:100px 0;
-    }
-
-    .section-dark{
-      background:linear-gradient(180deg,rgba(255,255,255,.018),transparent);
-    }
-
-    .glass-card{
-      border:1px solid var(--line);
-      background:
-        linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.012)),
-        var(--surface);
-      box-shadow:var(--shadow);
-      backdrop-filter:blur(18px);
-      -webkit-backdrop-filter:blur(18px);
-    }
-
-    .site-header{
-      position:sticky;
-      top:0;
-      z-index:100;
-      border-bottom:1px solid rgba(148,163,184,.08);
-      background:rgba(6,9,18,.78);
-      backdrop-filter:blur(20px);
-      -webkit-backdrop-filter:blur(20px);
-    }
-
-    .nav-container{
-      min-height:76px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:24px;
-    }
-
-    .brand{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      flex:0 0 auto;
-    }
-
-    .brand-mark{
-      display:grid;
-      width:38px;
-      height:38px;
-      place-items:center;
-      border:1px solid rgba(56,189,248,.35);
-      border-radius:12px;
-      background:linear-gradient(135deg,#0ea5e9,#6366f1);
-      box-shadow:0 0 30px rgba(56,189,248,.2);
-      font-size:16px;
-      font-weight:900;
-    }
-
-    .brand-text{
-      font-size:14px;
-      font-weight:800;
-      letter-spacing:.14em;
-    }
-
-    .brand-text span,
-    .footer-brand span{
-      color:var(--cyan);
-    }
-
-    .nav-links{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:26px;
-    }
-
-    .nav-links a,
-    .footer-links a{
-      color:var(--muted);
-      font-size:13px;
-      font-weight:600;
-      transition:color .2s ease;
-    }
-
-    .nav-links a:hover,
-    .footer-links a:hover{
-      color:var(--text);
-    }
-
-    .nav-actions{
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-
-    .button{
-      min-height:44px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      padding:0 17px;
-      border:1px solid transparent;
-      border-radius:12px;
-      font-size:13px;
-      font-weight:700;
-      white-space:nowrap;
-      transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;
-    }
-
-    .button:hover{
-      transform:translateY(-2px);
-    }
-
-    .button-primary{
-      color:#fff;
-      background:linear-gradient(135deg,#0ea5e9,#6366f1);
-      box-shadow:0 10px 30px rgba(59,130,246,.2);
-    }
-
-    .button-primary:hover{
-      box-shadow:0 14px 36px rgba(59,130,246,.3);
-    }
-
-    .button-secondary{
-      border-color:var(--line);
-      background:rgba(255,255,255,.035);
-      color:var(--text-2);
-    }
-
-    .button-secondary:hover{
-      border-color:var(--line-hover);
-      background:rgba(56,189,248,.06);
-    }
-
-    .hero{
-      min-height:calc(100vh - 76px);
-      display:flex;
-      align-items:center;
-      padding:100px 0;
-    }
-
-    .hero-grid{
-      display:grid;
-      grid-template-columns:minmax(0,1.35fr) minmax(320px,.65fr);
-      align-items:center;
-      gap:clamp(48px,8vw,110px);
-    }
-
-    .hero-content,
-    .profile-card,
-    .experience-content,
-    .project,
-    .ai-content,
-    .chat{
-      min-width:0;
-    }
-
-    .eyebrow,
-    .section-label{
-      color:var(--cyan);
-      font-size:11px;
-      font-weight:800;
-      letter-spacing:.18em;
-    }
-
-    .eyebrow{
-      display:inline-flex;
-      align-items:center;
-      gap:9px;
-      margin-bottom:24px;
-    }
-
-    .status-dot{
-      width:7px;
-      height:7px;
-      flex:0 0 7px;
-      border-radius:50%;
-      background:var(--green);
-      box-shadow:0 0 14px rgba(34,197,94,.8);
-    }
-
-    .hero-title{
-      max-width:850px;
-      font-size:clamp(56px,8vw,108px);
-      line-height:.95;
-      letter-spacing:-.055em;
-      font-weight:850;
-    }
-
-    .hero-title span{
-      background:linear-gradient(100deg,#38bdf8,#818cf8 50%,#c084fc);
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
-    }
-
-    .hero-text{
-      max-width:760px;
-      margin-top:32px;
-      color:var(--text-2);
-      font-size:16px;
-    }
-
-    .hero-highlights{
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      max-width:680px;
-      margin-top:32px;
-      border-block:1px solid var(--line);
-    }
-
-    .hero-highlight{
-      padding:18px 20px;
-    }
-
-    .hero-highlight+.hero-highlight{
-      border-left:1px solid var(--line);
-    }
-
-    .hero-highlight strong{
-      display:block;
-      font-size:24px;
-      line-height:1.2;
-    }
-
-    .hero-highlight span{
-      display:block;
-      margin-top:3px;
-      color:var(--muted);
-      font-size:11px;
-    }
-
-    .hero-actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      margin-top:32px;
-    }
-
-    .profile-card{
-      padding:28px;
-      border-radius:var(--radius);
-    }
-
-    .profile-top{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:16px;
-    }
-
-    .profile-avatar-wrap{
-      position:relative;
-    }
-
-    .avatar-image{
-      width:88px;
-      height:88px;
-      border:2px solid rgba(56,189,248,.35);
-      border-radius:22px;
-      object-fit:cover;
-    }
-
-    .profile-online{
-      position:absolute;
-      right:-3px;
-      bottom:-3px;
-      width:15px;
-      height:15px;
-      border:3px solid #101827;
-      border-radius:50%;
-      background:var(--green);
-    }
-
-    .profile-status{
-      padding:6px 9px;
-      border:1px solid rgba(34,197,94,.2);
-      border-radius:999px;
-      background:rgba(34,197,94,.08);
-      color:#86efac;
-      font-size:9px;
-      font-weight:800;
-      letter-spacing:.1em;
-    }
-
-    .profile-name{
-      margin-top:22px;
-      font-size:24px;
-      font-weight:800;
-    }
-
-    .profile-role{
-      margin-top:4px;
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.6;
-    }
-
-    .profile-line{
-      height:1px;
-      margin:24px 0;
-      background:var(--line);
-    }
-
-    .profile-details{
-      display:grid;
-      gap:16px;
-    }
-
-    .profile-detail{
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-    }
-
-    .profile-detail span:first-child{
-      color:var(--muted);
-      font-size:10px;
-      text-transform:uppercase;
-      letter-spacing:.1em;
-    }
-
-    .profile-detail span:last-child{
-      color:var(--text-2);
-      font-size:12px;
-      font-weight:600;
-      overflow-wrap:anywhere;
-    }
-
-    .profile-stack,
-    .project-tags{
-      display:flex;
-      flex-wrap:wrap;
-      gap:7px;
-    }
-
-    .profile-stack{
-      margin-top:24px;
-    }
-
-    .profile-stack span,
-    .project-tag{
-      padding:5px 9px;
-      border:1px solid rgba(56,189,248,.12);
-      border-radius:999px;
-      background:rgba(56,189,248,.045);
-      color:#9bdcff;
-      font-size:10px;
-      font-weight:600;
-    }
-
-    .section-heading{
-      max-width:850px;
-      margin-bottom:46px;
-    }
-
-    .section-title{
-      margin:12px 0 18px;
-      font-size:clamp(34px,5vw,58px);
-      line-height:1.08;
-      letter-spacing:-.04em;
-    }
-
-    .section-description{
-      max-width:850px;
-      margin-bottom:14px;
-      color:var(--text-2);
-      font-size:15px;
-    }
-
-    .section-description strong,
-    .experience-points strong,
-    .project-description strong{
-      color:var(--text);
-    }
-
-    .skills-grid{
-      display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:12px;
-    }
-
-    .skill{
-      min-height:128px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      padding:20px;
-      border-radius:18px;
-      transition:transform .25s ease,border-color .25s ease;
-    }
-
-    .skill:hover,
-    .project:hover,
-    .education-box:hover{
-      transform:translateY(-4px);
-      border-color:var(--line-hover);
-    }
-
-    .skill-number{
-      color:var(--cyan);
-      font-size:10px;
-      font-weight:800;
-    }
-
-    .skill-name{
-      max-width:220px;
-      color:var(--text-2);
-      font-size:13px;
-      line-height:1.45;
-      font-weight:600;
-    }
-
-    .experience-list{
-      display:grid;
-      gap:18px;
-    }
-
-    .experience-item{
-      display:grid;
-      grid-template-columns:180px minmax(0,1fr);
-      gap:40px;
-      padding:32px;
-      border-radius:var(--radius);
-    }
-
-    .experience-period{
-      color:var(--cyan);
-      font-size:10px;
-      font-weight:800;
-      letter-spacing:.1em;
-    }
-
-    .experience-role{
-      font-size:24px;
-      line-height:1.25;
-    }
-
-    .experience-company{
-      margin-top:6px;
-      color:var(--cyan);
-      font-size:12px;
-      font-weight:600;
-    }
-
-    .experience-description{
-      margin:20px 0;
-      color:var(--text-2);
-      font-size:14px;
-    }
-
-    .experience-points{
-      display:grid;
-      gap:12px;
-      list-style:none;
-    }
-
-    .experience-point{
-      position:relative;
-      padding-left:20px;
-      color:#aebacd;
-      font-size:13px;
-    }
-
-    .experience-point::before{
-      content:"";
-      position:absolute;
-      top:.72em;
-      left:0;
-      width:5px;
-      height:5px;
-      border-radius:50%;
-      background:var(--cyan);
-      box-shadow:0 0 12px rgba(56,189,248,.7);
-    }
-
-    .education-grid{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:18px;
-    }
-
-    .education-box{
-      padding:32px;
-      border-radius:var(--radius);
-      transition:transform .25s ease,border-color .25s ease;
-    }
-
-    .education-title{
-      font-size:23px;
-      font-weight:800;
-      line-height:1.3;
-    }
-
-    .education-subtitle{
-      margin-top:8px;
-      color:var(--cyan);
-      font-size:12px;
-      font-weight:600;
-    }
-
-    .education-text{
-      margin-top:20px;
-      color:var(--text-2);
-      font-size:13px;
-    }
-
-    .projects-grid{
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:18px;
-    }
-
-    .project{
-      position:relative;
-      display:flex;
-      flex-direction:column;
-      min-height:100%;
-      padding:28px;
-      border-radius:var(--radius);
-      overflow:hidden;
-      transition:transform .25s ease,border-color .25s ease;
-    }
-
-    .project::before{
-      content:"";
-      position:absolute;
-      top:-100px;
-      right:-100px;
-      width:200px;
-      height:200px;
-      border-radius:50%;
-      background:rgba(56,189,248,.1);
-      filter:blur(60px);
-      pointer-events:none;
-    }
-
-    .project-number{
-      position:relative;
-      color:var(--cyan);
-      font-size:11px;
-      font-weight:800;
-    }
-
-    .project h3{
-      position:relative;
-      margin:24px 0 16px;
-      font-size:22px;
-      line-height:1.3;
-    }
-
-    .project-description{
-      position:relative;
-      margin-bottom:14px;
-      color:var(--text-2);
-      font-size:13px;
-    }
-
-    .project-tags{
-      position:relative;
-      margin-top:auto;
-      padding-top:22px;
-    }
-
-    .ai-section{
-      background:
-        radial-gradient(circle at 80% 50%,rgba(99,102,241,.12),transparent 35%);
-    }
-
-    .ai-layout{
-      display:grid;
-      grid-template-columns:minmax(0,.8fr) minmax(400px,1.2fr);
-      align-items:center;
-      gap:clamp(40px,8vw,100px);
-    }
-
-    .ai-description{
-      max-width:500px;
-      margin-top:18px;
-      color:var(--text-2);
-      font-size:15px;
-    }
-
-    .ai-features{
-      display:grid;
-      gap:10px;
-      margin-top:28px;
-    }
-
-    .ai-feature{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      color:var(--text-2);
-      font-size:13px;
-    }
-
-    .ai-feature .check{
-      color:var(--cyan);
-      font-weight:900;
-    }
-
-    .chat{
-      overflow:hidden;
-      border-radius:var(--radius);
-    }
-
-    .chat-header{
-      min-height:74px;
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding:16px 18px;
-      border-bottom:1px solid var(--line);
-    }
-
-    .chat-avatar{
-      display:grid;
-      width:40px;
-      height:40px;
-      flex:0 0 40px;
-      place-items:center;
-      border-radius:12px;
-      background:linear-gradient(135deg,#0ea5e9,#6366f1);
-      font-weight:800;
-    }
-
-    .chat-identity{
-      min-width:0;
-      flex:1;
-    }
-
-    .chat-identity strong,
-    .chat-identity small{
-      display:block;
-    }
-
-    .chat-identity strong{
-      font-size:12px;
-    }
-
-    .chat-identity small{
-      color:var(--muted);
-      font-size:10px;
-    }
-
-    .chat-status{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      color:#86efac;
-      font-size:10px;
-      font-weight:700;
-    }
-
-    .chat-messages{
-      min-height:280px;
-      max-height:420px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      padding:20px;
-      overflow-y:auto;
-    }
-
-    .message{
-      max-width:85%;
-      padding:11px 13px;
-      border-radius:14px;
-      font-size:13px;
-      line-height:1.55;
-      overflow-wrap:anywhere;
-    }
-
-    .message.bot{
-      align-self:flex-start;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.035);
-      color:var(--text-2);
-    }
-
-    .message.user{
-      align-self:flex-end;
-      background:linear-gradient(135deg,#0ea5e9,#6366f1);
-      color:#fff;
-    }
-
-    .quick-questions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      padding:0 18px 18px;
-    }
-
-    .quick-question{
-      min-height:34px;
-      padding:0 11px;
-      border:1px solid var(--line);
-      border-radius:999px;
-      background:transparent;
-      color:var(--muted);
-      font-size:10px;
-      transition:color .2s ease,border-color .2s ease,background .2s ease;
-    }
-
-    .quick-question:hover{
-      border-color:var(--line-hover);
-      background:rgba(56,189,248,.05);
-      color:var(--text);
-    }
-
-    .chat-input{
-      display:grid;
-      gap:8px;
-      padding:18px;
-      border-top:1px solid var(--line);
-    }
-
-    .chat-input>input,
-    .chat-message-input input{
-      width:100%;
-      min-width:0;
-      height:44px;
-      border:1px solid var(--line);
-      border-radius:11px;
-      outline:none;
-      background:rgba(0,0,0,.18);
-      color:var(--text);
-      padding:0 13px;
-      transition:border-color .2s ease,box-shadow .2s ease;
-    }
-
-    .chat-input input::placeholder{
-      color:#64748b;
-    }
-
-    .chat-input input:focus{
-      border-color:rgba(56,189,248,.45);
-      box-shadow:0 0 0 3px rgba(56,189,248,.07);
-    }
-
-    .chat-message-input{
-      position:relative;
-    }
-
-    .chat-message-input input{
-      padding-right:52px;
-    }
-
-    .chat-send{
-      position:absolute;
-      top:4px;
-      right:4px;
-      width:36px;
-      height:36px;
-      border:0;
-      border-radius:9px;
-      background:linear-gradient(135deg,#0ea5e9,#6366f1);
-      color:#fff;
-      font-size:18px;
-      line-height:1;
-    }
-
-    .site-footer{
-      border-top:1px solid var(--line);
-      padding:32px 0;
-    }
-
-    .footer-container{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:24px;
-    }
-
-    .footer-brand{
-      font-size:14px;
-      font-weight:800;
-      letter-spacing:.14em;
-    }
-
-    .footer-description{
-      margin-top:4px;
-      color:var(--muted);
-      font-size:11px;
-    }
-
-    .footer-links{
-      display:flex;
-      flex-wrap:wrap;
-      gap:20px;
-    }
-
-    @media(max-width:1050px){
-      .nav-links{
-        gap:16px;
-      }
-
-      .hero-grid{
-        grid-template-columns:1fr;
-      }
-
-      .profile-card{
-        max-width:620px;
-      }
-
-      .skills-grid{
-        grid-template-columns:repeat(2,minmax(0,1fr));
-      }
-
-      .projects-grid{
-        grid-template-columns:1fr;
-      }
-
-      .ai-layout{
-        grid-template-columns:1fr;
-      }
-
-      .ai-content{
-        max-width:700px;
-      }
-    }
-
-    @media(max-width:760px){
-      html{
-        scroll-padding-top:130px;
-      }
-
-      .container{
-        width:min(calc(100% - 24px),var(--max));
-      }
-
-      .site-header{
-        position:relative;
-      }
-
-      .nav-container{
-        min-height:auto;
-        flex-wrap:wrap;
-        padding:14px 0;
-        gap:12px;
-      }
-
-      .brand{
-        margin-right:auto;
-      }
-
-      .nav-actions{
-        order:2;
-      }
-
-      .nav-links{
-        order:3;
-        width:100%;
-        justify-content:flex-start;
-        gap:18px;
-        padding-top:8px;
-        overflow-x:auto;
-        scrollbar-width:none;
-      }
-
-      .nav-links::-webkit-scrollbar{
-        display:none;
-      }
-
-      .nav-links a{
-        flex:0 0 auto;
-        white-space:nowrap;
-      }
-
-      .section{
-        padding:72px 0;
-      }
-
-      .hero{
-        min-height:auto;
-        padding:72px 0;
-      }
-
-      .hero-title{
-        font-size:clamp(48px,15vw,76px);
-      }
-
-      .hero-text{
-        font-size:14px;
-      }
-
-      .hero-highlights{
-        grid-template-columns:1fr;
-      }
-
-      .hero-highlight{
-        padding:14px 16px;
-      }
-
-      .hero-highlight+.hero-highlight{
-        border-top:1px solid var(--line);
-        border-left:0;
-      }
-
-      .hero-actions{
-        display:grid;
-        grid-template-columns:1fr;
-      }
-
-      .hero-actions .button{
-        width:100%;
-      }
-
-      .skills-grid{
-        grid-template-columns:1fr;
-      }
-
-      .section-title{
-        font-size:clamp(32px,10vw,48px);
-      }
-
-      .experience-item{
-        grid-template-columns:1fr;
-        gap:18px;
-        padding:22px;
-      }
-
-      .experience-role{
-        font-size:21px;
-      }
-
-      .education-grid{
-        grid-template-columns:1fr;
-      }
-
-      .education-box{
-        padding:24px;
-      }
-
-      .project{
-        padding:24px;
-      }
-
-      .chat-header{
-        padding:14px;
-      }
-
-      .chat-messages{
-        min-height:240px;
-        padding:16px;
-      }
-
-      .quick-questions{
-        padding-inline:14px;
-      }
-
-      .chat-input{
-        padding:14px;
-      }
-
-      .footer-container{
-        align-items:flex-start;
-        flex-direction:column;
-      }
-    }
-
-    @media(max-width:480px){
-      .brand-text{
-        font-size:12px;
-      }
-
-      .brand-mark{
-        width:34px;
-        height:34px;
-      }
-
-      .nav-actions .button-secondary{
-        display:none;
-      }
-
-      .nav-actions .button{
-        min-height:40px;
-        padding-inline:13px;
-      }
-
-      .profile-card{
-        padding:22px;
-      }
-
-      .avatar-image{
-        width:76px;
-        height:76px;
-      }
-
-      .profile-name{
-        font-size:22px;
-      }
-
-      .section-description,
-      .experience-description{
-        font-size:13px;
-      }
-
-      .experience-point{
-        font-size:12px;
-      }
-
-      .message{
-        max-width:92%;
-        font-size:12px;
-      }
-
-      .chat-status{
-        font-size:0;
-      }
-
-      .footer-links{
-        gap:14px;
-      }
-    }
-
-    @media(prefers-reduced-motion:reduce){
-      html{
-        scroll-behavior:auto;
-      }
-
-      *,
-      *::before,
-      *::after{
-        transition-duration:.01ms!important;
-        animation-duration:.01ms!important;
-        animation-iteration-count:1!important;
-      }
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Kellan Hung — Software Engineer, System Validation, Automation Engineering and Infrastructure Validation.">
+  <meta name="theme-color" content="#07111f">
+  <title>Kellan Hung — Software Engineer · System Validation · Automation</title>
 </head>
 
 <body>
-  <header class="site-header">
-    <div class="container nav-container">
-      <a href="#top" class="brand" aria-label="Kellan Hung home">
-        <span class="brand-mark">K</span>
-        <span class="brand-text">KELLAN<span>.DEV</span></span>
-      </a>
 
-      <nav class="nav-links" aria-label="Primary navigation">
-        <a href="#about">Overview</a>
-        <a href="#experience">Experience</a>
-        <a href="#projects">Projects</a>
-        <a href="#assistant">AI Assistant</a>
-      </nav>
+<header class="site-header">
+  <div class="container nav-container">
+    <a href="#about" class="brand" aria-label="Kellan Hung home">
+      <span class="brand-mark">K</span>
+      <span class="brand-text">KELLAN HUNG</span>
+    </a>
 
-      <div class="nav-actions">
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="#about">Overview</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#assistant">AI Assistant</a>
+    </nav>
+
+    <div class="nav-actions">
+      <a
+        href="https://github.com/kaekae939311"
+        class="nav-button"
+        target="_blank"
+        rel="noopener noreferrer"
+      >GitHub</a>
+
+      <a
+        href="https://line.me/ti/p/4GwwNnu_bA"
+        class="button-primary"
+        target="_blank"
+        rel="noopener noreferrer"
+      >💬 Contact via LINE</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section class="hero section">
+  <div class="container hero-grid">
+
+    <div class="hero-content">
+      <div class="section-label">SOFTWARE ENGINEER · SYSTEM VALIDATION</div>
+
+      <h1 class="hero-title">
+        Building<br>
+        <span class="accent">useful things.</span>
+      </h1>
+
+      <p class="hero-text">
+        Software Engineer – Test (SET) with 7 years of experience in
+        automation engineering, enterprise server validation, firmware
+        verification, and infrastructure testing across HPE and Lenovo
+        platforms. Experienced in system validation, integration,
+        regression, black-box testing, BIOS/UEFI, BMC, RAID, hardware
+        verification, Redfish, IPMI, CI/CD, and large-scale test
+        orchestration.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#projects" class="button-primary">View My Work</a>
+
         <a
-          href="https://github.com/kaekae939311"
-          class="button button-secondary"
+          href="https://mail.google.com/mail/?view=cm&fs=1&to=kaekae939311@gmail.com"
+          class="nav-button"
           target="_blank"
           rel="noopener noreferrer"
-        >GitHub</a>
-
-        <a
-          href="https://line.me/ti/p/4GwwNnu_bA"
-          class="button button-primary"
-          target="_blank"
-          rel="noopener noreferrer"
-        >💬 LINE</a>
+        >Contact Me</a>
       </div>
     </div>
-  </header>
 
-  <main id="top">
-    <section class="hero section">
-      <div class="container hero-grid">
-        <div class="hero-content">
-          <div class="eyebrow">
-            <span class="status-dot"></span>
-            SOFTWARE ENGINEER · SYSTEM VALIDATION
-          </div>
-
-          <h1 class="hero-title">
-            Building<br>
-            <span>useful things.</span>
-          </h1>
-
-          <p class="hero-text">
-            Software Engineer – Test (SET) with 5+ years of experience in
-            enterprise server validation and automation engineering across
-            HPE and Lenovo platforms. Experienced in system validation,
-            firmware verification, BMC and Redfish integration, hardware
-            compatibility testing, CI/CD automation, and large-scale
-            validation infrastructure.
-          </p>
-
-          <div class="hero-highlights">
-            <div class="hero-highlight">
-              <strong>5+</strong>
-              <span>Years Experience</span>
-            </div>
-
-            <div class="hero-highlight">
-              <strong>300+</strong>
-              <span>Servers Managed</span>
-            </div>
-
-            <div class="hero-highlight">
-              <strong>500+</strong>
-              <span>Network Adapters</span>
-            </div>
-          </div>
-
-          <div class="hero-actions">
-            <a href="#projects" class="button button-primary">View My Work</a>
-
-            <a
-              href="https://mail.google.com/mail/?view=cm&fs=1&to=kaekae939311@gmail.com"
-              class="button button-secondary"
-              target="_blank"
-              rel="noopener noreferrer"
-            >Contact Me</a>
-          </div>
+    <aside class="profile-card glass-card">
+      <div class="profile-top">
+        <div class="profile-avatar-wrap">
+          <img
+            src="avatar.jpg"
+            alt="Kellan Hung"
+            class="avatar-image"
+          >
+          <span class="profile-online" aria-hidden="true"></span>
         </div>
 
-        <aside class="profile-card glass-card">
-          <div class="profile-top">
-            <div class="profile-avatar-wrap">
-              <img
-                src="avatar.jpg"
-                alt="Kellan Hung"
-                class="avatar-image"
-              >
-              <span class="profile-online"></span>
-            </div>
-
-            <span class="profile-status">AVAILABLE</span>
-          </div>
-
-          <div class="profile-name">Kellan Hung</div>
-
-          <div class="profile-role">
-            Software Engineer · System Validation · Automation Engineering
-          </div>
-
-          <div class="profile-line"></div>
-
-          <div class="profile-details">
-            <div class="profile-detail">
-              <span>Location</span>
-              <span>Taipei / Remote</span>
-            </div>
-
-            <div class="profile-detail">
-              <span>Focus</span>
-              <span>HPE Enterprise Server Validation &amp; Automation</span>
-            </div>
-
-            <div class="profile-detail">
-              <span>Approach</span>
-              <span>Practical &amp; Data-driven</span>
-            </div>
-
-            <div class="profile-detail">
-              <span>Email</span>
-              <span>kaekae939311@gmail.com</span>
-            </div>
-          </div>
-
-          <div class="profile-stack">
-            <span>Python</span>
-            <span>PowerShell</span>
-            <span>Bash</span>
-            <span>Jenkins</span>
-            <span>Redfish</span>
-            <span>BMC</span>
-          </div>
-        </aside>
+        <span class="profile-status">AVAILABLE</span>
       </div>
-    </section>
 
-    <section id="about" class="section">
-      <div class="container">
-        <div class="section-heading">
-          <div class="section-label">01 / OVERVIEW</div>
+      <div class="profile-name">Kellan Hung</div>
 
-          <h2 class="section-title">
-            Enterprise validation engineer with automation and infrastructure expertise.
-          </h2>
+      <div class="profile-role">
+        Senior SET · Automation Engineering · Infrastructure Validation
+      </div>
 
-          <p class="section-description">
-            I specialize in enterprise server validation, firmware verification,
-            and infrastructure automation for HPE and Lenovo platforms. My
-            experience spans BIOS / UEFI validation, BMC and Redfish integration,
-            network adapter testing, CI/CD automation, and large-scale lab
-            resource management.
-          </p>
+      <div class="profile-line"></div>
 
-          <p class="section-description">
-            In my current role, I manage validation operations involving
-            <strong>300+ servers</strong> and <strong>500+ network adapters</strong>,
-            while building reusable internal web platforms that improve
-            collaboration, resource scheduling, and testing efficiency across
-            engineering teams.
-          </p>
+      <div class="profile-details">
+        <div class="profile-detail">
+          <span>Location</span>
+          <span>Taipei / Remote</span>
         </div>
 
-        <div class="skills-grid">
-          <div class="skill glass-card">
-            <span class="skill-number">01</span>
-            <span class="skill-name">Enterprise Server Validation</span>
-          </div>
+        <div class="profile-detail">
+          <span>Focus</span>
+          <span>Enterprise Server Validation &amp; Automation</span>
+        </div>
 
-          <div class="skill glass-card">
-            <span class="skill-number">02</span>
-            <span class="skill-name">Cross-Platform Compatibility Testing</span>
-          </div>
+        <div class="profile-detail">
+          <span>Approach</span>
+          <span>Practical &amp; Data-driven</span>
+        </div>
 
-          <div class="skill glass-card">
-            <span class="skill-number">03</span>
-            <span class="skill-name">BIOS / UEFI / Firmware Validation</span>
-          </div>
-
-          <div class="skill glass-card">
-            <span class="skill-number">04</span>
-            <span class="skill-name">BMC / Redfish / IPMI Automation</span>
-          </div>
-
-          <div class="skill glass-card">
-            <span class="skill-number">05</span>
-            <span class="skill-name">Large-Scale NIC &amp; Infrastructure Management</span>
-          </div>
-
-          <div class="skill glass-card">
-            <span class="skill-number">06</span>
-            <span class="skill-name">PowerShell / Bash / Python Automation</span>
-          </div>
-
-          <div class="skill glass-card">
-            <span class="skill-number">07</span>
-            <span class="skill-name">Jenkins CI/CD Workflows</span>
-          </div>
-
-          <div class="skill glass-card">
-            <span class="skill-number">08</span>
-            <span class="skill-name">Test Orchestration &amp; Reliability Engineering</span>
-          </div>
+        <div class="profile-detail">
+          <span>Email</span>
+          <span>kaekae939311@gmail.com</span>
         </div>
       </div>
-    </section>
 
-    <section id="experience" class="section section-dark">
-      <div class="container">
-        <div class="section-heading">
-          <div class="section-label">02 / EXPERIENCE</div>
-
-          <h2 class="section-title">Professional experience.</h2>
-
-          <p class="section-description">
-            Experience across enterprise server validation, firmware integration,
-            infrastructure automation, and large-scale test environment
-            management for HPE and Lenovo platforms.
-          </p>
-        </div>
-
-        <div class="experience-list">
-          <article class="experience-item glass-card">
-            <div>
-              <div class="experience-period">NOV 2024 — PRESENT</div>
-            </div>
-
-            <div class="experience-content">
-              <h3 class="experience-role">
-                Software Engineer – System Validation
-              </h3>
-
-              <div class="experience-company">
-                Mphasis Australia Pty. Limited Taiwan Branch · HPE Option SIT Team
-              </div>
-
-              <p class="experience-description">
-                Leading enterprise server and network adapter validation for
-                HPE ProLiant AMD and Intel platforms, covering firmware
-                verification, resource management, automation workflows,
-                and infrastructure coordination across local and offshore teams.
-              </p>
-
-              <div class="experience-points">
-                <div class="experience-point">
-                  Managed <strong>300+ enterprise servers</strong> and
-                  <strong>500+ network adapters</strong> used for validation
-                  and release testing.
-                </div>
-
-                <div class="experience-point">
-                  Built an internal <strong>team web portal</strong> for server
-                  allocation, NIC inventory tracking, test scheduling, and
-                  cross-team collaboration.
-                </div>
-
-                <div class="experience-point">
-                  Validated Intel, Broadcom, Mellanox, Marvell, and Xilinx NIC
-                  adapters across Windows, Linux, and VMware environments.
-                </div>
-
-                <div class="experience-point">
-                  Performed iLO7 Gen12 troubleshooting, firmware image
-                  verification, LMS license validation, and automated release
-                  testing using Jenkins and Postman.
-                </div>
-              </div>
-            </div>
-          </article>
-
-          <article class="experience-item glass-card">
-            <div>
-              <div class="experience-period">JUN 2022 — OCT 2024</div>
-            </div>
-
-            <div class="experience-content">
-              <h3 class="experience-role">
-                Software Test Engineer / BIOS Engineer III
-              </h3>
-
-              <div class="experience-company">
-                Lionbridge Global Sourcing Solutions Inc. · Hewlett Packard Enterprise
-              </div>
-
-              <p class="experience-description">
-                Worked across HPE OART, BIOS, and Option SIT teams, focusing
-                on server compatibility validation, firmware integration,
-                ROM functionality testing, and automated infrastructure
-                verification.
-              </p>
-
-              <div class="experience-points">
-                <div class="experience-point">
-                  Validated <strong>SATA and NVMe drive compatibility</strong>
-                  with cage configurations and Service Pack for ProLiant
-                  upgrade integration.
-                </div>
-
-                <div class="experience-point">
-                  Executed full <strong>ROM U54 functionality testing</strong>
-                  for Intel and AMD platforms, including Embedded Shell,
-                  iSCSI, HBM CPU, and memory validation.
-                </div>
-
-                <div class="experience-point">
-                  Developed and maintained
-                  <strong>Jenkins-based automated test workflows</strong>
-                  for driver, firmware, SR-IOV, RDE-SPDM, iPerf, and Redfish
-                  stress testing.
-                </div>
-
-                <div class="experience-point">
-                  Collaborated with offshore teams, reported defects through
-                  Spira and JIRA, and mentored new engineers during onboarding
-                  and technical training.
-                </div>
-              </div>
-            </div>
-          </article>
-
-          <article class="experience-item glass-card">
-            <div>
-              <div class="experience-period">APR 2021 — APR 2022</div>
-            </div>
-
-            <div class="experience-content">
-              <h3 class="experience-role">
-                BMC Validation &amp; Automation Engineer
-              </h3>
-
-              <div class="experience-company">
-                LC Future Center Limited Taiwan Branch · Lenovo Global Technology
-              </div>
-
-              <p class="experience-description">
-                Responsible for BMC firmware validation, automation framework
-                development, and remote server management solutions for Lenovo
-                enterprise server platforms.
-              </p>
-
-              <div class="experience-points">
-                <div class="experience-point">
-                  Designed automation tools and reusable test scripts using
-                  <strong>PowerShell, Python, and Bash</strong>.
-                </div>
-
-                <div class="experience-point">
-                  Validated <strong>IPMI, PMBus, RESTful API / Redfish</strong>,
-                  I2C, UART, GPIO, PWM, SMBPBI, PECI, and Intel ME functionality.
-                </div>
-
-                <div class="experience-point">
-                  Participated in BMC firmware testing, release validation,
-                  sensor porting on <strong>AST2500</strong> platforms, and
-                  OpenBMC research activities.
-                </div>
-
-                <div class="experience-point">
-                  Built a <strong>one-click remote server control interface</strong>
-                  that simplified KVM and BMC-based operations for validation teams.
-                </div>
-              </div>
-            </div>
-          </article>
-        </div>
+      <div class="profile-stack">
+        <span>Python</span>
+        <span>PowerShell</span>
+        <span>Bash</span>
+        <span>Jenkins</span>
+        <span>Redfish</span>
+        <span>BMC</span>
       </div>
-    </section>
+    </aside>
 
-    <section class="section">
-      <div class="container">
-        <div class="section-heading">
-          <div class="section-label">03 / EDUCATION</div>
-          <h2 class="section-title">Education &amp; academic background.</h2>
-        </div>
+  </div>
+</section>
 
-        <div class="education-grid">
-          <article class="education-box glass-card">
-            <div class="education-title">
-              Master of Business Administration
-            </div>
+<section id="about" class="section">
+  <div class="container">
 
-            <div class="education-subtitle">
-              Huafan University · Smart Data Program
-            </div>
+    <div class="section-heading">
+      <div class="section-label">01 / OVERVIEW</div>
 
-            <p class="education-text">
-              Graduate-level studies focused on business strategy, smart data
-              analytics, digital transformation, data-driven decision making,
-              and the integration of technology with enterprise management.
-            </p>
-          </article>
+      <h2 class="section-title">
+        Enterprise validation engineer with automation and infrastructure expertise.
+      </h2>
 
-          <article class="education-box glass-card">
-            <div class="education-title">
-              Bachelor's Degree in Game Design
-            </div>
+      <p class="section-description">
+        I specialize in enterprise server validation, firmware verification,
+        infrastructure automation, and cross-platform compatibility testing
+        for HPE and Lenovo environments. My experience covers BIOS / UEFI,
+        BMC, Redfish, IPMI, network adapters, storage, CI/CD automation,
+        telemetry, fault analysis, and large-scale validation infrastructure.
+      </p>
 
-            <div class="education-subtitle">
-              China University of Science and Technology
-            </div>
+      <p class="section-description">
+        In my current role, I manage validation operations involving
+        <strong>300+ enterprise servers</strong> and
+        <strong>500+ network adapters</strong>, while developing reusable
+        internal web tools that improve resource allocation, scheduling,
+        collaboration, and testing efficiency.
+      </p>
+    </div>
 
-            <p class="education-text">
-              Developed foundations in software design, interactive systems,
-              digital media, user experience, and project-based technical
-              development.
-            </p>
-          </article>
-        </div>
+    <div class="skills-grid">
+
+      <div class="skill glass-card">
+        <span class="skill-number">01</span>
+        <span class="skill-name">Enterprise Server Validation</span>
       </div>
-    </section>
 
-    <section id="projects" class="section section-dark">
-      <div class="container">
-        <div class="section-heading">
-          <div class="section-label">04 / SELECTED WORK</div>
+      <div class="skill glass-card">
+        <span class="skill-number">02</span>
+        <span class="skill-name">Cross-Platform Compatibility Testing</span>
+      </div>
 
-          <h2 class="section-title">
-            Enterprise validation &amp; automation projects.
-          </h2>
+      <div class="skill glass-card">
+        <span class="skill-number">03</span>
+        <span class="skill-name">BIOS / UEFI / Firmware Validation</span>
+      </div>
 
-          <p class="section-description">
-            Selected projects based on experience in HPE and Lenovo enterprise
-            server validation, infrastructure automation, firmware testing,
-            and internal platform development.
+      <div class="skill glass-card">
+        <span class="skill-number">04</span>
+        <span class="skill-name">BMC / Redfish / IPMI Automation</span>
+      </div>
+
+      <div class="skill glass-card">
+        <span class="skill-number">05</span>
+        <span class="skill-name">NIC &amp; Infrastructure Management</span>
+      </div>
+
+      <div class="skill glass-card">
+        <span class="skill-number">06</span>
+        <span class="skill-name">PowerShell / Bash / Python Automation</span>
+      </div>
+
+      <div class="skill glass-card">
+        <span class="skill-number">07</span>
+        <span class="skill-name">Jenkins CI/CD Test Workflows</span>
+      </div>
+
+      <div class="skill glass-card">
+        <span class="skill-number">08</span>
+        <span class="skill-name">Test Orchestration &amp; Reliability Engineering</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="experience" class="section section-dark">
+  <div class="container">
+
+    <div class="section-heading">
+      <div class="section-label">02 / EXPERIENCE</div>
+
+      <h2 class="section-title">Professional experience.</h2>
+
+      <p class="section-description">
+        Experience across enterprise server validation, firmware integration,
+        infrastructure automation, and large-scale test environment
+        management for HPE and Lenovo platforms.
+      </p>
+    </div>
+
+    <div class="experience">
+
+      <article class="experience-item glass-card">
+        <div class="experience-period">NOV 2024 — PRESENT</div>
+
+        <div class="experience-content">
+          <h3 class="experience-role">
+            Software Engineer – System Validation
+          </h3>
+
+          <div class="experience-company">
+            Mphasis Australia Pty. Limited Taiwan Branch · HPE Option SIT Team
+          </div>
+
+          <p class="experience-description">
+            Leading enterprise server and network adapter validation for
+            HPE ProLiant AMD and Intel platforms, covering firmware
+            verification, resource management, automation workflows,
+            release testing, and infrastructure coordination across
+            local and offshore engineering teams.
           </p>
-        </div>
 
-        <div class="projects-grid">
-          <article class="project glass-card">
-            <span class="project-number">01</span>
+          <div class="experience-points">
 
-            <h3>
-              Enterprise Server &amp; NIC Resource Management Platform
-            </h3>
-
-            <p class="project-description">
-              Designed and operated an internal resource management platform
-              for HPE validation teams supporting more than
-              <strong>300 servers</strong> and <strong>500 network adapters</strong>
-              across AMD and Intel ProLiant environments.
-            </p>
-
-            <p class="project-description">
-              Centralized server allocation, NIC inventory tracking,
-              resource scheduling, and validation status monitoring for
-              local and offshore engineering teams.
-            </p>
-
-            <div class="project-tags">
-              <span class="project-tag">Server Management</span>
-              <span class="project-tag">NIC Inventory</span>
-              <span class="project-tag">Web Platform</span>
-              <span class="project-tag">Jenkins</span>
-              <span class="project-tag">Automation</span>
+            <div class="experience-point">
+              Managed <strong>300+ enterprise servers</strong> and
+              <strong>500+ network adapters</strong> used for validation
+              and release testing.
             </div>
-          </article>
 
-          <article class="project glass-card">
-            <span class="project-number">02</span>
+            <div class="experience-point">
+              Built an internal <strong>team web portal</strong> for server
+              allocation, NIC inventory tracking, test scheduling,
+              and cross-team collaboration.
+            </div>
 
-            <h3>HPE SPP Drive Compatibility Automation</h3>
+            <div class="experience-point">
+              Validated Intel, Broadcom, Mellanox, Marvell, and Xilinx
+              network adapters across Windows, Linux, and VMware environments.
+            </div>
 
-            <p class="project-description">
-              Built and executed automated validation workflows for SATA and
-              NVMe drives, cage configurations, and Service Pack for ProLiant
+            <div class="experience-point">
+              Performed iLO7 Gen12 troubleshooting, firmware image
+              verification, LMS license validation, Jenkins automation,
+              and Postman-based API testing.
+            </div>
+
+          </div>
+        </div>
+      </article>
+
+      <article class="experience-item glass-card">
+        <div class="experience-period">JUN 2022 — OCT 2024</div>
+
+        <div class="experience-content">
+          <h3 class="experience-role">
+            Software Test Engineer / BIOS Engineer III
+          </h3>
+
+          <div class="experience-company">
+            Lionbridge Global Sourcing Solutions Inc. · Hewlett Packard Enterprise
+          </div>
+
+          <p class="experience-description">
+            Worked across HPE OART, BIOS, and Option SIT teams with a focus
+            on server compatibility validation, firmware integration,
+            ROM functionality, automated testing, and infrastructure
+            verification.
+          </p>
+
+          <div class="experience-points">
+
+            <div class="experience-point">
+              Validated <strong>SATA and NVMe drive compatibility</strong>
+              with cage configurations and Service Pack for ProLiant
               upgrade integration.
-            </p>
-
-            <p class="project-description">
-              Reduced manual verification effort and improved deployment
-              efficiency while supporting technical onboarding for new
-              team members.
-            </p>
-
-            <div class="project-tags">
-              <span class="project-tag">PowerShell</span>
-              <span class="project-tag">Python</span>
-              <span class="project-tag">NVMe</span>
-              <span class="project-tag">SPP</span>
-              <span class="project-tag">Automation</span>
-            </div>
-          </article>
-
-          <article class="project glass-card">
-            <span class="project-number">03</span>
-
-            <h3>
-              Lenovo BMC Validation &amp; Remote Control Automation
-            </h3>
-
-            <p class="project-description">
-              Designed and maintained BMC automation tools for Lenovo server
-              platforms, including IPMI, PMBus, RESTful API / Redfish
-              validation, firmware release verification, and remote KVM
-              workflows.
-            </p>
-
-            <p class="project-description">
-              Built automation capabilities that simplified server management
-              operations across multiple validation teams.
-            </p>
-
-            <div class="project-tags">
-              <span class="project-tag">IPMI</span>
-              <span class="project-tag">Redfish</span>
-              <span class="project-tag">BMC</span>
-              <span class="project-tag">AST2500</span>
-              <span class="project-tag">OpenBMC</span>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="assistant" class="section ai-section">
-      <div class="container">
-        <div class="ai-layout">
-          <div class="ai-content">
-            <div class="section-label">05 / INTERACTIVE RESUME</div>
-
-            <h2 class="section-title">
-              Ask my<br>resume.
-            </h2>
-
-            <p class="ai-description">
-              Instead of reading a long resume, just ask. The assistant can
-              answer questions about Kellan's experience, technical skills,
-              projects, and professional background.
-            </p>
-
-            <div class="ai-features">
-              <div class="ai-feature">
-                <span class="check">✓</span>
-                <span>Built with HTML &amp; JavaScript</span>
-              </div>
-
-              <div class="ai-feature">
-                <span class="check">✓</span>
-                <span>Runs directly on GitHub Pages</span>
-              </div>
-
-              <div class="ai-feature">
-                <span class="check">✓</span>
-                <span>Cloudflare Worker + KV powered chat support</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="chat glass-card">
-            <div class="chat-header">
-              <div class="chat-avatar">K</div>
-
-              <div class="chat-identity">
-                <strong>Kellan Resume Assistant</strong>
-                <small>Ask me about Kellan</small>
-              </div>
-
-              <div class="chat-status">
-                <span class="status-dot"></span>
-                Online
-              </div>
             </div>
 
-            <div id="chatMessages" class="chat-messages" aria-live="polite">
-              <div class="message bot">
-                Hi 👋 I'm Kellan's resume assistant. Ask me about his skills,
-                experience, projects, or background.
-              </div>
+            <div class="experience-point">
+              Executed <strong>ROM U54 functionality testing</strong>
+              across Intel and AMD platforms, including Embedded Shell,
+              iSCSI, HBM CPU, and memory validation.
             </div>
 
-            <div class="quick-questions">
-              <button
-                class="quick-question"
-                type="button"
-                onclick="askQuestion('Who are you?')"
-              >Who are you?</button>
-
-              <button
-                class="quick-question"
-                type="button"
-                onclick="askQuestion('What are your skills?')"
-              >Skills</button>
-
-              <button
-                class="quick-question"
-                type="button"
-                onclick="askQuestion('Tell me about your projects.')"
-              >Projects</button>
-
-              <button
-                class="quick-question"
-                type="button"
-                onclick="askQuestion('How can I contact you?')"
-              >Contact</button>
+            <div class="experience-point">
+              Developed and maintained
+              <strong>Jenkins-based automated test workflows</strong>
+              for driver, firmware, SR-IOV, RDE-SPDM, iPerf,
+              and Redfish stress testing.
             </div>
 
-            <div class="chat-input">
-              <input
-                id="visitorNameInput"
-                type="text"
-                placeholder="Your name"
-                autocomplete="name"
-              >
-
-              <div class="chat-message-input">
-                <input
-                  id="chatInput"
-                  type="text"
-                  placeholder="Ask about Kellan..."
-                  autocomplete="off"
-                  onkeydown="handleEnter(event)"
-                >
-
-                <button
-                  class="chat-send"
-                  type="button"
-                  onclick="sendMessage()"
-                  aria-label="Send message"
-                >→</button>
-              </div>
+            <div class="experience-point">
+              Collaborated with offshore teams, managed defects through
+              Spira and JIRA, and supported technical onboarding
+              and mentoring for new engineers.
             </div>
+
           </div>
         </div>
-      </div>
-    </section>
-  </main>
+      </article>
 
-  <footer class="site-footer">
-    <div class="container footer-container">
-      <div>
-        <div class="footer-brand">
-          KELLAN<span>.DEV</span>
+      <article class="experience-item glass-card">
+        <div class="experience-period">APR 2021 — APR 2022</div>
+
+        <div class="experience-content">
+          <h3 class="experience-role">
+            BMC Validation &amp; Automation Engineer
+          </h3>
+
+          <div class="experience-company">
+            LC Future Center Limited Taiwan Branch · Lenovo Global Technology
+          </div>
+
+          <p class="experience-description">
+            Responsible for BMC firmware validation, automation framework
+            development, and remote server management solutions for
+            Lenovo enterprise server platforms.
+          </p>
+
+          <div class="experience-points">
+
+            <div class="experience-point">
+              Designed automation tools and reusable test scripts using
+              <strong>PowerShell, Python, and Bash</strong>.
+            </div>
+
+            <div class="experience-point">
+              Validated <strong>IPMI, PMBus, RESTful API / Redfish</strong>,
+              I2C, UART, GPIO, PWM, SMBPBI, PECI, and Intel ME functionality.
+            </div>
+
+            <div class="experience-point">
+              Participated in BMC firmware testing, release validation,
+              sensor porting on <strong>AST2500</strong> platforms,
+              and OpenBMC research activities.
+            </div>
+
+            <div class="experience-point">
+              Built a <strong>one-click remote server control interface</strong>
+              that simplified KVM and BMC-based operations for validation teams.
+            </div>
+
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+
+    <div class="section-heading">
+      <div class="section-label">03 / EDUCATION</div>
+      <h2 class="section-title">Education &amp; academic background.</h2>
+    </div>
+
+    <div class="education-grid">
+
+      <article class="education-box glass-card">
+        <div class="education-title">
+          Master of Business Administration
         </div>
 
-        <div class="footer-description">
-          Software Engineer · System Validation · Automation Engineering
+        <div class="education-subtitle">
+          Huafan University · Smart Data Program
+        </div>
+
+        <p class="education-text">
+          Graduate-level studies focused on business strategy,
+          smart data analytics, digital transformation, data-driven
+          decision making, and the integration of technology with
+          enterprise management.
+        </p>
+      </article>
+
+      <article class="education-box glass-card">
+        <div class="education-title">
+          Bachelor's Degree in Game Design
+        </div>
+
+        <div class="education-subtitle">
+          China University of Science and Technology
+        </div>
+
+        <p class="education-text">
+          Developed foundations in software design, interactive systems,
+          digital media, user experience, and project-based technical
+          development, providing a foundation for later work in
+          automation engineering and enterprise validation.
+        </p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section id="projects" class="section section-dark">
+  <div class="container">
+
+    <div class="section-heading">
+      <div class="section-label">04 / SELECTED WORK</div>
+
+      <h2 class="section-title">
+        Enterprise validation &amp; automation projects.
+      </h2>
+
+      <p class="section-description">
+        Selected projects based on enterprise server validation,
+        infrastructure automation, firmware testing, and internal
+        engineering platform development.
+      </p>
+    </div>
+
+    <div class="projects-grid">
+
+      <article class="project glass-card">
+        <div class="project-glow"></div>
+        <span class="project-number">01</span>
+
+        <h3>
+          Enterprise Server &amp; NIC Resource Management Platform
+        </h3>
+
+        <p class="project-description">
+          Designed and operated an internal resource management platform
+          supporting more than <strong>300 servers</strong> and
+          <strong>500 network adapters</strong> across AMD and Intel
+          ProLiant validation environments.
+        </p>
+
+        <p class="project-description">
+          Centralized server allocation, NIC inventory, resource scheduling,
+          validation status, and team coordination through a reusable
+          internal web platform.
+        </p>
+
+        <div class="project-tags">
+          <span class="project-tag">Server Management</span>
+          <span class="project-tag">NIC Inventory</span>
+          <span class="project-tag">Web Platform</span>
+          <span class="project-tag">Jenkins</span>
+          <span class="project-tag">Automation</span>
+        </div>
+      </article>
+
+      <article class="project glass-card">
+        <div class="project-glow"></div>
+        <span class="project-number">02</span>
+
+        <h3>HPE SPP Drive Compatibility Automation</h3>
+
+        <p class="project-description">
+          Built and executed automated validation workflows for SATA
+          and NVMe drives, cage configurations, and Service Pack for
+          ProLiant upgrade integration.
+        </p>
+
+        <p class="project-description">
+          Reduced manual verification effort, improved deployment
+          consistency, and supported technical onboarding for new
+          validation engineers.
+        </p>
+
+        <div class="project-tags">
+          <span class="project-tag">PowerShell</span>
+          <span class="project-tag">Python</span>
+          <span class="project-tag">NVMe</span>
+          <span class="project-tag">SPP</span>
+          <span class="project-tag">Automation</span>
+        </div>
+      </article>
+
+      <article class="project glass-card">
+        <div class="project-glow"></div>
+        <span class="project-number">03</span>
+
+        <h3>
+          Lenovo BMC Validation &amp; Remote Control Automation
+        </h3>
+
+        <p class="project-description">
+          Designed and maintained BMC automation tools for Lenovo
+          server platforms, including IPMI, PMBus, RESTful API /
+          Redfish validation, firmware release verification,
+          and remote KVM workflows.
+        </p>
+
+        <p class="project-description">
+          Built reusable automation capabilities that simplified
+          server management and validation operations across
+          multiple engineering teams.
+        </p>
+
+        <div class="project-tags">
+          <span class="project-tag">IPMI</span>
+          <span class="project-tag">Redfish</span>
+          <span class="project-tag">BMC</span>
+          <span class="project-tag">AST2500</span>
+          <span class="project-tag">OpenBMC</span>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section id="assistant" class="section ai-section">
+  <div class="container">
+
+    <div class="ai-layout">
+
+      <div class="ai-content">
+        <div class="section-label">05 / INTERACTIVE RESUME</div>
+
+        <h2 class="section-title">
+          Ask my<br>
+          resume.
+        </h2>
+
+        <p class="ai-description">
+          Instead of reading a long resume, ask directly. The assistant
+          can answer common questions about Kellan's experience,
+          technical skills, projects, education, and professional
+          background.
+        </p>
+
+        <div class="ai-features">
+
+          <div class="ai-feature">
+            <span class="check">✓</span>
+            <span>Browser-based HTML &amp; JavaScript interface</span>
+          </div>
+
+          <div class="ai-feature">
+            <span class="check">✓</span>
+            <span>Designed for GitHub Pages deployment</span>
+          </div>
+
+          <div class="ai-feature">
+            <span class="check">✓</span>
+            <span>Cloudflare Worker + KV chat synchronization</span>
+          </div>
+
         </div>
       </div>
 
-      <div class="footer-links">
-        <a
-          href="https://github.com/kaekae939311"
-          target="_blank"
-          rel="noopener noreferrer"
-        >GitHub</a>
+      <div class="chat glass-card">
 
-        <a href="mailto:kaekae939311@gmail.com">Email</a>
+        <div class="chat-header">
+          <div class="chat-avatar">K</div>
 
-        <a
-          href="https://line.me/ti/p/4GwwNnu_bA"
-          target="_blank"
-          rel="noopener noreferrer"
-        >LINE</a>
+          <div class="chat-identity">
+            <strong>Kellan Resume Assistant</strong>
+            <small>Ask me about Kellan</small>
+          </div>
+
+          <div class="chat-status">
+            <span class="status-dot"></span>
+            Online
+          </div>
+        </div>
+
+        <div
+          id="chatMessages"
+          class="chat-messages"
+          aria-live="polite"
+          aria-label="Resume assistant messages"
+        >
+          <div class="message bot">
+            <div class="message-name">Kellan</div>
+            <div class="message-text">
+              Hi 👋 I'm Kellan's resume assistant. Ask me about his
+              skills, experience, projects, or background.
+            </div>
+          </div>
+        </div>
+
+        <div class="quick-questions" aria-label="Quick questions">
+
+          <button
+            class="quick-question"
+            type="button"
+            data-question="Who are you?"
+          >Who are you?</button>
+
+          <button
+            class="quick-question"
+            type="button"
+            data-question="What are your skills?"
+          >Skills</button>
+
+          <button
+            class="quick-question"
+            type="button"
+            data-question="Tell me about your projects."
+          >Projects</button>
+
+          <button
+            class="quick-question"
+            type="button"
+            data-question="How can I contact you?"
+          >Contact</button>
+
+        </div>
+
+        <div class="chat-input">
+
+          <input
+            id="visitorNameInput"
+            type="text"
+            placeholder="Your name"
+            autocomplete="name"
+            maxlength="80"
+            aria-label="Your name"
+          >
+
+          <div class="chat-message-input">
+
+            <input
+              id="chatInput"
+              type="text"
+              placeholder="Ask about Kellan..."
+              autocomplete="off"
+              maxlength="500"
+              aria-label="Ask about Kellan"
+            >
+
+            <button
+              id="chatSendButton"
+              class="chat-send"
+              type="button"
+              aria-label="Send message"
+            >→</button>
+
+          </div>
+        </div>
+
       </div>
     </div>
-  </footer>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-container">
+
+    <div class="footer-description">
+      Software Engineer · System Validation · Automation Engineering
+    </div>
+
+    <div class="footer-links">
+      <a
+        href="https://github.com/kaekae939311"
+        target="_blank"
+        rel="noopener noreferrer"
+      >GitHub</a>
+
+      <a href="mailto:kaekae939311@gmail.com">Email</a>
+
+      <a
+        href="https://line.me/ti/p/4GwwNnu_bA"
+        target="_blank"
+        rel="noopener noreferrer"
+      >LINE</a>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+(() => {
+  "use strict";
+
+  const WORKER_URL = "https://hung.kaekae939311.workers.dev";
+
+  const CHAT_SESSION_KEY = "kellanChatSessionId";
+  const VISITOR_NAME_KEY = "visitorName";
+
+  const chatMessages = document.getElementById("chatMessages");
+  const chatInput = document.getElementById("chatInput");
+  const visitorNameInput = document.getElementById("visitorNameInput");
+  const chatSendButton = document.getElementById("chatSendButton");
+  const quickQuestionButtons = document.querySelectorAll(".quick-question");
+
+  if (
+    !chatMessages ||
+    !chatInput ||
+    !visitorNameInput ||
+    !chatSendButton
+  ) {
+    console.error("Resume assistant initialization failed.");
+    return;
+  }
+
+  let sessionId = localStorage.getItem(CHAT_SESSION_KEY);
+
+  if (!sessionId) {
+    sessionId = crypto.randomUUID();
+    localStorage.setItem(CHAT_SESSION_KEY, sessionId);
+  }
+
+  let visitorName = localStorage.getItem(VISITOR_NAME_KEY) || "";
+  let lastMessageHash = "";
+  let isSending = false;
+
+  visitorNameInput.value = visitorName;
+
+  const aiAnswers = {
+    "Who are you?":
+      "I'm Kellan Hung's resume assistant 🤖. I can answer questions about his professional background, technical skills, experience, projects, and education.",
+
+    "What are your skills?":
+      "Kellan specializes in enterprise server validation, automation engineering, BIOS/UEFI and firmware validation, BMC, Redfish, IPMI, NIC and hardware compatibility testing, PowerShell, Bash, Python, Jenkins CI/CD, test orchestration, and infrastructure management.",
+
+    "Tell me about your projects.":
+      "Kellan has worked on an enterprise server and NIC resource management platform, HPE SPP drive compatibility automation, and Lenovo BMC validation and remote server control automation.",
+
+    "How can I contact you?":
+      "You can contact Kellan by email at kaekae939311@gmail.com or through LINE. GitHub is also available from the navigation and footer."
+  };
+
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function addMessage(text, sender = "bot") {
+    const div = document.createElement("div");
+    div.className = `message ${sender}`;
+
+    const rawText = String(text);
+    let name = sender === "bot" ? "Kellan" : "You";
+    let content = rawText;
+
+    const separatorIndex = rawText.indexOf(": ");
+
+    if (separatorIndex > -1) {
+      name = rawText.slice(0, separatorIndex).trim() || name;
+      content = rawText.slice(separatorIndex + 2);
+    }
+
+    div.innerHTML = `
+      <div class="message-name">${escapeHtml(name)}</div>
+      <div class="message-text">${escapeHtml(content)}</div>
+    `;
+
+    chatMessages.appendChild(div);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function resetMessages() {
+    chatMessages.innerHTML = `
+      <div class="message bot">
+        <div class="message-name">Kellan</div>
+        <div class="message-text">
+          Hi 👋 I'm Kellan's resume assistant. Ask me about his
+          skills, experience, projects, or background.
+        </div>
+      </div>
+    `;
+  }
+
+  function setSendingState(sending) {
+    isSending = sending;
+    chatSendButton.disabled = sending;
+    chatInput.disabled = sending;
+
+    chatSendButton.style.opacity = sending ? "0.5" : "1";
+    chatSendButton.style.pointerEvents = sending ? "none" : "auto";
+  }
+
+  function askQuestion(question) {
+    const displayName = visitorName || "You";
+    const answer = aiAnswers[question];
+
+    addMessage(`${displayName}: ${question}`, "user");
+
+    if (!answer) {
+      addMessage(
+        "I can answer questions about Kellan's experience, skills, projects, education, and contact information.",
+        "bot"
+      );
+      return;
+    }
+
+    window.setTimeout(() => {
+      addMessage(answer, "bot");
+    }, 250);
+  }
+
+  async function sendMessage() {
+    if (isSending) return;
+
+    const text = chatInput.value.trim();
+
+    if (!text) {
+      chatInput.focus();
+      return;
+    }
+
+    const displayName = visitorName || "You";
+
+    addMessage(`${displayName}: ${text}`, "user");
+    chatInput.value = "";
+
+    setSendingState(true);
+
+    try {
+      const response = await fetch(`${WORKER_URL}/send`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          text,
+          name: visitorName || "Website Visitor",
+          sessionId
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (!data.ok) {
+        throw new Error("Worker rejected the message.");
+      }
+
+      await syncMessages(true);
+
+    } catch (error) {
+      console.error("sendMessage error:", error);
+
+      addMessage(
+        "❌ Failed to send the message. Please try again later.",
+        "bot"
+      );
+    } finally {
+      setSendingState(false);
+      chatInput.focus();
+    }
+  }
+
+  async function loadHistory() {
+    try {
+      const response = await fetch(
+        `${WORKER_URL}/messages?sessionId=${encodeURIComponent(sessionId)}`
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const messages = await response.json();
+
+      renderMessages(messages);
+
+    } catch (error) {
+      console.error("loadHistory error:", error);
+    }
+  }
+
+  function renderMessages(messages) {
+    resetMessages();
+
+    messages.forEach((message) => {
+      const isAdmin = message.role === "admin";
+      const name = isAdmin
+        ? "Kellan"
+        : message.name || "Anonymous";
+
+      addMessage(
+        `${name}: ${message.text || ""}`,
+        isAdmin ? "bot" : "user"
+      );
+    });
+  }
+
+  async function syncMessages(force = false) {
+    try {
+      const response = await fetch(
+        `${WORKER_URL}/messages?sessionId=${encodeURIComponent(sessionId)}`
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const messages = await response.json();
+
+      const currentHash = JSON.stringify(
+        messages.map((message) => [
+          message.role,
+          message.name,
+          message.text,
+          message.time
+        ])
+      );
+
+      if (!force && currentHash === lastMessageHash) {
+        return;
+      }
+
+      lastMessageHash = currentHash;
+      renderMessages(messages);
+
+    } catch (error) {
+      console.error("syncMessages error:", error);
+    }
+  }
+
+  function handleEnter(event) {
+    if (event.key !== "Enter") return;
+
+    if (event.isComposing) return;
+
+    event.preventDefault();
+    sendMessage();
+  }
+
+  visitorNameInput.addEventListener("input", () => {
+    visitorName = visitorNameInput.value.trim();
+
+    if (visitorName) {
+      localStorage.setItem(VISITOR_NAME_KEY, visitorName);
+    } else {
+      localStorage.removeItem(VISITOR_NAME_KEY);
+    }
+  });
+
+  chatSendButton.addEventListener("click", sendMessage);
+
+  chatInput.addEventListener("keydown", handleEnter);
+
+  quickQuestionButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const question = button.dataset.question;
+
+      if (!question) return;
+
+      askQuestion(question);
+    });
+  });
+
+  loadHistory().then(() => {
+    syncMessages(true);
+
+    window.setInterval(() => {
+      syncMessages();
+    }, 2000);
+  });
+})();
+</script>
+
 </body>
 </html>
