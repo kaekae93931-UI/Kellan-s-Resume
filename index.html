@@ -2487,9 +2487,6 @@
                 onkeydown="handleEnter(event)"
               >
             
-              <button onclick="sendMessage()">Send</button>
-            </div>
-
 
               <button
                 class="chat-send"
@@ -2691,7 +2688,18 @@
 
 
   const WORKER_URL = "https://hung.kaekae939311.workers.dev";
+  // ===== 每個訪客的名字 =====
+  const nameInput = document.getElementById("visitorNameInput");
   
+  let visitorName = localStorage.getItem("visitorName") || "";
+  nameInput.value = visitorName;
+  
+  nameInput.addEventListener("change", () => {
+    visitorName = nameInput.value.trim() || "匿名訪客";
+    localStorage.setItem("visitorName", visitorName);
+  });
+
+    
   let lastRendered = 0;
   
   function addMessage(text, sender) {
@@ -2717,7 +2725,12 @@
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ text })
+        body: JSON.stringify({
+          text,
+          name: visitorName || "匿名訪客",
+          sessionId
+        })
+        
       });
   
       const data = await res.json();
