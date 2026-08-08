@@ -2467,14 +2467,28 @@
             </div>
 
 
-            <div class="chat-input">
+ 
 
+            <div class="chat-input">
+            
+              <!-- 訪客名稱 -->
+              <input
+                id="visitorNameInput"
+                type="text"
+                placeholder="Your name..."
+                style="margin-bottom:8px;"
+              >
+            
+              <!-- 聊天訊息 -->
               <input
                 id="chatInput"
                 type="text"
                 placeholder="Ask about Wallace..."
                 onkeydown="handleEnter(event)"
               >
+            
+              <button onclick="sendMessage()">Send</button>
+            </div>
 
 
               <button
