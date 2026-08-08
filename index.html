@@ -2718,6 +2718,29 @@
 
     }
 
+  async function checkReply() {
+    try {
+      const res = await fetch(
+        "https://hung.kaekae939311.workers.dev/reply"
+      );
+  
+      const data = await res.json();
+  
+      if (data.reply && data.reply !== window.lastReply) {
+        window.lastReply = data.reply;
+        addMessage(data.reply, "bot");
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  
+  // 每 2 秒檢查一次 LINE 是否有新回覆
+  setInterval(checkReply, 2000);    
+
+
+
+    
   </script>
 
 
