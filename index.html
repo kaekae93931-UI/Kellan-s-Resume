@@ -3,371 +3,321 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kellan Hung — Product · Strategy · Growth</title>
-  <meta name="description" content="Kellan Hung — Product, Strategy and Growth professional." />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Kellan Hung | Enterprise Validation & Automation Engineer</title>
 
   <style>
     :root {
-      --bg: #070b16;
-      --surface: rgba(15, 23, 42, 0.72);
-      --surface-2: rgba(30, 41, 59, 0.78);
-      --text: #e2e8f0;
+      --bg: #050816;
+      --bg-soft: #0b1020;
+      --card: rgba(255, 255, 255, 0.08);
+      --card-border: rgba(255, 255, 255, 0.16);
+      --text: #f8fafc;
       --muted: #94a3b8;
-      --line: rgba(255,255,255,0.08);
       --accent: #38bdf8;
-      --accent-2: #0ea5e9;
-      --accent-3: #8b5cf6;
-      --radius: 20px;
+      --accent-2: #818cf8;
+      --success: #22c55e;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
-      margin: 0;
-      font-family: Inter, sans-serif;
-      background: var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 35%),
+        radial-gradient(circle at top right, rgba(129, 140, 248, 0.18), transparent 35%),
+        var(--bg);
       color: var(--text);
-      line-height: 1.6;
-      overflow-x: hidden;
+      line-height: 1.7;
     }
 
-    body::before,
-    body::after {
-      content: "";
-      position: fixed;
-      width: 520px;
-      height: 520px;
-      border-radius: 50%;
-      filter: blur(120px);
-      opacity: 0.18;
-      z-index: -1;
-      animation: float 14s ease-in-out infinite alternate;
+    a {
+      color: inherit;
+      text-decoration: none;
     }
-
-    body::before {
-      background: var(--accent);
-      top: -180px;
-      left: -120px;
-    }
-
-    body::after {
-      background: var(--accent-3);
-      right: -160px;
-      bottom: -220px;
-      animation-delay: 3s;
-    }
-
-    @keyframes float {
-      from { transform: translate3d(0,0,0) scale(1); }
-      to { transform: translate3d(40px,30px,0) scale(1.08); }
-    }
-
-    a { color: inherit; text-decoration: none; }
 
     .container {
       width: min(1120px, calc(100% - 40px));
       margin: 0 auto;
     }
 
-    .nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      backdrop-filter: blur(16px);
-      background: rgba(7, 11, 22, 0.72);
-      border-bottom: 1px solid var(--line);
+    .glass-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+      border-radius: 28px;
     }
 
-    .nav-inner {
-      height: 72px;
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(5, 8, 22, 0.72);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .nav {
+      height: 76px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 24px;
     }
 
     .logo {
       font-weight: 800;
-      font-size: 1.08rem;
-      letter-spacing: -.02em;
+      letter-spacing: -0.04em;
+      font-size: 22px;
     }
 
-    .logo span { color: var(--accent); }
+    .logo span {
+      color: var(--accent);
+    }
 
     .nav-links {
       display: flex;
-      gap: 28px;
-    }
-
-    .nav-links a {
-      color: var(--muted);
-      font-size: .95rem;
-      transition: color .2s ease;
-    }
-
-    .nav-links a:hover { color: var(--text); }
-
-    .nav-button,
-    .button-primary {
-      display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px 18px;
+      gap: 26px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .talk-button {
+      padding: 10px 18px;
       border-radius: 999px;
-      font-weight: 600;
-      transition: transform .2s ease, background .2s ease, border-color .2s ease;
-    }
-
-    .nav-button {
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.04);
-    }
-
-    .nav-button:hover {
-      transform: translateY(-1px);
-      background: rgba(255,255,255,.08);
-      border-color: rgba(56,189,248,.28);
-    }
-
-    .button-primary {
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: #03131d;
-      box-shadow: 0 10px 30px rgba(14,165,233,.28);
-    }
-
-    .button-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 16px 36px rgba(14,165,233,.34);
+      color: white;
+      font-weight: 700;
     }
 
     .hero {
-      padding: 104px 0 76px;
+      padding: 120px 0 90px;
     }
 
     .hero-grid {
       display: grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap: 48px;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 44px;
       align-items: center;
     }
 
-    .availability {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      color: var(--muted);
-      font-size: .92rem;
-      backdrop-filter: blur(12px);
+    .eyebrow {
+      color: var(--accent);
+      font-size: 13px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 800;
+      margin-bottom: 18px;
     }
 
-    .availability-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #22c55e;
-      box-shadow: 0 0 0 6px rgba(34,197,94,.16);
+    .hero-title {
+      font-size: clamp(48px, 8vw, 88px);
+      line-height: 0.98;
+      letter-spacing: -0.07em;
+      margin-bottom: 28px;
     }
 
-    h1 {
-      margin: 28px 0 20px;
-      font-size: clamp(3.2rem, 7vw, 5.8rem);
-      line-height: .94;
-      letter-spacing: -.05em;
-    }
-
-    .accent {
-      background: linear-gradient(135deg, var(--accent), #a855f7);
+    .hero-title span {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
       -webkit-background-clip: text;
-      background-clip: text;
       color: transparent;
     }
 
-    .hero-text {
-      max-width: 640px;
+    .hero-description {
       color: var(--muted);
-      font-size: 1.08rem;
+      max-width: 680px;
+      font-size: 18px;
       margin-bottom: 34px;
     }
 
     .hero-actions {
       display: flex;
-      flex-wrap: wrap;
       gap: 14px;
+      flex-wrap: wrap;
     }
 
-    .glass-card {
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      backdrop-filter: blur(18px);
-      box-shadow: 0 12px 40px rgba(2, 6, 23, 0.38);
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 13px 22px;
+      border-radius: 999px;
+      font-weight: 800;
+      border: 1px solid rgba(255,255,255,0.16);
+    }
+
+    .button-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+    }
+
+    .button-secondary {
+      color: var(--text);
+      background: rgba(255,255,255,0.06);
     }
 
     .profile-card {
-      padding: 30px;
-      border-radius: 26px;
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
     }
 
-    .profile-top {
-      display: flex;
-      justify-content: flex-start;
-      margin-bottom: 18px;
+    .profile-card::before {
+      content: "";
+      position: absolute;
+      inset: -80px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.18), transparent 55%);
+      pointer-events: none;
     }
 
-    .avatar-image {
-      width: 84px;
-      height: 84px;
-      border-radius: 24px;
-      object-fit: cover;
-      border: 2px solid rgba(255,255,255,.14);
-      box-shadow:
-        0 10px 24px rgba(0,0,0,.35),
-        0 0 0 4px rgba(56,189,248,.08);
-      transition: transform .25s ease, box-shadow .25s ease;
-    }
-    
-    .avatar-image:hover {
-      transform: translateY(-2px) scale(1.02);
-      box-shadow:
-        0 14px 28px rgba(0,0,0,.42),
-        0 0 0 6px rgba(56,189,248,.14);
+    .avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: grid;
+      place-items: center;
+      font-size: 42px;
+      font-weight: 900;
+      margin-bottom: 24px;
+      position: relative;
     }
 
-    .profile-name {
-      font-size: 1.38rem;
-      font-weight: 700;
-      margin-bottom: 6px;
+    .profile-card h3 {
+      font-size: 28px;
+      margin-bottom: 8px;
+      letter-spacing: -0.04em;
+      position: relative;
     }
 
-    .profile-role {
+    .profile-card p {
       color: var(--muted);
-      margin-bottom: 18px;
+      position: relative;
     }
 
-    .profile-line {
-      height: 1px;
-      background: var(--line);
-      margin: 18px 0;
+    .profile-stats {
+      margin-top: 26px;
+      display: grid;
+      gap: 14px;
+      position: relative;
     }
 
-    .profile-detail {
+    .profile-stat {
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      padding: 10px 0;
-      color: var(--muted);
+      padding: 14px 0;
+      border-top: 1px solid rgba(255,255,255,0.1);
     }
 
-    .profile-detail span:last-child {
+    .profile-stat strong {
       color: var(--text);
-      text-align: right;
+      font-size: 22px;
+    }
+
+    .profile-stat span {
+      color: var(--muted);
+      font-size: 14px;
     }
 
     .section {
-      padding: 88px 0;
-      border-top: 1px solid rgba(255,255,255,.05);
+      padding: 90px 0;
     }
 
     .section-label {
       color: var(--accent);
-      font-weight: 700;
-      letter-spacing: .08em;
-      font-size: .78rem;
+      font-size: 13px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 800;
       margin-bottom: 14px;
     }
 
     .section-title {
-      margin: 0 0 16px;
-      font-size: clamp(2rem, 5vw, 3rem);
+      font-size: clamp(34px, 5vw, 58px);
       line-height: 1.05;
-      letter-spacing: -.03em;
+      letter-spacing: -0.06em;
+      margin-bottom: 22px;
     }
 
     .section-description {
-      max-width: 720px;
       color: var(--muted);
+      max-width: 760px;
+      font-size: 17px;
       margin-bottom: 36px;
     }
 
     .skills-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0,1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 18px;
     }
 
-    .skill,
-    .project,
-    .education-box,
-    .experience-item {
-      border-radius: var(--radius);
-      transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease;
-    }
-
-    .skill:hover,
-    .project:hover,
-    .education-box:hover,
-    .experience-item:hover {
-      transform: translateY(-4px);
-      border-color: rgba(56,189,248,.22);
-      box-shadow: 0 16px 40px rgba(2, 6, 23, 0.28);
-    }
-
-    .skill,
-    .project,
-    .education-box {
-      padding: 22px;
+    .skill {
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
     }
 
     .skill-number {
-      display: block;
       color: var(--accent);
-      font-size: .8rem;
-      font-weight: 700;
-      margin-bottom: 10px;
+      font-weight: 900;
+      font-size: 14px;
     }
 
-    .skill-name { font-weight: 600; }
+    .skill-name {
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: -0.03em;
+    }
 
     .experience {
       display: grid;
-      gap: 28px;
+      gap: 22px;
     }
 
     .experience-item {
+      padding: 30px;
       display: grid;
-      grid-template-columns: 160px 1fr;
+      grid-template-columns: 220px 1fr;
       gap: 28px;
-      padding: 28px;
     }
 
     .experience-period {
-      color: var(--muted);
-      font-weight: 600;
-      font-size: .95rem;
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 14px;
     }
 
     .experience-role {
-      margin: 0 0 6px;
-      font-size: 1.22rem;
+      font-size: 24px;
+      letter-spacing: -0.04em;
+      margin-bottom: 6px;
     }
 
     .experience-company {
-      color: var(--accent);
-      font-weight: 600;
+      color: var(--muted);
       margin-bottom: 14px;
     }
 
     .experience-description {
-      color: var(--muted);
-      margin-bottom: 16px;
+      color: #cbd5e1;
+      margin-bottom: 18px;
     }
 
     .experience-points {
@@ -376,547 +326,423 @@
     }
 
     .experience-point {
-      position: relative;
-      padding-left: 18px;
       color: var(--muted);
+      padding-left: 18px;
+      position: relative;
     }
 
     .experience-point::before {
       content: "";
-      position: absolute;
-      left: 0;
-      top: .62em;
-      width: 6px;
-      height: 6px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       background: var(--accent);
+      position: absolute;
+      left: 0;
+      top: 12px;
+    }
+
+    .education-box {
+      padding: 30px;
     }
 
     .education-title {
-      font-weight: 700;
-      margin-bottom: 8px;
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      margin-bottom: 6px;
     }
 
     .education-subtitle {
       color: var(--accent);
-      margin-bottom: 14px;
+      font-weight: 800;
+      margin-bottom: 12px;
     }
 
     .education-text {
       color: var(--muted);
-      margin: 0;
     }
 
     .projects-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 22px;
     }
 
     .project {
+      padding: 28px;
       position: relative;
       overflow: hidden;
     }
 
     .project-glow {
       position: absolute;
-      inset: -30% auto auto -20%;
-      width: 180px;
-      height: 180px;
-      background: radial-gradient(circle, rgba(56,189,248,.22), transparent 70%);
+      inset: -80px;
+      background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.18), transparent 50%);
       pointer-events: none;
     }
 
     .project-number {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 34px;
-      height: 34px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
       color: var(--accent);
-      font-size: .82rem;
-      font-weight: 700;
-      margin-bottom: 14px;
+      font-weight: 900;
+      font-size: 14px;
+      position: relative;
     }
 
     .project h3 {
-      margin: 0 0 12px;
-      font-size: 1.15rem;
+      margin: 14px 0;
+      font-size: 24px;
+      line-height: 1.2;
+      letter-spacing: -0.04em;
+      position: relative;
     }
 
     .project-description {
       color: var(--muted);
-      margin-bottom: 18px;
+      position: relative;
+      margin-bottom: 20px;
     }
 
     .project-tags {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
+      position: relative;
     }
 
     .project-tag {
-      padding: 6px 10px;
+      font-size: 12px;
+      padding: 7px 10px;
       border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      color: var(--muted);
-      font-size: .8rem;
-      font-weight: 600;
+      background: rgba(56, 189, 248, 0.12);
+      color: #bae6fd;
+      border: 1px solid rgba(56, 189, 248, 0.18);
+    }
+
+    .ai-section {
+      padding-bottom: 110px;
     }
 
     .ai-layout {
       display: grid;
-      grid-template-columns: .9fr 1.1fr;
-      gap: 40px;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 34px;
       align-items: start;
     }
 
     .ai-description {
       color: var(--muted);
-      margin-bottom: 28px;
+      font-size: 17px;
+      margin-bottom: 26px;
     }
 
     .ai-features {
       display: grid;
-      gap: 14px;
+      gap: 12px;
     }
 
     .ai-feature {
+      color: #cbd5e1;
       display: flex;
       align-items: center;
-      gap: 12px;
-      color: var(--muted);
+      gap: 10px;
     }
 
     .check {
-      color: #22c55e;
-      font-weight: 800;
+      display: inline-grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--success);
+      font-weight: 900;
     }
 
     .chat {
-      border-radius: 26px;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      min-height: 620px;
     }
-    
+
     .chat-header {
+      padding: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
       display: flex;
       align-items: center;
       gap: 14px;
-      padding: 18px 20px;
-      border-bottom: 1px solid var(--line);
-      background: rgba(255,255,255,.03);
-      backdrop-filter: blur(14px);
     }
-    
+
     .chat-avatar {
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-3));
-      color: #03131d;
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
       display: grid;
       place-items: center;
-      font-weight: 800;
+      font-weight: 900;
     }
-    
+
     .chat-header small {
       display: block;
       color: var(--muted);
+      margin-top: 2px;
     }
-    
+
     .chat-status {
       margin-left: auto;
+      color: var(--muted);
+      font-size: 13px;
       display: flex;
       align-items: center;
       gap: 8px;
-      color: var(--muted);
-      font-size: .9rem;
     }
-    
+
     .status-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: #22c55e;
+      background: var(--success);
+      box-shadow: 0 0 14px var(--success);
     }
-    
+
     .chat-messages {
-      flex: 1;
-      padding: 16px 18px;
+      height: 360px;
       overflow-y: auto;
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      scroll-behavior: smooth;
+      gap: 12px;
     }
-    
+
     .message {
-      display: flex;
-      flex-direction: column;
-      align-self: flex-start;
-    
-      /* 關鍵修正 */
-      width: auto;
-      min-width: 220px;
-      max-width: 78%;
-    
-      padding: 12px 16px;
+      max-width: 82%;
+      padding: 13px 15px;
       border-radius: 18px;
-    
-      font-size: 0.95rem;
-      line-height: 1.55;
-    
-      white-space: pre-wrap;
-      word-break: break-word;
-    
-      animation: messageIn 0.22s ease;
+      font-size: 14px;
     }
-    
+
     .message.bot {
       align-self: flex-start;
-      background: #1e293b;
-      color: #e5e7eb;
-      border-bottom-left-radius: 4px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
     }
-    
+
     .message.user {
       align-self: flex-end;
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: #fff;
-      border-bottom-right-radius: 4px;
-      box-shadow: 0 4px 12px rgba(37,99,235,.22);
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.35), rgba(129, 140, 248, 0.35));
+      border: 1px solid rgba(255,255,255,0.16);
     }
-    
+
     .message-name {
-      display: block;
-      font-size: 0.7rem;
-      font-weight: 600;
-      margin-bottom: 2px;
-      opacity: .85;
-      padding: 0;
-      background: none;
-      border: 0;
-      letter-spacing: 0;
-      text-transform: none;
+      font-size: 12px;
+      color: #bae6fd;
+      font-weight: 800;
+      margin-bottom: 4px;
     }
-    
-    .message.user .message-name {
-      color: #dbeafe;
-      text-align: right;
+
+    .message-text {
+      color: var(--text);
     }
-    
-    .message.bot .message-name {
-      color: #7dd3fc;
-    }
-    
-    @keyframes messageIn {
-      from {
-        opacity: 0;
-        transform: translateY(3px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    .message.user .message-name {
-      color: #dbeafe;
-      text-align: right;
-    }
-    
-    .message.bot .message-name {
-      color: #7dd3fc;
-    }
-    
-    @keyframes messageIn {
-      from {
-        opacity: 0;
-        transform: translateY(3px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    .message.user .message-name {
-      color: #dbeafe;
-      text-align: right;
-    }
-    
-    .message.bot .message-name {
-      color: #7dd3fc;
-    }
-    
+
     .quick-questions {
+      padding: 0 20px 18px;
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      padding: 0 20px 18px;
+      gap: 8px;
     }
 
     .quick-question {
-      padding: 9px 12px;
+      border: 1px solid rgba(255,255,255,0.14);
+      color: #dbeafe;
+      background: rgba(255,255,255,0.06);
       border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
+      padding: 8px 12px;
       cursor: pointer;
-      transition: transform .18s ease, background .18s ease, color .18s ease;
+      font-weight: 700;
+      font-size: 12px;
     }
 
     .quick-question:hover {
-      transform: translateY(-1px);
-      background: rgba(255,255,255,.08);
-      color: var(--text);
+      background: rgba(255,255,255,0.12);
     }
 
     .chat-input {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 12px;
       padding: 18px 20px 20px;
-      border-top: 1px solid var(--line);
-      background: rgba(255,255,255,.03);
-      backdrop-filter: blur(14px);
-    }
-
-    #visitorNameInput {
-      grid-column: 1 / -1;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: grid;
+      grid-template-columns: 0.8fr 1.6fr auto;
+      gap: 10px;
     }
 
     .chat-input input {
-      width: 100%;
-      padding: 14px 16px;
-      border-radius: 14px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.04);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.14);
       color: var(--text);
-      font: inherit;
+      border-radius: 999px;
+      padding: 12px 15px;
       outline: none;
-      transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
     }
 
     .chat-input input::placeholder {
       color: #64748b;
     }
 
-    .chat-input input:focus {
-      border-color: rgba(56,189,248,.58);
-      box-shadow: 0 0 0 3px rgba(56,189,248,.15);
-      background: rgba(255,255,255,.06);
-    }
-
     .chat-send {
-      width: 52px;
+      width: 46px;
+      height: 46px;
       border: none;
-      border-radius: 14px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: #03131d;
-      font-size: 1.08rem;
-      font-weight: 800;
+      border-radius: 50%;
       cursor: pointer;
-      transition: transform .2s ease, box-shadow .2s ease;
-      box-shadow: 0 10px 24px rgba(14,165,233,.24);
-    }
-
-    .chat-send:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 14px 28px rgba(14,165,233,.3);
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+      font-size: 22px;
+      font-weight: 900;
     }
 
     .footer {
-      border-top: 1px solid rgba(255,255,255,.05);
-      padding: 36px 0 48px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 32px 0;
+      background: rgba(5, 8, 22, 0.76);
     }
 
     .footer-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 24px;
-      flex-wrap: wrap;
+      gap: 20px;
     }
 
     .footer-name {
-      font-weight: 700;
-      margin-bottom: 6px;
+      font-weight: 900;
+      font-size: 20px;
+      letter-spacing: -0.04em;
     }
 
     .footer-description {
       color: var(--muted);
+      font-size: 14px;
     }
 
     .footer-links {
       display: flex;
       gap: 18px;
-      flex-wrap: wrap;
-    }
-
-    .footer-links a {
       color: var(--muted);
-      transition: color .2s ease;
+      font-size: 14px;
     }
 
     .footer-links a:hover {
       color: var(--text);
     }
 
-    @media (max-width: 960px) {
+    @media (max-width: 900px) {
       .hero-grid,
       .ai-layout,
-      .projects-grid,
-      .skills-grid {
+      .experience-item {
         grid-template-columns: 1fr;
       }
 
-      .experience-item {
+      .projects-grid,
+      .skills-grid {
         grid-template-columns: 1fr;
       }
 
       .nav-links {
         display: none;
       }
+
+      .chat-input {
+        grid-template-columns: 1fr;
+      }
+
+      .chat-send {
+        width: 100%;
+        border-radius: 999px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
   </style>
 </head>
 
-<body id="top">
-  <header class="nav">
-    <div class="container nav-inner">
-      <a href="#top" class="logo">Kellan<span>.</span></a>
+<body>
+  <header class="header">
+    <div class="container nav">
+      #Kellan<span>.</span></a>
 
       <nav class="nav-links">
-        <a href="#about">Overview</a>
-        <a href="#experience">Experience</a>
-        <a href="#projects">Projects</a>
-        <a href="#assistant">AI Assistant</a>
+        #skillsSkills</a>
+        #experienceExperience</a>
+        #projectsProjects</a>
+        #assistantAssistant</a>
+        <a class="talk-button" href="mailto:kaekae939311@gmail.com">Let's Talk</a>
       </nav>
-      
-      <div style="display:flex; gap:12px; align-items:center;">
-        <a
-          href="https://github.com/kaekae939311"
-          class="nav-button"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          GitHub
-        </a>
-      
-        <a
-          href="https://line.me/ti/p/4GwwNnu_bA"
-          class="button-primary"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          💬 Contact via LINE
-        </a>
-      </div>
     </div>
   </header>
 
   <main>
     <section class="hero">
-      <div class="container">
-        <div class="hero-grid">
-          <div class="hero-content">
-            <div class="availability">
-              <span class="availability-dot"></span>
-              Available for strategic opportunities
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">Enterprise Validation · Automation · Infrastructure</div>
+
+          <h1 class="hero-title">
+            Kellan Hung<br />
+            <span>System Validation Engineer.</span>
+          </h1>
+
+          <p class="hero-description">
+            Software Engineer focused on enterprise server validation, firmware integration,
+            NIC testing, BMC / BIOS validation, infrastructure automation, and large-scale
+            test environment management for HPE and Lenovo platforms.
+          </p>
+
+          <div class="hero-actions">
+            #projectsView Projects</a>
+            #assistantAsk My Resume</a>
+          </div>
+        </div>
+
+        <aside class="profile-card glass-card">
+          <div class="avatar">K</div>
+
+          <h3>Kellan Hung</h3>
+
+          <p>
+            Enterprise server validation and automation engineer with hands-on experience
+            across HPE ProLiant, Lenovo server platforms, firmware testing, Jenkins workflows,
+            NIC validation, and infrastructure reliability.
+          </p>
+
+          <div class="profile-stats">
+            <div class="profile-stat">
+              <span>Experience</span>
+              <strong>7+ yrs</strong>
             </div>
 
-            <h1>
-              Building
-              <br />
-              <span class="accent">useful things.</span>
-            </h1>
+            <div class="profile-stat">
+              <span>Managed Servers</span>
+              <strong>300+</strong>
+            </div>
 
-            <p class="hero-text">
-              Software Engineer – Test (SET) with 7 years of experience in
-              Automation Engineering and server validation across HPE enterprise platforms.
-              Expert in system validation, integration, regression, manual and automated
-              black-box testing; firmware and hardware verification (BIOS/UEFI, BMC, RAID,
-              board bring-up). Proficient in PowerShell, Bash, Python (pytest, Robot Framework),
-              Jenkins CI/CD pipelines, Ansible; experienced with Redfish, IPMI, iLO, iDRAC,
-              telemetry/log analysis (Splunk/ELK), fault injection, performance/stress testing,
-              and test orchestration using Git and JIRA.
-            </p>
-
-            <div class="hero-actions">
-              <a href="#projects" class="button-primary">View my work</a>
-
-              <a
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=kaekae939311@gmail.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="nav-button"
-              >
-                Contact me by Online-Gmail
-              </a>
+            <div class="profile-stat">
+              <span>NIC Adapters</span>
+              <strong>500+</strong>
             </div>
           </div>
-
-          <aside class="profile-card glass-card">
-            <div class="profile-top">
-              <img
-                src="avatar.jpg"
-                alt="Kellan Hung"
-                class="avatar-image"
-              />
-            </div>
-
-            <div class="profile-name">Kellan Hung</div>
-            <div class="profile-role">
-              Senior SET · Automation Engineering · Infrastructure Validation
-            </div>
-
-            <div class="profile-line"></div>
-
-            <div class="profile-detail">
-              <span>Location</span>
-              <span>Taipei / Remote</span>
-            </div>
-
-            <div class="profile-detail">
-              <span>Focus</span>
-              <span>HPE Enterprise Server Validation &amp; Automation</span>
-            </div>
-
-            <div class="profile-detail">
-              <span>Approach</span>
-              <span>Practical &amp; Data-driven</span>
-            </div>
-
-            <div class="profile-detail">
-              <span>Email</span>
-              <span>kaekae939311@gmail.com</span>
-            </div>
-          </aside>
-        </div>
+        </aside>
       </div>
     </section>
 
-    <section id="about" class="section">
+    <section id="skills" class="section">
       <div class="container">
-        <div class="section-label">01 / OVERVIEW</div>
-        <h2 class="section-title">Enterprise validation engineer with automation and infrastructure expertise.</h2>
-    
+        <div class="section-label">01 / SKILLS</div>
+        <h2 class="section-title">Core technical strengths.</h2>
+
         <p class="section-description">
-          I specialize in enterprise server validation, firmware verification, and
-          infrastructure automation for HPE and Lenovo platforms. My experience spans
-          BIOS / UEFI validation, BMC and Redfish integration, network adapter testing,
-          CI/CD automation, and large-scale lab resource management. In my current role,
-          I manage validation operations involving <strong>300+ servers</strong> and
-          <strong>500+ network adapters</strong>, while also building reusable internal
-          web platforms that improve collaboration, resource scheduling, and testing
-          efficiency across multiple engineering teams.
+          Practical engineering experience across enterprise infrastructure validation,
+          firmware testing, automation, CI/CD workflows, and large-scale resource management.
         </p>
 
         <div class="skills-grid">
@@ -924,40 +750,40 @@
             <span class="skill-number">01</span>
             <span class="skill-name">Enterprise Server Validation</span>
           </div>
-        
+
           <div class="skill glass-card">
             <span class="skill-number">02</span>
-            <span class="skill-name">Cross-Platform Compatibility Testing</span>
+            <span class="skill-name">BMC / BIOS / Firmware Testing</span>
           </div>
-        
+
           <div class="skill glass-card">
             <span class="skill-number">03</span>
-            <span class="skill-name">BIOS / UEFI / Firmware Validation</span>
+            <span class="skill-name">Redfish / IPMI / iLO / RESTful API Validation</span>
           </div>
-        
+
           <div class="skill glass-card">
             <span class="skill-number">04</span>
-            <span class="skill-name">BMC / Redfish / IPMI Automation</span>
+            <span class="skill-name">Windows / Linux / VMware Test Environments</span>
           </div>
-        
+
           <div class="skill glass-card">
             <span class="skill-number">05</span>
-            <span class="skill-name">Large-Scale NIC &amp; Infrastructure Management</span>
+            <span class="skill-name">Large-Scale NIC & Infrastructure Management</span>
           </div>
-        
+
           <div class="skill glass-card">
             <span class="skill-number">06</span>
             <span class="skill-name">PowerShell / Bash / Python Automation Engineering</span>
           </div>
-        
+
           <div class="skill glass-card">
             <span class="skill-number">07</span>
-            <span class="skill-name">Jenkins CI/CD &amp; Cloud Deployment Workflows</span>
+            <span class="skill-name">Jenkins CI/CD & Cloud Deployment Workflows</span>
           </div>
-        
+
           <div class="skill glass-card">
             <span class="skill-number">08</span>
-            <span class="skill-name">Test Orchestration, Telemetry &amp; Reliability Engineering</span>
+            <span class="skill-name">Test Orchestration, Telemetry & Reliability Engineering</span>
           </div>
         </div>
       </div>
@@ -967,89 +793,88 @@
       <div class="container">
         <div class="section-label">02 / EXPERIENCE</div>
         <h2 class="section-title">Professional experience.</h2>
+
         <p class="section-description">
           More than 7 years of experience across enterprise server validation, firmware
           integration, infrastructure automation, and large-scale test environment
           management for HPE and Lenovo platforms.
         </p>
-    
+
         <div class="experience">
-    
-          <!-- Current Role -->
           <article class="experience-item glass-card">
             <div class="experience-period">Nov 2024 — Present</div>
-    
+
             <div>
               <h3 class="experience-role">Software Engineer – System Validation</h3>
+
               <div class="experience-company">
                 Mphasis Australia Pty. Limited Taiwan Branch · HPE Option SIT Team
               </div>
-    
+
               <p class="experience-description">
                 Leading enterprise server and network adapter validation for HPE
                 ProLiant AMD and Intel platforms, including firmware verification,
                 resource management, automation workflows, and infrastructure
                 coordination across offshore and local engineering teams.
               </p>
-    
+
               <div class="experience-points">
                 <div class="experience-point">
-                  Managed <strong>300+ enterprise servers</strong> and <strong>500+ network
-                  adapters</strong> used for validation and release testing.
+                  Managed <strong>300+ enterprise servers</strong> and
+                  <strong>500+ network adapters</strong> used for validation and release testing.
                 </div>
-    
+
                 <div class="experience-point">
                   Built an internal <strong>team web portal</strong> for server allocation,
                   NIC inventory tracking, test scheduling, and cross-team collaboration.
                 </div>
-    
+
                 <div class="experience-point">
                   Validated Intel, Broadcom, Mellanox, Marvell, and Xilinx NIC adapters
                   across Windows, Linux, and VMware environments.
                 </div>
-    
+
                 <div class="experience-point">
                   Performed iLO7 Gen12 troubleshooting, firmware image verification, LMS
-                  license validation, and automated release testing using Jenkins and
-                  Postman.
+                  license validation, and automated release testing using Jenkins and Postman.
                 </div>
               </div>
             </div>
           </article>
-    
-          <!-- HPE Lionbridge -->
+
           <article class="experience-item glass-card">
             <div class="experience-period">Jun 2022 — Oct 2024</div>
-    
+
             <div>
               <h3 class="experience-role">Software Test Engineer / BIOS Engineer III</h3>
+
               <div class="experience-company">
                 Lionbridge Global Sourcing Solutions Inc. · Hewlett Packard Enterprise
               </div>
-    
+
               <p class="experience-description">
                 Worked across HPE OART, BIOS, and Option SIT teams, focusing on server
                 compatibility validation, firmware integration, ROM functionality testing,
                 and automated infrastructure verification.
               </p>
-    
+
               <div class="experience-points">
                 <div class="experience-point">
                   Validated <strong>SATA and NVMe drive compatibility</strong> with cage
-                  configurations and Service Pack for ProLiant (SPP) upgrade integration.
+                  configurations and Service Pack for ProLiant upgrade integration.
                 </div>
-    
+
                 <div class="experience-point">
                   Executed full <strong>ROM U54 functionality testing</strong> for Intel and AMD
                   platforms, including hidden BIOS features such as Embedded Shell, iSCSI,
                   HBM CPU, and memory validation.
                 </div>
-    
+
                 <div class="experience-point">
                   Developed and maintained <strong>automated Jenkins-based test workflows</strong>
                   for driver, firmware, SR-IOV, RDE-SPDM, iPerf, and Redfish stress testing.
                 </div>
-    
+
                 <div class="experience-point">
                   Collaborated with offshore teams, reported defects through Spira and JIRA,
                   and mentored new engineers during onboarding and technical training.
@@ -1057,39 +882,38 @@
               </div>
             </div>
           </article>
-    
-          <!-- Lenovo -->
+
           <article class="experience-item glass-card">
             <div class="experience-period">Apr 2021 — Apr 2022</div>
-    
+
             <div>
-              <h3 class="experience-role">BMC Validation &amp; Automation Engineer</h3>
+              <h3 class="experience-role">BMC Validation & Automation Engineer</h3>
+
               <div class="experience-company">
                 LC Future Center Limited Taiwan Branch · Lenovo Global Technology
               </div>
-    
+
               <p class="experience-description">
                 Responsible for BMC firmware validation, automation framework development,
-                and remote server management solutions for Lenovo enterprise server
-                platforms.
+                and remote server management solutions for Lenovo enterprise server platforms.
               </p>
-    
+
               <div class="experience-points">
                 <div class="experience-point">
                   Designed automation tools and reusable test scripts using
                   <strong>PowerShell, Python, and Bash</strong> to improve validation efficiency.
                 </div>
-    
+
                 <div class="experience-point">
                   Validated <strong>IPMI, PMBus, RESTful API / Redfish</strong>, I2C, UART, GPIO,
                   PWM, SMBPBI, PECI, and Intel ME functionality.
                 </div>
-    
+
                 <div class="experience-point">
                   Participated in BMC firmware testing, release validation, sensor porting on
                   <strong>AST2500</strong> platforms, and OpenBMC research activities.
                 </div>
-    
+
                 <div class="experience-point">
                   Built a <strong>one-click remote server control interface</strong> that simplified
                   KVM and BMC-based operations for validation teams.
@@ -1097,7 +921,6 @@
               </div>
             </div>
           </article>
-    
         </div>
       </div>
     </section>
@@ -1105,38 +928,33 @@
     <section class="section">
       <div class="container">
         <div class="section-label">03 / EDUCATION</div>
-        <h2 class="section-title">Education &amp; academic background.</h2>
-    
+        <h2 class="section-title">Education & academic background.</h2>
+
         <div class="education-box glass-card">
-          <div class="education-title">
-            Master of Business Administration (MBA)
-          </div>
-    
+          <div class="education-title">Master of Business Administration MBA</div>
+
           <div class="education-subtitle">
             Huafan University · Smart Data Program
           </div>
-    
+
           <p class="education-text">
             Graduate-level studies focused on business strategy, smart data analytics,
             digital transformation, data-driven decision making, and the integration of
             technology with enterprise management practices.
           </p>
         </div>
-    
+
         <div class="education-box glass-card" style="margin-top:20px;">
-          <div class="education-title">
-            Bachelor's Degree in Game Design
-          </div>
-    
+          <div class="education-title">Bachelor's Degree in Game Design</div>
+
           <div class="education-subtitle">
             China University of Science and Technology
           </div>
-    
+
           <p class="education-text">
             Developed foundations in software design, interactive systems, digital media,
             user experience, and project-based technical development, providing a strong
-            background for later work in automation engineering and enterprise system
-            validation.
+            background for later work in automation engineering and enterprise system validation.
           </p>
         </div>
       </div>
@@ -1145,35 +963,29 @@
     <section id="projects" class="section">
       <div class="container">
         <div class="section-label">04 / SELECTED WORK</div>
-        <h2 class="section-title">Enterprise Validation &amp; Automation Projects.</h2>
+        <h2 class="section-title">Enterprise Validation & Automation Projects.</h2>
+
         <p class="section-description">
-          Real-world projects based on my experience in HPE and Lenovo enterprise
-          server validation, infrastructure automation, firmware testing, and
-          internal platform development.
+          Real-world projects based on experience in HPE and Lenovo enterprise server
+          validation, infrastructure automation, firmware testing, and internal platform development.
         </p>
-    
+
         <div class="projects-grid">
-    
-          <!-- Project 1 -->
           <article class="project glass-card">
             <div class="project-glow"></div>
             <span class="project-number">01</span>
-    
-            <h3>Enterprise Server &amp; NIC Resource Management Platform</h3>
-    
+
+            <h3>Enterprise Server & NIC Resource Management Platform</h3>
+
             <p class="project-description">
               Designed and operated an internal enterprise resource management platform
               for HPE validation teams, responsible for managing more than
               <strong>300+ servers</strong> and <strong>500+ network adapters</strong>
               across AMD and Intel ProLiant environments. The platform centralized
               server allocation, NIC inventory tracking, test resource scheduling,
-              and validation status monitoring for offshore and local engineering
-              teams. In addition, I created a reusable <strong>team web portal</strong>
-              that can be adapted for different validation, automation, and
-              operations teams to streamline collaboration, reduce manual
-              coordination, and improve overall testing efficiency.
+              and validation status monitoring for offshore and local engineering teams.
             </p>
-    
+
             <div class="project-tags">
               <span class="project-tag">Server Management</span>
               <span class="project-tag">NIC Inventory</span>
@@ -1182,22 +994,20 @@
               <span class="project-tag">Automation</span>
             </div>
           </article>
-    
-          <!-- Project 2 -->
+
           <article class="project glass-card">
             <div class="project-glow"></div>
             <span class="project-number">02</span>
-    
+
             <h3>HPE SPP Drive Compatibility Automation</h3>
-    
+
             <p class="project-description">
               Built and executed automated validation workflows for SATA and NVMe
-              drives, cage configurations, and Service Pack for ProLiant (SPP)
-              upgrade integration. Improved deployment efficiency, reduced manual
-              verification effort, and supported onboarding and technical mentoring
-              for new team members.
+              drives, cage configurations, and Service Pack for ProLiant upgrade integration.
+              Improved deployment efficiency, reduced manual verification effort, and supported
+              onboarding and technical mentoring for new team members.
             </p>
-    
+
             <div class="project-tags">
               <span class="project-tag">PowerShell</span>
               <span class="project-tag">Python</span>
@@ -1206,22 +1016,20 @@
               <span class="project-tag">Automation</span>
             </div>
           </article>
-    
-          <!-- Project 3 -->
+
           <article class="project glass-card">
             <div class="project-glow"></div>
             <span class="project-number">03</span>
-    
-            <h3>Lenovo BMC Validation &amp; Remote Control Automation</h3>
-    
+
+            <h3>Lenovo BMC Validation & Remote Control Automation</h3>
+
             <p class="project-description">
-              Designed and maintained BMC automation tools for Lenovo server
-              platforms, including IPMI, PMBus, RESTful API / Redfish validation,
-              firmware release verification, remote KVM control workflows, and
-              automation frameworks that enabled one-click server management
-              operations across multiple validation teams.
+              Designed and maintained BMC automation tools for Lenovo server platforms,
+              including IPMI, PMBus, RESTful API / Redfish validation, firmware release
+              verification, remote KVM control workflows, and automation frameworks that
+              enabled one-click server management operations across validation teams.
             </p>
-    
+
             <div class="project-tags">
               <span class="project-tag">IPMI</span>
               <span class="project-tag">Redfish</span>
@@ -1230,26 +1038,41 @@
               <span class="project-tag">OpenBMC</span>
             </div>
           </article>
-    
         </div>
       </div>
     </section>
+
     <section id="assistant" class="section ai-section">
       <div class="container">
         <div class="ai-layout">
           <div>
             <div class="section-label">INTERACTIVE RESUME</div>
 
-            <h2 class="section-title">Ask my<br />resume.</h2>
+            <h2 class="section-title">
+              Ask my<br />
+              resume.
+            </h2>
 
             <p class="ai-description">
-              Instead of reading a long resume, just ask. The assistant can answer common questions about my experience, skills, projects, and background.
+              Instead of reading a long resume, just ask. The assistant can answer common
+              questions about experience, skills, projects, technical background, and contact details.
             </p>
 
             <div class="ai-features">
-              <div class="ai-feature"><span class="check">✓</span>Built with HTML &amp; JavaScript</div>
-              <div class="ai-feature"><span class="check">✓</span>Runs directly on GitHub Pages</div>
-              <div class="ai-feature"><span class="check">✓</span>Cloudflare Worker + KV powered chat support</div>
+              <div class="ai-feature">
+                <span class="check">✓</span>
+                Built with HTML & JavaScript
+              </div>
+
+              <div class="ai-feature">
+                <span class="check">✓</span>
+                Runs directly on GitHub Pages
+              </div>
+
+              <div class="ai-feature">
+                <span class="check">✓</span>
+                Cloudflare Worker + KV powered chat support
+              </div>
             </div>
           </div>
 
@@ -1270,23 +1093,56 @@
 
             <div id="chatMessages" class="chat-messages">
               <div class="message bot">
-                Hi 👋 I'm Kellan's resume assistant. Ask me about his skills, experience, projects, or background.
+                <div class="message-name">Kellan</div>
+                <div class="message-text">
+                  Hi 👋 I'm Kellan's resume assistant. Ask me about his skills,
+                  experience, projects, or background.
+                </div>
               </div>
             </div>
 
             <div class="quick-questions">
-              <button class="quick-question" onclick="askQuestion('Who are you?')">Who are you?</button>
-              <button class="quick-question" onclick="askQuestion('What are your skills?')">Skills</button>
-              <button class="quick-question" onclick="askQuestion('Tell me about your projects.')">Projects</button>
-              <button class="quick-question" onclick="askQuestion('How can I contact you?')">Contact</button>
+              <button class="quick-question" onclick="askQuestion('Who are you?')">
+                Who are you?
+              </button>
+
+              <button class="quick-question" onclick="askQuestion('What are your skills?')">
+                Skills
+              </button>
+
+              <button class="quick-question" onclick="askQuestion('Tell me about your projects.')">
+                Projects
+              </button>
+
+              <button class="quick-question" onclick="askQuestion('How can I contact you?')">
+                Contact
+              </button>
             </div>
 
             <div class="chat-input">
-              <input id="visitorNameInput" type="text" placeholder="Your name" autocomplete="name" />
+              <input
+                id="visitorNameInput"
+                type="text"
+                placeholder="Your name"
+                autocomplete="name"
+              />
 
-              <input id="chatInput" type="text" placeholder="Ask about Kellan..." autocomplete="off" onkeydown="handleEnter(event)" />
+              <input
+                id="chatInput"
+                type="text"
+                placeholder="Ask about Kellan..."
+                autocomplete="off"
+                onkeydown="handleEnter(event)"
+              />
 
-              <button class="chat-send" type="button" onclick="sendMessage()" aria-label="Send message">→</button>
+              <button
+                class="chat-send"
+                type="button"
+                onclick="sendMessage()"
+                aria-label="Send message"
+              >
+                →
+              </button>
             </div>
           </div>
         </div>
@@ -1299,12 +1155,23 @@
       <div class="footer-inner">
         <div>
           <div class="footer-name">Kellan Hung</div>
-          <div class="footer-description">Product · Strategy · Growth</div>
+          <div class="footer-description">
+            Enterprise Validation · Firmware Automation · Infrastructure Engineering
+          </div>
         </div>
 
         <div class="footer-links">
-          <a href="https://github.com/kaekae939311" target="_blank" rel="noopener noreferrer">GitHub</a>
-          <a href="mailto:kaekae939311@gmail.com">Email</a>
+          <a
+            href="https://github.com/kaekae939311"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub
+          </a>
+
+          <a href="mailto:kaekae939311@gmail.com">
+            Email
+          </a>
         </div>
       </div>
     </div>
@@ -1313,7 +1180,6 @@
   <script>
     const WORKER_URL = "https://hung.kaekae939311.workers.dev";
 
-    // ===== 永久聊天室 ID =====
     let sessionId = localStorage.getItem("kellanChatSessionId");
 
     if (!sessionId) {
@@ -1321,7 +1187,6 @@
       localStorage.setItem("kellanChatSessionId", sessionId);
     }
 
-    // ===== 訪客名稱 =====
     const nameInput = document.getElementById("visitorNameInput");
     let visitorName = localStorage.getItem("visitorName") || "";
     nameInput.value = visitorName;
@@ -1336,16 +1201,22 @@
       }
     });
 
-    // ===== AI 回答 =====
     const aiAnswers = {
-      "Who are you?": "I'm Kellan Hung's resume assistant 🤖. I can answer questions about his background, skills, projects, and experience.",
-      "What are your skills?": "Kellan focuses on Product Strategy, Data Analysis, Business Development, AI Workflow, Automation, and Digital Products.",
-      "Tell me about your projects.": "Kellan has built an AI Resume Chatbot, a Business Analytics Dashboard concept, and a Workflow Automation Kit for productivity and operations.",
-      "How can I contact you?": "You can contact Kellan via LINE, email (kaekae939311@gmail.com), or the Let's Talk button in the top-right corner."
+      "Who are you?":
+        "I'm Kellan Hung's resume assistant 🤖. Kellan is a software engineer focused on enterprise server validation, firmware testing, NIC validation, infrastructure automation, and reliability engineering.",
+
+      "What are your skills?":
+        "Kellan specializes in enterprise server validation, NIC and firmware testing, BMC / BIOS validation, Jenkins CI/CD workflows, PowerShell / Bash / Python automation, Redfish / IPMI, Linux, Windows, VMware, and large-scale test infrastructure management.",
+
+      "Tell me about your projects.":
+        "Kellan has built an enterprise server and NIC resource management platform, HPE SPP drive compatibility automation workflows, and Lenovo BMC remote control automation tools.",
+
+      "How can I contact you?":
+        "You can contact Kellan by email at kaekae939311@gmail.com or through the GitHub link in the footer."
     };
 
     function escapeHtml(text) {
-      return text
+      return String(text)
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
@@ -1355,97 +1226,124 @@
 
     function addMessage(text, sender = "bot") {
       const container = document.getElementById("chatMessages");
-    
       const div = document.createElement("div");
+
       div.className = `message ${sender}`;
-    
+
       let name = sender === "bot" ? "Kellan" : "You";
       let content = text;
-    
+
       if (text.includes(": ")) {
         const parts = text.split(": ");
         name = parts.shift();
         content = parts.join(": ");
       }
-    
+
       div.innerHTML = `
         <div class="message-name">${escapeHtml(name)}</div>
         <div class="message-text">${escapeHtml(content)}</div>
       `;
-    
+
       container.appendChild(div);
       container.scrollTop = container.scrollHeight;
     }
+
     function askQuestion(question) {
       const displayName = visitorName || "You";
-    
-      // 顯示使用者訊息
+
       addMessage(`${displayName}: ${question}`, "user");
-    
-      // 直接 AI 回答，不進真人聊天室
+
       setTimeout(() => {
-        addMessage(aiAnswers[question], "bot");
+        addMessage(aiAnswers[question] || "Please ask me about Kellan's experience, skills, projects, or contact information.", "bot");
       }, 300);
     }
 
     function shouldContactHuman(text) {
       const keywords = [
-        "合作", "聯絡", "報價", "email", "line", "LINE",
-        "contact", "hire", "project", "business", "meeting", "collaboration"
+        "合作",
+        "聯絡",
+        "報價",
+        "email",
+        "line",
+        "contact",
+        "hire",
+        "project",
+        "business",
+        "meeting",
+        "collaboration",
+        "interview",
+        "recruit",
+        "job"
       ];
 
-      return keywords.some(k =>
-        text.toLowerCase().includes(k.toLowerCase())
+      return keywords.some(keyword =>
+        text.toLowerCase().includes(keyword.toLowerCase())
       );
     }
 
     async function loadHistory() {
       try {
         const response = await fetch(
-          `${WORKER_URL}/messages?sessionId=${sessionId}`
+          `${WORKER_URL}/messages?sessionId=${encodeURIComponent(sessionId)}`
         );
-    
+
+        if (!response.ok) {
+          throw new Error("Failed to load history");
+        }
+
         const messages = await response.json();
-    
-        const container = document.getElementById("chatMessages");
-    
-        // 清空聊天室（只保留歡迎訊息）
-        container.innerHTML = `
-          <div class="message bot">
-            Hi 👋 I'm Kellan's resume assistant.
-            Ask me about his skills, experience, projects, or background.
-          </div>
-        `;
-    
-        // 重新畫出所有訊息
-        messages.forEach(msg => {
-          const content = msg.role === "admin"
-            ? `Kellan: ${msg.text}`
-            : `${msg.name}: ${msg.text}`;
-    
-          addMessage(
-            content,
-            msg.role === "admin" ? "bot" : "user"
-          );
-        });
-    
-      } catch (e) {
-        console.error("loadHistory error:", e);
+        renderMessages(messages);
+
+      } catch (error) {
+        console.error("loadHistory error:", error);
       }
+    }
+
+    function renderMessages(messages) {
+      const container = document.getElementById("chatMessages");
+
+      container.innerHTML = `
+        <div class="message bot">
+          <div class="message-name">Kellan</div>
+          <div class="message-text">
+            Hi 👋 I'm Kellan's resume assistant. Ask me about his skills,
+            experience, projects, or background.
+          </div>
+        </div>
+      `;
+
+      messages.forEach(msg => {
+        const content = msg.role === "admin"
+          ? `Kellan: ${msg.text}`
+          : `${msg.name || "Anonymous"}: ${msg.text}`;
+
+        addMessage(
+          content,
+          msg.role === "admin" ? "bot" : "user"
+        );
+      });
     }
 
     async function sendMessage() {
       const input = document.getElementById("chatInput");
       const text = input.value.trim();
-    
+
       if (!text) return;
-    
+
       const displayName = visitorName || "You";
-    
-      // 先顯示在畫面上
+
       addMessage(`${displayName}: ${text}`, "user");
       input.value = "";
-    
+
+      if (!shouldContactHuman(text)) {
+        setTimeout(() => {
+          addMessage(
+            "Thanks for your question. For detailed or customized questions, Kellan can reply directly through this chat. You can also ask quick questions using the buttons above.",
+            "bot"
+          );
+        }, 300);
+      }
+
       try {
         const response = await fetch(`${WORKER_URL}/send`, {
           method: "POST",
@@ -1458,81 +1356,66 @@
             sessionId
           })
         });
-    
+
         const data = await response.json();
-    
+
         if (!data.ok) {
           throw new Error("Failed to send message");
         }
-    
+
       } catch (error) {
         addMessage(
           "❌ Failed to send the message. Please try again later.",
           "bot"
         );
-        console.error(error);
+
+        console.error("sendMessage error:", error);
       }
     }
-    let lastMessageHash = "";
+
     function handleEnter(event) {
       if (event.key === "Enter") {
         sendMessage();
       }
     }
 
-    // 初始載入歷史訊息
-    // ===== 即時同步真人聊天室 =====
+    let lastMessageHash = "";
+
     async function syncMessages() {
       try {
         const response = await fetch(
-          `${WORKER_URL}/messages?sessionId=${sessionId}`
+          `${WORKER_URL}/messages?sessionId=${encodeURIComponent(sessionId)}`
         );
-    
+
+        if (!response.ok) {
+          throw new Error("Failed to sync messages");
+        }
+
         const messages = await response.json();
-        
-        // 沒有新訊息就不要重畫，避免閃爍
+
         const currentHash = JSON.stringify(
-          messages.map(m => [m.role, m.name, m.text, m.time])
+          messages.map(message => [
+            message.role,
+            message.name,
+            message.text,
+            message.time
+          ])
         );
-        
+
         if (currentHash === lastMessageHash) return;
+
         lastMessageHash = currentHash;
-        
-        const container = document.getElementById("chatMessages");
-    
-        // 保留第一則歡迎訊息
-        container.innerHTML = `
-          <div class="message bot">
-            Hi 👋 I'm Kellan's resume assistant.
-            Ask me about his skills, experience, projects, or background.
-          </div>
-        `;
-    
-        // 顯示所有聊天紀錄
-        messages.forEach(msg => {
-          const content = msg.role === "admin"
-            ? `Kellan: ${msg.text}`
-            : `${msg.name || "Anonymous"}: ${msg.text}`;
-    
-          addMessage(
-            content,
-            msg.role === "admin" ? "bot" : "user"
-          );
-        });
-    
-      } catch (e) {
-        console.error(e);
+        renderMessages(messages);
+
+      } catch (error) {
+        console.error("syncMessages error:", error);
       }
     }
-    
-    // 啟動聊天室
+
     loadHistory().then(() => {
       syncMessages();
-    
-      // 每 2 秒自動更新一次
       setInterval(syncMessages, 2000);
     });
-    
   </script>
 </body>
 </html>
