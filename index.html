@@ -1,20 +1,36 @@
-
 import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Github, Linkedin, ExternalLink, Send, Bot, User, Briefcase, GraduationCap, Sparkles, Award, Code2 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Github,
+  Linkedin,
+  Send,
+  Bot,
+  User,
+  Briefcase,
+  GraduationCap,
+  Sparkles,
+  ArrowUpRight,
+  CheckCircle2,
+  Menu,
+  X,
+  Zap,
+  Target,
+  Layers3,
+} from "lucide-react";
 
 const profile = {
   name: "Wallace Chen",
-  title: "Product / Strategy / Growth",
-  tagline: "I build practical digital products, improve workflows, and turn business goals into measurable execution.",
+  title: "Product · Strategy · Growth",
+  tagline:
+    "I turn business problems into practical digital products, smarter workflows, and measurable growth.",
   location: "Taipei / Remote",
   email: "your.email@example.com",
   phone: "+886 900 000 000",
   github: "https://github.com/yourusername",
   linkedin: "https://linkedin.com/in/yourusername",
-  resumeUrl: "#",
 };
 
 const skills = [
@@ -24,8 +40,8 @@ const skills = [
   "AI Workflow",
   "Project Management",
   "Customer Research",
-  "GitHub Pages",
   "Automation",
+  "Digital Products",
 ];
 
 const experience = [
@@ -33,18 +49,22 @@ const experience = [
     role: "Product / Strategy Specialist",
     company: "Your Company",
     period: "2023 — Present",
+    description:
+      "Driving cross-functional initiatives from discovery to execution, connecting business goals with practical product solutions.",
     points: [
       "Led cross-functional projects from discovery to launch.",
-      "Improved operational workflow through AI-assisted automation.",
-      "Created dashboards and reports for decision-making.",
+      "Improved operational workflows through AI-assisted automation.",
+      "Built dashboards and reports to support business decisions.",
     ],
   },
   {
     role: "Business Development / Project Manager",
     company: "Previous Company",
     period: "2020 — 2023",
+    description:
+      "Worked across clients, internal teams, and business stakeholders to turn customer needs into actionable projects.",
     points: [
-      "Managed client communication and strategic partnership opportunities.",
+      "Managed client communication and strategic partnerships.",
       "Coordinated internal teams to deliver projects on schedule.",
       "Translated customer needs into product and service improvements.",
     ],
@@ -53,287 +73,735 @@ const experience = [
 
 const projects = [
   {
+    number: "01",
     name: "AI Resume Chatbot",
-    description: "A portfolio assistant that answers questions about my background, skills, projects, and contact information.",
-    tech: "React · GitHub Pages · JavaScript",
+    description:
+      "An interactive portfolio assistant that answers questions about my background, skills, experience, and projects.",
+    tech: ["React", "JavaScript", "GitHub Pages"],
+    color: "from-violet-500 to-indigo-500",
   },
   {
+    number: "02",
     name: "Business Analytics Dashboard",
-    description: "A clean dashboard concept for tracking growth metrics, sales pipeline, and operational performance.",
-    tech: "Data · Visualization · Strategy",
+    description:
+      "A dashboard concept designed to turn growth metrics, sales pipelines, and operational data into actionable insights.",
+    tech: ["Analytics", "Visualization", "Strategy"],
+    color: "from-cyan-500 to-blue-500",
   },
   {
+    number: "03",
     name: "Workflow Automation Kit",
-    description: "A collection of reusable templates for reducing repeated manual tasks across teams.",
-    tech: "AI · Automation · Operations",
+    description:
+      "Reusable AI and automation workflows designed to reduce repetitive tasks and improve team productivity.",
+    tech: ["AI", "Automation", "Operations"],
+    color: "from-emerald-500 to-teal-500",
   },
 ];
 
 const qa = [
   {
     keys: ["who", "你是誰", "介紹", "about"],
-    answer: "我是 Wallace Chen，專注產品策略、專案管理、商業成長與 AI 工作流程。我擅長把想法變成可執行的產品與流程。",
+    answer:
+      "我是 Wallace Chen，專注產品策略、專案管理、商業成長與 AI 工作流程。我擅長把商業問題拆解成可以執行的產品與流程。",
   },
   {
     keys: ["skill", "技能", "能力", "會什麼"],
-    answer: "我的核心技能包含 Product Strategy、Data Analysis、Business Development、AI Workflow、Project Management、Customer Research 與 Automation。",
+    answer:
+      "我的核心能力包含 Product Strategy、Data Analysis、Business Development、AI Workflow、Project Management、Customer Research 與 Automation。",
   },
   {
     keys: ["experience", "經歷", "工作", "履歷"],
-    answer: "我有產品策略、商務開發與專案管理相關經驗，曾負責跨部門專案、流程改善、客戶需求整理與數據報告。你可以在 Experience 區塊看到更多。",
+    answer:
+      "我有產品策略、商務開發與專案管理相關經驗，曾負責跨部門專案、流程改善、客戶需求整理與數據分析。",
   },
   {
     keys: ["project", "作品", "專案"],
-    answer: "目前展示的作品包含 AI Resume Chatbot、Business Analytics Dashboard 與 Workflow Automation Kit。你可以依照真實作品替換內容。",
+    answer:
+      "目前展示的作品包含 AI Resume Chatbot、Business Analytics Dashboard 與 Workflow Automation Kit。",
   },
   {
     keys: ["contact", "聯絡", "email", "mail"],
-    answer: `你可以透過 ${profile.email} 聯絡我，也可以在頁面上方找到 GitHub 與 LinkedIn 連結。`,
+    answer: `你可以透過 ${profile.email} 聯絡我，也可以使用頁面上的 GitHub 或 LinkedIn。`,
   },
   {
     keys: ["github", "部署", "pages", "網站"],
-    answer: "這個履歷網站可以放到 GitHub Pages。做法是建立 repository，放入網站檔案，然後在 Settings > Pages 啟用部署。",
+    answer:
+      "這個網站使用 React 建立，可以部署到 GitHub Pages，不需要傳統後端即可運作。",
   },
 ];
 
 function getBotAnswer(message) {
   const text = message.toLowerCase();
-  const found = qa.find((item) => item.keys.some((key) => text.includes(key.toLowerCase())));
-  return found
-    ? found.answer
-    : "我目前可以回答：你是誰、技能、經歷、作品、聯絡方式、GitHub 部署。你也可以把 QA 資料改成你的真實履歷內容。";
+
+  const found = qa.find((item) =>
+    item.keys.some((key) => text.includes(key.toLowerCase()))
+  );
+
+  return (
+    found?.answer ||
+    "我可以回答關於 Wallace 的自我介紹、技能、經歷、作品、聯絡方式與網站。試著問我「你的技能？」或「你的作品？」"
+  );
+}
+
+function SectionTitle({ eyebrow, title, description, icon: Icon }) {
+  return (
+    <div className="mb-10">
+      <div className="flex items-center gap-3 mb-3">
+        {Icon && (
+          <div className="h-9 w-9 rounded-xl bg-slate-900 text-white flex items-center justify-center">
+            <Icon size={17} />
+          </div>
+        )}
+
+        <span className="text-xs font-bold uppercase tracking-[0.2em] text-indigo-600">
+          {eyebrow}
+        </span>
+      </div>
+
+      <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-slate-950">
+        {title}
+      </h2>
+
+      {description && (
+        <p className="mt-4 max-w-2xl text-slate-500 leading-relaxed">
+          {description}
+        </p>
+      )}
+    </div>
+  );
 }
 
 function Chatbot() {
   const [messages, setMessages] = useState([
-    { from: "bot", text: "你好，我是 Wallace 的履歷小助手。你可以問我：技能、經歷、作品、聯絡方式。" },
+    {
+      from: "bot",
+      text: "Hi 👋 I'm Wallace's resume assistant. Ask me about his skills, experience, projects, or background.",
+    },
   ]);
+
   const [input, setInput] = useState("");
 
-  const quickQuestions = ["你是誰？", "你的技能？", "你的作品？", "怎麼聯絡你？"];
+  const quickQuestions = [
+    "你是誰？",
+    "你的技能？",
+    "你的作品？",
+    "怎麼聯絡你？",
+  ];
 
   const sendMessage = (text = input) => {
     const clean = text.trim();
+
     if (!clean) return;
+
     const answer = getBotAnswer(clean);
-    setMessages((prev) => [...prev, { from: "user", text: clean }, { from: "bot", text: answer }]);
+
+    setMessages((prev) => [
+      ...prev,
+      { from: "user", text: clean },
+      { from: "bot", text: answer },
+    ]);
+
     setInput("");
   };
 
   return (
-    <Card className="rounded-2xl shadow-xl border-slate-200 bg-white/90 backdrop-blur">
-      <CardContent className="p-5">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="h-10 w-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center">
-            <Bot size={20} />
+    <div className="relative overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_25px_80px_-30px_rgba(15,23,42,0.35)]">
+      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-violet-500 via-indigo-500 to-cyan-400" />
+
+      <div className="p-6 md:p-7">
+        <div className="flex items-center gap-4 mb-6">
+          <div className="relative">
+            <div className="h-12 w-12 rounded-2xl bg-slate-950 text-white flex items-center justify-center shadow-lg">
+              <Bot size={22} />
+            </div>
+
+            <span className="absolute -right-1 -bottom-1 h-3.5 w-3.5 rounded-full bg-emerald-400 border-2 border-white" />
           </div>
+
           <div>
-            <h3 className="font-semibold text-slate-900">Resume Q&A Bot</h3>
-            <p className="text-sm text-slate-500">Ask about skills, experience, projects, contact</p>
+            <h3 className="font-bold text-lg text-slate-950">
+              Resume Assistant
+            </h3>
+            <p className="text-sm text-slate-500">
+              Ask me anything about Wallace
+            </p>
           </div>
         </div>
 
-        <div className="h-80 overflow-y-auto rounded-2xl bg-slate-50 p-4 space-y-3 mb-4">
+        <div className="h-[330px] overflow-y-auto rounded-2xl bg-slate-50 border border-slate-100 p-4 space-y-4 mb-4">
           {messages.map((msg, index) => (
-            <div key={index} className={`flex gap-2 ${msg.from === "user" ? "justify-end" : "justify-start"}`}>
-              {msg.from === "bot" && <Bot className="mt-2 text-slate-500" size={16} />}
-              <div className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm leading-relaxed ${msg.from === "user" ? "bg-slate-900 text-white" : "bg-white text-slate-700 border"}`}>
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`flex gap-2 ${
+                msg.from === "user" ? "justify-end" : "justify-start"
+              }`}
+            >
+              {msg.from === "bot" && (
+                <div className="mt-1 h-7 w-7 shrink-0 rounded-lg bg-slate-900 text-white flex items-center justify-center">
+                  <Bot size={13} />
+                </div>
+              )}
+
+              <div
+                className={`max-w-[82%] rounded-2xl px-4 py-3 text-sm leading-6 ${
+                  msg.from === "user"
+                    ? "bg-slate-950 text-white rounded-br-md"
+                    : "bg-white text-slate-700 border border-slate-200 rounded-bl-md shadow-sm"
+                }`}
+              >
                 {msg.text}
               </div>
-              {msg.from === "user" && <User className="mt-2 text-slate-500" size={16} />}
-            </div>
+
+              {msg.from === "user" && (
+                <div className="mt-1 h-7 w-7 shrink-0 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center">
+                  <User size={13} />
+                </div>
+              )}
+            </motion.div>
           ))}
         </div>
 
-        <div className="flex flex-wrap gap-2 mb-3">
-          {quickQuestions.map((q) => (
-            <button key={q} onClick={() => sendMessage(q)} className="text-xs px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700">
-              {q}
+        <div className="flex flex-wrap gap-2 mb-4">
+          {quickQuestions.map((question) => (
+            <button
+              key={question}
+              onClick={() => sendMessage(question)}
+              className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:border-indigo-300 hover:bg-indigo-50 hover:text-indigo-700"
+            >
+              {question}
             </button>
           ))}
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 rounded-2xl border border-slate-200 bg-white p-1.5 focus-within:border-indigo-400 focus-within:ring-4 focus-within:ring-indigo-50 transition">
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-            placeholder="Ask me anything..."
-            className="flex-1 rounded-xl border border-slate-200 px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-900"
+            placeholder="Ask about Wallace..."
+            className="min-w-0 flex-1 bg-transparent px-3 py-2 text-sm outline-none"
           />
-          <Button onClick={() => sendMessage()} className="rounded-xl bg-slate-900 hover:bg-slate-700">
+
+          <button
+            onClick={() => sendMessage()}
+            className="h-10 w-10 shrink-0 rounded-xl bg-slate-950 text-white flex items-center justify-center transition hover:bg-indigo-600"
+          >
             <Send size={16} />
-          </Button>
+          </button>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
 
 export default function ResumeWebsite() {
   const year = useMemo(() => new Date().getFullYear(), []);
+  const [mobileMenu, setMobileMenu] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 text-slate-900">
-      <header className="sticky top-0 z-20 bg-white/80 backdrop-blur border-b border-slate-200">
-        <div className="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between">
-          <div className="font-bold tracking-tight text-lg">{profile.name}</div>
-          <nav className="hidden md:flex items-center gap-6 text-sm text-slate-600">
-            <a href="#about" className="hover:text-slate-900">About</a>
-            <a href="#experience" className="hover:text-slate-900">Experience</a>
-            <a href="#projects" className="hover:text-slate-900">Projects</a>
-            <a href="#chat" className="hover:text-slate-900">Q&A Bot</a>
+    <div className="min-h-screen bg-[#f8fafc] text-slate-900">
+      {/* NAVBAR */}
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-slate-950/90 backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto px-5 lg:px-8 h-16 flex items-center justify-between">
+          <a
+            href="#top"
+            className="font-bold text-white tracking-tight text-lg"
+          >
+            Wallace<span className="text-indigo-400">.</span>
+          </a>
+
+          <nav className="hidden md:flex items-center gap-8 text-sm text-slate-300">
+            <a href="#about" className="hover:text-white transition">
+              About
+            </a>
+            <a href="#experience" className="hover:text-white transition">
+              Experience
+            </a>
+            <a href="#projects" className="hover:text-white transition">
+              Projects
+            </a>
+            <a href="#chat" className="hover:text-white transition">
+              AI Assistant
+            </a>
           </nav>
+
+          <a
+            href={`mailto:${profile.email}`}
+            className="hidden sm:inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-bold text-slate-950 hover:bg-indigo-50 transition"
+          >
+            Let's Talk
+            <ArrowUpRight size={14} />
+          </a>
+
+          <button
+            onClick={() => setMobileMenu(!mobileMenu)}
+            className="md:hidden text-white"
+          >
+            {mobileMenu ? <X /> : <Menu />}
+          </button>
         </div>
+
+        {mobileMenu && (
+          <div className="md:hidden border-t border-white/10 bg-slate-950 px-5 py-5 space-y-4">
+            {["about", "experience", "projects", "chat"].map((item) => (
+              <a
+                key={item}
+                href={`#${item}`}
+                onClick={() => setMobileMenu(false)}
+                className="block text-sm text-slate-300"
+              >
+                {item === "chat"
+                  ? "AI Assistant"
+                  : item.charAt(0).toUpperCase() + item.slice(1)}
+              </a>
+            ))}
+          </div>
+        )}
       </header>
 
-      <main className="max-w-6xl mx-auto px-5 py-10 md:py-16">
-        <section id="about" className="grid md:grid-cols-[1.1fr_0.9fr] gap-8 items-center mb-16">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <div className="inline-flex items-center gap-2 rounded-full bg-slate-900 text-white px-4 py-2 text-sm mb-6">
-              <Sparkles size={16} /> Available for strategic opportunities
-            </div>
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-5">
-              {profile.title}
-            </h1>
-            <p className="text-lg md:text-xl text-slate-600 leading-relaxed mb-7">
-              {profile.tagline}
-            </p>
-            <div className="flex flex-wrap gap-3 mb-7">
-              <a href={`mailto:${profile.email}`} className="inline-flex items-center gap-2 rounded-xl bg-slate-900 text-white px-4 py-2 text-sm hover:bg-slate-700">
-                <Mail size={16} /> Contact Me
-              </a>
-              <a href={profile.github} className="inline-flex items-center gap-2 rounded-xl border border-slate-300 px-4 py-2 text-sm hover:bg-slate-50">
-                <Github size={16} /> GitHub
-              </a>
-              <a href={profile.linkedin} className="inline-flex items-center gap-2 rounded-xl border border-slate-300 px-4 py-2 text-sm hover:bg-slate-50">
-                <Linkedin size={16} /> LinkedIn
-              </a>
-            </div>
-            <div className="grid sm:grid-cols-3 gap-3 text-sm text-slate-600">
-              <div className="flex items-center gap-2"><MapPin size={16} /> {profile.location}</div>
-              <div className="flex items-center gap-2"><Mail size={16} /> {profile.email}</div>
-              <div className="flex items-center gap-2"><Phone size={16} /> {profile.phone}</div>
-            </div>
-          </motion.div>
+      {/* HERO */}
+      <section
+        id="top"
+        className="relative min-h-screen overflow-hidden bg-slate-950 pt-16 text-white"
+      >
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(99,102,241,0.25),transparent_30%),radial-gradient(circle_at_85%_70%,rgba(6,182,212,0.18),transparent_30%)]" />
 
-          <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6, delay: 0.1 }}>
-            <Card className="rounded-3xl shadow-2xl border-slate-200 overflow-hidden">
-              <CardContent className="p-0">
-                <div className="h-44 bg-gradient-to-br from-slate-900 via-slate-700 to-slate-500" />
-                <div className="p-6">
-                  <div className="h-24 w-24 -mt-16 rounded-3xl bg-white border-4 border-white shadow-lg flex items-center justify-center text-3xl font-bold text-slate-900">
+        <div className="absolute inset-0 opacity-[0.07] bg-[linear-gradient(rgba(255,255,255,0.4)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.4)_1px,transparent_1px)] bg-[size:60px_60px]" />
+
+        <div className="relative max-w-7xl mx-auto px-5 lg:px-8 py-20 md:py-28 lg:py-32">
+          <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-14 items-center">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+            >
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-slate-300 backdrop-blur mb-7">
+                <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                Available for strategic opportunities
+              </div>
+
+              <p className="text-sm font-semibold tracking-[0.25em] uppercase text-indigo-300 mb-5">
+                Product · Strategy · Growth
+              </p>
+
+              <h1 className="text-5xl sm:text-6xl lg:text-8xl font-bold tracking-[-0.05em] leading-[0.95]">
+                Building
+                <br />
+                <span className="bg-gradient-to-r from-indigo-300 via-violet-300 to-cyan-300 bg-clip-text text-transparent">
+                  useful things.
+                </span>
+              </h1>
+
+              <p className="mt-7 max-w-2xl text-base md:text-lg leading-8 text-slate-400">
+                {profile.tagline}
+              </p>
+
+              <div className="mt-9 flex flex-wrap gap-3">
+                <a
+                  href="#projects"
+                  className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-slate-950 hover:bg-indigo-50 transition"
+                >
+                  View my work
+                  <ArrowUpRight size={16} />
+                </a>
+
+                <a
+                  href={`mailto:${profile.email}`}
+                  className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white hover:bg-white/10 transition"
+                >
+                  <Mail size={16} />
+                  Contact me
+                </a>
+              </div>
+
+              <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-slate-400">
+                <span className="flex items-center gap-2">
+                  <MapPin size={15} />
+                  {profile.location}
+                </span>
+
+                <a
+                  href={profile.github}
+                  className="flex items-center gap-2 hover:text-white transition"
+                >
+                  <Github size={15} />
+                  GitHub
+                </a>
+
+                <a
+                  href={profile.linkedin}
+                  className="flex items-center gap-2 hover:text-white transition"
+                >
+                  <Linkedin size={15} />
+                  LinkedIn
+                </a>
+              </div>
+            </motion.div>
+
+            {/* HERO CARD */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.94 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.15 }}
+              className="relative"
+            >
+              <div className="absolute -inset-4 rounded-[40px] bg-gradient-to-r from-indigo-500/20 to-cyan-500/20 blur-2xl" />
+
+              <div className="relative rounded-[32px] border border-white/10 bg-white/[0.06] backdrop-blur-xl p-6 shadow-2xl">
+                <div className="flex items-start justify-between mb-12">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+                      Digital Profile
+                    </p>
+                    <p className="mt-2 text-slate-300 text-sm">
+                      Product-minded problem solver
+                    </p>
+                  </div>
+
+                  <div className="h-11 w-11 rounded-2xl bg-gradient-to-br from-indigo-400 to-cyan-400 flex items-center justify-center font-black text-slate-950">
                     WC
                   </div>
-                  <h2 className="mt-4 text-2xl font-bold">{profile.name}</h2>
-                  <p className="text-slate-500 mb-4">Digital Resume + AI Q&A Assistant</p>
-                  <div className="flex flex-wrap gap-2">
-                    {skills.slice(0, 6).map((skill) => (
-                      <span key={skill} className="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-700">{skill}</span>
-                    ))}
+                </div>
+
+                <div className="mb-10">
+                  <div className="text-6xl md:text-7xl font-bold tracking-tight">
+                    {profile.name.split(" ")[0]}
+                  </div>
+                  <div className="text-6xl md:text-7xl font-bold tracking-tight text-slate-600">
+                    {profile.name.split(" ")[1]}.
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </section>
 
-        <section className="mb-16">
-          <div className="flex items-center gap-3 mb-6">
-            <Code2 className="text-slate-700" />
-            <h2 className="text-3xl font-bold">Core Skills</h2>
-          </div>
-          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-3">
-            {skills.map((skill) => (
-              <div key={skill} className="rounded-2xl bg-white border border-slate-200 p-4 shadow-sm text-sm font-medium">{skill}</div>
-            ))}
-          </div>
-        </section>
-
-        <section id="experience" className="mb-16">
-          <div className="flex items-center gap-3 mb-6">
-            <Briefcase className="text-slate-700" />
-            <h2 className="text-3xl font-bold">Experience</h2>
-          </div>
-          <div className="space-y-4">
-            {experience.map((job) => (
-              <Card key={job.role} className="rounded-2xl shadow-sm border-slate-200">
-                <CardContent className="p-6">
-                  <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2 mb-3">
-                    <div>
-                      <h3 className="text-xl font-semibold">{job.role}</h3>
-                      <p className="text-slate-500">{job.company}</p>
-                    </div>
-                    <span className="text-sm text-slate-500">{job.period}</span>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
+                    <Target className="text-indigo-300 mb-5" size={20} />
+                    <p className="text-xs text-slate-500">Focus</p>
+                    <p className="mt-1 text-sm font-semibold text-slate-200">
+                      Strategy & Growth
+                    </p>
                   </div>
-                  <ul className="list-disc pl-5 text-slate-600 space-y-1">
-                    {job.points.map((p) => <li key={p}>{p}</li>)}
-                  </ul>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
 
-        <section className="mb-16">
-          <div className="flex items-center gap-3 mb-6">
-            <GraduationCap className="text-slate-700" />
-            <h2 className="text-3xl font-bold">Education & Certifications</h2>
+                  <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
+                    <Zap className="text-cyan-300 mb-5" size={20} />
+                    <p className="text-xs text-slate-500">Approach</p>
+                    <p className="mt-1 text-sm font-semibold text-slate-200">
+                      Practical & Data-driven
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
-          <Card className="rounded-2xl shadow-sm border-slate-200">
-            <CardContent className="p-6">
-              <h3 className="font-semibold text-lg">Your University / Certification</h3>
-              <p className="text-slate-600">Degree, major, certificate, or professional training. Replace this section with your real background.</p>
-            </CardContent>
-          </Card>
-        </section>
+        </div>
 
-        <section id="projects" className="mb-16">
-          <div className="flex items-center gap-3 mb-6">
-            <Award className="text-slate-700" />
-            <h2 className="text-3xl font-bold">Selected Projects</h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-4">
-            {projects.map((project) => (
-              <Card key={project.name} className="rounded-2xl shadow-sm border-slate-200 hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <h3 className="text-lg font-semibold mb-2">{project.name}</h3>
-                  <p className="text-slate-600 text-sm leading-relaxed mb-4">{project.description}</p>
+        <div className="absolute bottom-7 left-1/2 -translate-x-1/2 text-xs tracking-[0.25em] uppercase text-slate-600">
+          Scroll to explore
+        </div>
+      </section>
+
+      {/* ABOUT / SKILLS */}
+      <main>
+        <section
+          id="about"
+          className="max-w-7xl mx-auto px-5 lg:px-8 py-24 md:py-32"
+        >
+          <div className="grid lg:grid-cols-[0.75fr_1.25fr] gap-16">
+            <div>
+              <SectionTitle
+                eyebrow="Capabilities"
+                title="What I bring."
+                description="A mix of product thinking, business execution, data, and automation."
+                icon={Layers3}
+              />
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-4">
+              {skills.map((skill, index) => (
+                <motion.div
+                  key={skill}
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.05 }}
+                  className="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:-translate-y-1 hover:border-indigo-200 hover:shadow-xl hover:shadow-indigo-100/40 transition-all"
+                >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-slate-500">{project.tech}</span>
-                    <ExternalLink size={16} className="text-slate-400" />
+                    <span className="font-semibold text-slate-800">
+                      {skill}
+                    </span>
+                    <ArrowUpRight
+                      size={17}
+                      className="text-slate-300 group-hover:text-indigo-500 transition"
+                    />
                   </div>
-                </CardContent>
-              </Card>
-            ))}
+
+                  <div className="mt-5 h-1 w-8 rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 group-hover:w-16 transition-all" />
+                </motion.div>
+              ))}
+            </div>
           </div>
         </section>
 
-        <section id="chat" className="grid md:grid-cols-[0.8fr_1.2fr] gap-8 items-start mb-16">
-          <div>
-            <h2 className="text-3xl font-bold mb-4">Ask My Resume</h2>
-            <p className="text-slate-600 leading-relaxed mb-4">
-              This built-in chatbot answers common questions about your resume. For GitHub Pages, this version works without a backend by using preset Q&A rules.
-            </p>
-            <p className="text-slate-600 leading-relaxed">
-              Later, you can connect it to an AI API or a serverless function if you want a real AI assistant.
-            </p>
+        {/* EXPERIENCE */}
+        <section
+          id="experience"
+          className="bg-white border-y border-slate-200"
+        >
+          <div className="max-w-7xl mx-auto px-5 lg:px-8 py-24 md:py-32">
+            <SectionTitle
+              eyebrow="Experience"
+              title="Where I've worked."
+              description="Experience across product, strategy, business development, and project execution."
+              icon={Briefcase}
+            />
+
+            <div className="relative">
+              <div className="absolute left-[11px] top-3 bottom-3 w-px bg-gradient-to-b from-indigo-400 via-slate-200 to-transparent" />
+
+              <div className="space-y-12">
+                {experience.map((job, index) => (
+                  <motion.div
+                    key={job.role}
+                    initial={{ opacity: 0, x: -15 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="relative pl-10 md:pl-14"
+                  >
+                    <div className="absolute left-0 top-1 h-6 w-6 rounded-full border-4 border-white bg-indigo-500 shadow-[0_0_0_4px_rgba(99,102,241,0.15)]" />
+
+                    <div className="grid md:grid-cols-[1fr_auto] gap-4 mb-4">
+                      <div>
+                        <h3 className="text-xl md:text-2xl font-bold text-slate-950">
+                          {job.role}
+                        </h3>
+                        <p className="mt-1 font-medium text-indigo-600">
+                          {job.company}
+                        </p>
+                      </div>
+
+                      <span className="text-sm font-semibold text-slate-400">
+                        {job.period}
+                      </span>
+                    </div>
+
+                    <p className="max-w-3xl text-slate-500 leading-7 mb-5">
+                      {job.description}
+                    </p>
+
+                    <div className="grid md:grid-cols-3 gap-3">
+                      {job.points.map((point) => (
+                        <div
+                          key={point}
+                          className="rounded-xl bg-slate-50 border border-slate-100 p-4 text-sm leading-6 text-slate-600"
+                        >
+                          <CheckCircle2
+                            size={16}
+                            className="text-emerald-500 mb-3"
+                          />
+                          {point}
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </div>
-          <Chatbot />
+        </section>
+
+        {/* EDUCATION */}
+        <section className="max-w-7xl mx-auto px-5 lg:px-8 py-24 md:py-28">
+          <div className="rounded-[32px] bg-slate-950 text-white p-7 md:p-10 overflow-hidden relative">
+            <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-indigo-500/20 blur-3xl" />
+
+            <div className="relative grid md:grid-cols-[auto_1fr] gap-6 items-start">
+              <div className="h-14 w-14 rounded-2xl bg-white/10 flex items-center justify-center">
+                <GraduationCap className="text-indigo-300" />
+              </div>
+
+              <div>
+                <p className="text-xs uppercase tracking-[0.2em] text-indigo-300 mb-3">
+                  Education & Certifications
+                </p>
+
+                <h3 className="text-2xl md:text-3xl font-bold">
+                  Your University / Certification
+                </h3>
+
+                <p className="mt-3 max-w-2xl text-slate-400 leading-7">
+                  Degree, major, certificate, or professional training.
+                  Replace this section with your real background and
+                  qualifications.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* PROJECTS */}
+        <section
+          id="projects"
+          className="bg-slate-100 border-y border-slate-200"
+        >
+          <div className="max-w-7xl mx-auto px-5 lg:px-8 py-24 md:py-32">
+            <SectionTitle
+              eyebrow="Selected Work"
+              title="Things I've built."
+              description="A few examples of how I turn ideas into practical digital experiences."
+              icon={Sparkles}
+            />
+
+            <div className="grid lg:grid-cols-3 gap-5">
+              {projects.map((project, index) => (
+                <motion.article
+                  key={project.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.08 }}
+                  className="group relative overflow-hidden rounded-[28px] bg-white border border-slate-200 p-7 shadow-sm hover:-translate-y-2 hover:shadow-2xl hover:shadow-slate-300/40 transition-all duration-300"
+                >
+                  <div
+                    className={`h-1.5 w-14 rounded-full bg-gradient-to-r ${project.color} mb-8 group-hover:w-24 transition-all`}
+                  />
+
+                  <div className="flex justify-between items-start">
+                    <span className="text-xs font-bold tracking-[0.2em] text-slate-300">
+                      {project.number}
+                    </span>
+
+                    <ArrowUpRight
+                      size={20}
+                      className="text-slate-300 group-hover:text-slate-950 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"
+                    />
+                  </div>
+
+                  <h3 className="mt-8 text-2xl font-bold tracking-tight text-slate-950">
+                    {project.name}
+                  </h3>
+
+                  <p className="mt-4 text-sm leading-7 text-slate-500 min-h-[112px]">
+                    {project.description}
+                  </p>
+
+                  <div className="mt-7 flex flex-wrap gap-2">
+                    {project.tech.map((tech) => (
+                      <span
+                        key={tech}
+                        className="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-600"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </motion.article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* AI CHAT */}
+        <section
+          id="chat"
+          className="max-w-7xl mx-auto px-5 lg:px-8 py-24 md:py-32"
+        >
+          <div className="grid lg:grid-cols-[0.8fr_1.2fr] gap-12 lg:gap-20 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full bg-indigo-50 border border-indigo-100 px-4 py-2 text-xs font-bold text-indigo-600 mb-6">
+                <Bot size={14} />
+                INTERACTIVE RESUME
+              </div>
+
+              <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-slate-950">
+                Ask my
+                <br />
+                <span className="text-indigo-600">resume.</span>
+              </h2>
+
+              <p className="mt-6 text-slate-500 leading-8 max-w-lg">
+                Instead of reading a long resume, just ask. The assistant can
+                answer common questions about my experience, skills, projects,
+                and background.
+              </p>
+
+              <div className="mt-8 space-y-3">
+                {[
+                  "Built with React",
+                  "Runs directly on GitHub Pages",
+                  "No backend required",
+                ].map((item) => (
+                  <div
+                    key={item}
+                    className="flex items-center gap-3 text-sm font-medium text-slate-600"
+                  >
+                    <CheckCircle2
+                      size={17}
+                      className="text-emerald-500"
+                    />
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <Chatbot />
+          </div>
         </section>
       </main>
 
-      <footer className="border-t border-slate-200 bg-white">
-        <div className="max-w-6xl mx-auto px-5 py-8 flex flex-col md:flex-row gap-3 md:items-center md:justify-between text-sm text-slate-500">
-          <div>© {year} {profile.name}. Built for GitHub Pages.</div>
-          <div className="flex gap-4">
-            <a href={profile.github} className="hover:text-slate-900">GitHub</a>
-            <a href={profile.linkedin} className="hover:text-slate-900">LinkedIn</a>
-            <a href={`mailto:${profile.email}`} className="hover:text-slate-900">Email</a>
+      {/* FOOTER */}
+      <footer className="bg-slate-950 text-white">
+        <div className="max-w-7xl mx-auto px-5 lg:px-8 py-14">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+            <div>
+              <p className="text-3xl font-bold tracking-tight">
+                Wallace<span className="text-indigo-400">.</span>
+              </p>
+
+              <p className="mt-3 max-w-md text-sm leading-6 text-slate-500">
+                Product, strategy, growth, and practical digital execution.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap gap-3">
+              <a
+                href={profile.github}
+                className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2.5 text-sm text-slate-300 hover:bg-white/5 hover:text-white transition"
+              >
+                <Github size={16} />
+                GitHub
+              </a>
+
+              <a
+                href={profile.linkedin}
+                className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2.5 text-sm text-slate-300 hover:bg-white/5 hover:text-white transition"
+              >
+                <Linkedin size={16} />
+                LinkedIn
+              </a>
+
+              <a
+                href={`mailto:${profile.email}`}
+                className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-indigo-50 transition"
+              >
+                <Mail size={16} />
+                Email
+              </a>
+            </div>
+          </div>
+
+          <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between gap-3 text-xs text-slate-600">
+            <span>
+              © {year} {profile.name}. All rights reserved.
+            </span>
+
+            <span>Designed & built with React.</span>
           </div>
         </div>
       </footer>
     </div>
   );
 }
-
