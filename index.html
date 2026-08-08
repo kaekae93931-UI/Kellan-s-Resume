@@ -542,20 +542,12 @@
 
     .chat-messages {
       flex: 1;
-      padding: 20px;
+      padding: 24px 20px;
       overflow-y: auto;
-      display: grid;
-      gap: 14px;
-    }
-
-    .message {
-      max-width: 86%;
-      padding: 12px 14px;
-      border-radius: 16px;
-      font-size: .95rem;
-      white-space: pre-wrap;
-      word-break: break-word;
-      animation: fadeIn .24s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      scroll-behavior: smooth;
     }
 
     @keyframes fadeIn {
@@ -563,41 +555,77 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    .message {
+      max-width: 82%;
+      padding: 14px 16px;
+      border-radius: 18px;
+      font-size: 0.95rem;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+      animation: messageIn 0.25s ease;
+    }
+    
     .message.bot {
       justify-self: start;
-      background: rgba(255,255,255,.06);
-      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #e5e7eb;
+      border-top-left-radius: 8px;
     }
-
+    
     .message.user {
       justify-self: end;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: #03131d;
-      box-shadow: 0 10px 24px rgba(14,165,233,.22);
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-top-right-radius: 8px;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.22);
+    }
+    
+    @keyframes messageIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .message-name {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      margin-bottom: 6px;
-      padding: 4px 10px;
+      margin-bottom: 8px;
+      padding: 3px 10px;
       border-radius: 999px;
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.28);
-      color: #7dd3fc;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #cbd5e1;
       font-size: 0.72rem;
       font-weight: 700;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
-      box-shadow: 0 0 12px rgba(56, 189, 248, 0.16);
-      animation: glowPulse 2.4s ease-in-out infinite;
+    }
+    
+    .message.user .message-name {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.22);
+      color: #eff6ff;
+    }
+    
+    .message.bot .message-name {
+      background: rgba(56, 189, 248, 0.12);
+      border-color: rgba(56, 189, 248, 0.2);
+      color: #7dd3fc;
     }
     
     .message-name::before {
-      content: "✦";
-      font-size: 0.7rem;
-      color: #38bdf8;
+      content: "●";
+      font-size: 0.52rem;
+      color: currentColor;
     }
     
     @keyframes glowPulse {
