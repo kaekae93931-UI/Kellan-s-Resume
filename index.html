@@ -2682,46 +2682,32 @@
   
     if (!text) return;
   
-    // 顯示使用者訊息
     addMessage(text, "user");
   
     try {
-      // 傳送到你的 Cloudflare Worker
       const response = await fetch("https://hung.kaekae939311.workers.dev/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          message: text
-        })
+        body: JSON.stringify({ message: text })
       });
   
       const result = await response.text();
       console.log(result);
   
-      addMessage("✅ 已收到訊息，我會盡快透過 LINE 回覆你。", "bot");
+      if (response.ok) {
+        addMessage("✅ 已收到訊息，我會盡快回覆你。", "bot");
+      } else {
+        addMessage("❌ LINE API 錯誤：" + result, "bot");
+      }
     } catch (error) {
       console.error(error);
-      addMessage("❌ 訊息送出失敗，請稍後再試。", "bot");
+      addMessage("❌ 連線失敗：" + error.message, "bot");
     }
   
     input.value = "";
-    }
-  
-      function askQuestion(question) {
-  
-        const input =
-          document.getElementById("chatInput");
-  
-  
-        input.value =
-          question;
-  
-  
-        sendMessage();
-  
-      }
+  }
 
 
     function handleEnter(event) {
