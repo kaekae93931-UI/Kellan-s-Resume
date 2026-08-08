@@ -11,14 +11,34 @@
   <style>
     body {
       font-family: sans-serif;
-      max-width: 700px;
+      max-width: 800px;
       margin: 40px auto;
       padding: 20px;
       background: #f5f5f5;
     }
 
-    h2 {
+    #sessions {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px;
       margin-bottom: 20px;
+    }
+
+    .session {
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-bottom: 6px;
+    }
+
+    .session:hover {
+      background: #eef4ff;
+    }
+
+    .session.active {
+      background: #2563eb;
+      color: white;
     }
 
     #messages {
@@ -52,7 +72,13 @@
 </head>
 
 <body>
+
   <h2>網站聊天室管理</h2>
+
+  <div id="sessions">
+    <strong>聊天室列表</strong>
+    <div id="sessionList"></div>
+  </div>
 
   <div id="messages"></div>
 
@@ -61,8 +87,52 @@
   <script>
     const WORKER = "https://hung.kaekae939311.workers.dev";
 
-    async function load() {
-      const res = await fetch(`${WORKER}/messages`);
+    let currentSession = null;
+
+    // 取得所有聊天室 ID
+    async function loadSessions() {
+      const res = await fetch(`${WORKER}/sessions`);
+      const sessions = await res.json();
+
+      const list = document.getElementById("sessionList");
+      list.innerHTML = "";
+
+      sessions.forEach(id => {
+        const div = document.createElement("div");
+        div.className = "session";
+        div.textContent = id;
+
+        div.onclick = () => {
+          currentSession = id;
+
+          document.querySelectorAll(".session").forEach(el =>
+            el.classList.remove("active")
+          );
+
+          div.classList.add("active");
+
+          loadMessages();
+        };
+
+        list.appendChild(div);
+      });
+
+      // 自動選第一個
+      if (!currentSession && sessions.length > 0) {
+        currentSession = sessions[0];
+        list.firstChild.classList.add("active");
+        loadMessages();
+      }
+    }
+
+    // 載入某個聊天室訊息
+    async function loadMessages() {
+      if (!currentSession) return;
+
+      const res = await fetch(
+        `${WORKER}/messages?sessionId=${currentSession}`
+      );
+
       const data = await res.json();
 
       const box = document.getElementById("messages");
@@ -70,15 +140,22 @@
 
       data.forEach(m => {
         const div = document.createElement("div");
-        div.className = m.role;
-        div.textContent = `${m.role}: ${m.text}`;
+        div.className = m.role === "admin" ? "admin" : "visitor";
+
+        const name = m.name ? `${m.name}: ` : "";
+
+        div.textContent = `${name}${m.text}`;
+
         box.appendChild(div);
       });
 
       box.scrollTop = box.scrollHeight;
     }
 
+    // 回覆訊息
     async function reply() {
+      if (!currentSession) return;
+
       const input = document.getElementById("text");
       const text = input.value.trim();
 
@@ -89,11 +166,14 @@
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ text })
+        body: JSON.stringify({
+          text,
+          sessionId: currentSession
+        })
       });
 
       input.value = "";
-      load();
+      loadMessages();
     }
 
     document.getElementById("text").addEventListener("keydown", e => {
@@ -102,9 +182,15 @@
       }
     });
 
-    setInterval(load, 2000);
-    load();
+    // 每 2 秒更新
+    setInterval(() => {
+      loadSessions();
+      loadMessages();
+    }, 2000);
+
+    loadSessions();
   </script>
+
 </body>
 </html>
 ```
