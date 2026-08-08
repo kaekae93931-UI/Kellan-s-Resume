@@ -1133,27 +1133,22 @@
       const div = document.createElement("div");
       div.className = `message ${sender}`;
     
-      // 支援「名字: 內容」格式
-      if (text.includes(": ")) {
-        const [name, ...rest] = text.split(": ");
-        const content = rest.join(": ");
+      let name = sender === "bot" ? "Kellan" : "You";
+      let content = text;
     
-        div.innerHTML = `
-          <div class="message-name">${escapeHtml(name)}</div>
-          <div>${escapeHtml(content)}</div>
-        `;
-      } else {
-        div.innerHTML = escapeHtml(text);
+      if (text.includes(": ")) {
+        const parts = text.split(": ");
+        name = parts.shift();
+        content = parts.join(": ");
       }
+    
+      div.innerHTML = `
+        <div class="message-name">${escapeHtml(name)}</div>
+        <div class="message-text">${escapeHtml(content)}</div>
+      `;
     
       container.appendChild(div);
-    
-      const isNearBottom =
-        container.scrollHeight - container.scrollTop - container.clientHeight < 120;
-    
-      if (isNearBottom) {
-        container.scrollTop = container.scrollHeight;
-      }
+      container.scrollTop = container.scrollHeight;
     }
     function askQuestion(question) {
       const displayName = visitorName || "You";
