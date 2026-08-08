@@ -1,32 +1,11 @@
-import React, { useMemo, useState } from "react";
-import { motion } from "framer-motion";
-import {
-  Mail,
-  Phone,
-  MapPin,
-  Github,
-  Linkedin,
-  Send,
-  Bot,
-  User,
-  Briefcase,
-  GraduationCap,
-  Sparkles,
-  ArrowUpRight,
-  CheckCircle2,
-  Menu,
-  X,
-  Zap,
-  Target,
-  Layers3,
-} from "lucide-react";
+import React, { useState } from "react";
 
 const profile = {
   name: "Wallace Chen",
-  title: "Product · Strategy · Growth",
-  tagline:
-    "I turn business problems into practical digital products, smarter workflows, and measurable growth.",
-  location: "Taipei / Remote",
+  role: "Product · Strategy · Growth",
+  intro:
+    "I turn business problems into practical products, better workflows, and measurable results.",
+  location: "Taipei, Taiwan",
   email: "your.email@example.com",
   phone: "+886 900 000 000",
   github: "https://github.com/yourusername",
@@ -35,10 +14,10 @@ const profile = {
 
 const skills = [
   "Product Strategy",
-  "Data Analysis",
   "Business Development",
-  "AI Workflow",
   "Project Management",
+  "Data Analysis",
+  "AI Workflow",
   "Customer Research",
   "Automation",
   "Digital Products",
@@ -46,762 +25,1053 @@ const skills = [
 
 const experience = [
   {
+    period: "2023 — Present",
     role: "Product / Strategy Specialist",
     company: "Your Company",
-    period: "2023 — Present",
     description:
-      "Driving cross-functional initiatives from discovery to execution, connecting business goals with practical product solutions.",
-    points: [
-      "Led cross-functional projects from discovery to launch.",
-      "Improved operational workflows through AI-assisted automation.",
-      "Built dashboards and reports to support business decisions.",
+      "Lead cross-functional projects and turn business goals into practical product and workflow solutions.",
+    achievements: [
+      "Led projects from discovery through execution.",
+      "Improved internal workflows with AI-assisted automation.",
+      "Created reports and dashboards for business decisions.",
     ],
   },
   {
+    period: "2020 — 2023",
     role: "Business Development / Project Manager",
     company: "Previous Company",
-    period: "2020 — 2023",
     description:
-      "Worked across clients, internal teams, and business stakeholders to turn customer needs into actionable projects.",
-    points: [
-      "Managed client communication and strategic partnerships.",
-      "Coordinated internal teams to deliver projects on schedule.",
-      "Translated customer needs into product and service improvements.",
+      "Worked with customers, internal teams, and business stakeholders to deliver projects and improve services.",
+    achievements: [
+      "Managed client communication and partnerships.",
+      "Coordinated teams and project delivery.",
+      "Translated customer needs into actionable improvements.",
     ],
   },
 ];
 
 const projects = [
   {
-    number: "01",
-    name: "AI Resume Chatbot",
+    title: "AI Resume Chatbot",
     description:
-      "An interactive portfolio assistant that answers questions about my background, skills, experience, and projects.",
-    tech: ["React", "JavaScript", "GitHub Pages"],
-    color: "from-violet-500 to-indigo-500",
+      "An interactive assistant that answers questions about my background, skills, experience, and projects.",
+    tags: "React · JavaScript · GitHub Pages",
   },
   {
-    number: "02",
-    name: "Business Analytics Dashboard",
+    title: "Business Analytics Dashboard",
     description:
-      "A dashboard concept designed to turn growth metrics, sales pipelines, and operational data into actionable insights.",
-    tech: ["Analytics", "Visualization", "Strategy"],
-    color: "from-cyan-500 to-blue-500",
+      "A dashboard concept for tracking growth metrics, sales pipeline, and operational performance.",
+    tags: "Analytics · Visualization · Strategy",
   },
   {
-    number: "03",
-    name: "Workflow Automation Kit",
+    title: "Workflow Automation",
     description:
-      "Reusable AI and automation workflows designed to reduce repetitive tasks and improve team productivity.",
-    tech: ["AI", "Automation", "Operations"],
-    color: "from-emerald-500 to-teal-500",
+      "Reusable AI and automation workflows designed to reduce repetitive tasks and improve productivity.",
+    tags: "AI · Automation · Operations",
   },
 ];
 
-const qa = [
-  {
-    keys: ["who", "你是誰", "介紹", "about"],
-    answer:
-      "我是 Wallace Chen，專注產品策略、專案管理、商業成長與 AI 工作流程。我擅長把商業問題拆解成可以執行的產品與流程。",
-  },
-  {
-    keys: ["skill", "技能", "能力", "會什麼"],
-    answer:
-      "我的核心能力包含 Product Strategy、Data Analysis、Business Development、AI Workflow、Project Management、Customer Research 與 Automation。",
-  },
-  {
-    keys: ["experience", "經歷", "工作", "履歷"],
-    answer:
-      "我有產品策略、商務開發與專案管理相關經驗，曾負責跨部門專案、流程改善、客戶需求整理與數據分析。",
-  },
-  {
-    keys: ["project", "作品", "專案"],
-    answer:
-      "目前展示的作品包含 AI Resume Chatbot、Business Analytics Dashboard 與 Workflow Automation Kit。",
-  },
-  {
-    keys: ["contact", "聯絡", "email", "mail"],
-    answer: `你可以透過 ${profile.email} 聯絡我，也可以使用頁面上的 GitHub 或 LinkedIn。`,
-  },
-  {
-    keys: ["github", "部署", "pages", "網站"],
-    answer:
-      "這個網站使用 React 建立，可以部署到 GitHub Pages，不需要傳統後端即可運作。",
-  },
-];
-
-function getBotAnswer(message) {
-  const text = message.toLowerCase();
-
-  const found = qa.find((item) =>
-    item.keys.some((key) => text.includes(key.toLowerCase()))
-  );
-
-  return (
-    found?.answer ||
-    "我可以回答關於 Wallace 的自我介紹、技能、經歷、作品、聯絡方式與網站。試著問我「你的技能？」或「你的作品？」"
-  );
-}
-
-function SectionTitle({ eyebrow, title, description, icon: Icon }) {
-  return (
-    <div className="mb-10">
-      <div className="flex items-center gap-3 mb-3">
-        {Icon && (
-          <div className="h-9 w-9 rounded-xl bg-slate-900 text-white flex items-center justify-center">
-            <Icon size={17} />
-          </div>
-        )}
-
-        <span className="text-xs font-bold uppercase tracking-[0.2em] text-indigo-600">
-          {eyebrow}
-        </span>
-      </div>
-
-      <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-slate-950">
-        {title}
-      </h2>
-
-      {description && (
-        <p className="mt-4 max-w-2xl text-slate-500 leading-relaxed">
-          {description}
-        </p>
-      )}
-    </div>
-  );
-}
+const questions = {
+  "你是誰？":
+    "我是 Wallace Chen，專注產品策略、專案管理、商業成長與 AI 工作流程。",
+  "你的技能？":
+    "我的核心能力包含 Product Strategy、Business Development、Project Management、Data Analysis、AI Workflow 與 Automation。",
+  "你的經歷？":
+    "我有產品策略、商務開發與專案管理相關經驗，主要負責跨部門專案、流程改善與客戶需求。",
+  "你的作品？":
+    "目前展示的作品包含 AI Resume Chatbot、Business Analytics Dashboard 與 Workflow Automation。",
+};
 
 function Chatbot() {
   const [messages, setMessages] = useState([
     {
-      from: "bot",
-      text: "Hi 👋 I'm Wallace's resume assistant. Ask me about his skills, experience, projects, or background.",
+      type: "bot",
+      text: "Hi, I'm Wallace's resume assistant. Ask me about my skills, experience, or projects.",
     },
   ]);
 
   const [input, setInput] = useState("");
 
-  const quickQuestions = [
-    "你是誰？",
-    "你的技能？",
-    "你的作品？",
-    "怎麼聯絡你？",
-  ];
+  function send(text) {
+    const message = (text || input).trim();
+    if (!message) return;
 
-  const sendMessage = (text = input) => {
-    const clean = text.trim();
+    let answer =
+      "我可以回答關於我的介紹、技能、經歷和作品。你可以點下面的問題。";
 
-    if (!clean) return;
+    const matched = Object.keys(questions).find((q) =>
+      message.includes(q.replace("？", ""))
+    );
 
-    const answer = getBotAnswer(clean);
+    if (matched) answer = questions[matched];
 
-    setMessages((prev) => [
-      ...prev,
-      { from: "user", text: clean },
-      { from: "bot", text: answer },
+    setMessages((old) => [
+      ...old,
+      { type: "user", text: message },
+      { type: "bot", text: answer },
     ]);
 
     setInput("");
-  };
+  }
 
   return (
-    <div className="relative overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_25px_80px_-30px_rgba(15,23,42,0.35)]">
-      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-violet-500 via-indigo-500 to-cyan-400" />
-
-      <div className="p-6 md:p-7">
-        <div className="flex items-center gap-4 mb-6">
-          <div className="relative">
-            <div className="h-12 w-12 rounded-2xl bg-slate-950 text-white flex items-center justify-center shadow-lg">
-              <Bot size={22} />
-            </div>
-
-            <span className="absolute -right-1 -bottom-1 h-3.5 w-3.5 rounded-full bg-emerald-400 border-2 border-white" />
-          </div>
-
-          <div>
-            <h3 className="font-bold text-lg text-slate-950">
-              Resume Assistant
-            </h3>
-            <p className="text-sm text-slate-500">
-              Ask me anything about Wallace
-            </p>
-          </div>
+    <div className="chatbot">
+      <div className="chat-header">
+        <div className="chat-avatar">W</div>
+        <div>
+          <strong>Resume Assistant</strong>
+          <span>Ask about Wallace</span>
         </div>
+      </div>
 
-        <div className="h-[330px] overflow-y-auto rounded-2xl bg-slate-50 border border-slate-100 p-4 space-y-4 mb-4">
-          {messages.map((msg, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={`flex gap-2 ${
-                msg.from === "user" ? "justify-end" : "justify-start"
-              }`}
-            >
-              {msg.from === "bot" && (
-                <div className="mt-1 h-7 w-7 shrink-0 rounded-lg bg-slate-900 text-white flex items-center justify-center">
-                  <Bot size={13} />
-                </div>
-              )}
-
-              <div
-                className={`max-w-[82%] rounded-2xl px-4 py-3 text-sm leading-6 ${
-                  msg.from === "user"
-                    ? "bg-slate-950 text-white rounded-br-md"
-                    : "bg-white text-slate-700 border border-slate-200 rounded-bl-md shadow-sm"
-                }`}
-              >
-                {msg.text}
-              </div>
-
-              {msg.from === "user" && (
-                <div className="mt-1 h-7 w-7 shrink-0 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center">
-                  <User size={13} />
-                </div>
-              )}
-            </motion.div>
-          ))}
-        </div>
-
-        <div className="flex flex-wrap gap-2 mb-4">
-          {quickQuestions.map((question) => (
-            <button
-              key={question}
-              onClick={() => sendMessage(question)}
-              className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:border-indigo-300 hover:bg-indigo-50 hover:text-indigo-700"
-            >
-              {question}
-            </button>
-          ))}
-        </div>
-
-        <div className="flex gap-2 rounded-2xl border border-slate-200 bg-white p-1.5 focus-within:border-indigo-400 focus-within:ring-4 focus-within:ring-indigo-50 transition">
-          <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-            placeholder="Ask about Wallace..."
-            className="min-w-0 flex-1 bg-transparent px-3 py-2 text-sm outline-none"
-          />
-
-          <button
-            onClick={() => sendMessage()}
-            className="h-10 w-10 shrink-0 rounded-xl bg-slate-950 text-white flex items-center justify-center transition hover:bg-indigo-600"
+      <div className="chat-messages">
+        {messages.map((message, index) => (
+          <div
+            key={index}
+            className={
+              message.type === "user"
+                ? "message user-message"
+                : "message bot-message"
+            }
           >
-            <Send size={16} />
+            {message.text}
+          </div>
+        ))}
+      </div>
+
+      <div className="quick-questions">
+        {Object.keys(questions).map((question) => (
+          <button key={question} onClick={() => send(question)}>
+            {question}
           </button>
-        </div>
+        ))}
+      </div>
+
+      <div className="chat-input">
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") send();
+          }}
+          placeholder="Ask a question..."
+        />
+        <button onClick={() => send()}>Send</button>
       </div>
     </div>
   );
 }
 
 export default function ResumeWebsite() {
-  const year = useMemo(() => new Date().getFullYear(), []);
-  const [mobileMenu, setMobileMenu] = useState(false);
-
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-slate-900">
-      {/* NAVBAR */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-slate-950/90 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-5 lg:px-8 h-16 flex items-center justify-between">
-          <a
-            href="#top"
-            className="font-bold text-white tracking-tight text-lg"
-          >
-            Wallace<span className="text-indigo-400">.</span>
-          </a>
+    <>
+      <style>{`
+        * {
+          box-sizing: border-box;
+        }
 
-          <nav className="hidden md:flex items-center gap-8 text-sm text-slate-300">
-            <a href="#about" className="hover:text-white transition">
-              About
-            </a>
-            <a href="#experience" className="hover:text-white transition">
-              Experience
-            </a>
-            <a href="#projects" className="hover:text-white transition">
-              Projects
-            </a>
-            <a href="#chat" className="hover:text-white transition">
-              AI Assistant
-            </a>
-          </nav>
+        html {
+          scroll-behavior: smooth;
+        }
 
-          <a
-            href={`mailto:${profile.email}`}
-            className="hidden sm:inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-bold text-slate-950 hover:bg-indigo-50 transition"
-          >
-            Let's Talk
-            <ArrowUpRight size={14} />
-          </a>
+        body {
+          margin: 0;
+          font-family:
+            Inter,
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            sans-serif;
+          background: #ffffff;
+          color: #171717;
+        }
 
-          <button
-            onClick={() => setMobileMenu(!mobileMenu)}
-            className="md:hidden text-white"
-          >
-            {mobileMenu ? <X /> : <Menu />}
-          </button>
-        </div>
+        a {
+          color: inherit;
+          text-decoration: none;
+        }
 
-        {mobileMenu && (
-          <div className="md:hidden border-t border-white/10 bg-slate-950 px-5 py-5 space-y-4">
-            {["about", "experience", "projects", "chat"].map((item) => (
-              <a
-                key={item}
-                href={`#${item}`}
-                onClick={() => setMobileMenu(false)}
-                className="block text-sm text-slate-300"
-              >
-                {item === "chat"
-                  ? "AI Assistant"
-                  : item.charAt(0).toUpperCase() + item.slice(1)}
-              </a>
-            ))}
+        button,
+        input {
+          font: inherit;
+        }
+
+        .page {
+          min-height: 100vh;
+          background: #fff;
+        }
+
+        /* NAV */
+
+        .nav {
+          position: sticky;
+          top: 0;
+          z-index: 20;
+          height: 68px;
+          border-bottom: 1px solid #eaeaea;
+          background: rgba(255, 255, 255, 0.94);
+          backdrop-filter: blur(12px);
+        }
+
+        .nav-inner {
+          max-width: 1120px;
+          height: 100%;
+          margin: auto;
+          padding: 0 28px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .logo {
+          font-size: 18px;
+          font-weight: 700;
+          letter-spacing: -0.04em;
+        }
+
+        .logo span {
+          color: #2563eb;
+        }
+
+        .nav-links {
+          display: flex;
+          gap: 30px;
+          color: #666;
+          font-size: 14px;
+        }
+
+        .nav-links a:hover {
+          color: #111;
+        }
+
+        .nav-contact {
+          padding: 9px 16px;
+          border-radius: 7px;
+          background: #111;
+          color: #fff;
+          font-size: 13px;
+          font-weight: 600;
+        }
+
+        /* MAIN */
+
+        .container {
+          max-width: 1120px;
+          margin: auto;
+          padding: 0 28px;
+        }
+
+        /* HERO */
+
+        .hero {
+          padding: 110px 0 100px;
+          border-bottom: 1px solid #eaeaea;
+        }
+
+        .hero-grid {
+          display: grid;
+          grid-template-columns: 1.35fr 0.65fr;
+          gap: 80px;
+          align-items: end;
+        }
+
+        .eyebrow {
+          display: inline-block;
+          margin-bottom: 24px;
+          color: #2563eb;
+          font-size: 13px;
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+        }
+
+        .hero h1 {
+          max-width: 760px;
+          margin: 0;
+          font-size: clamp(48px, 7vw, 82px);
+          line-height: 0.98;
+          letter-spacing: -0.065em;
+          font-weight: 750;
+        }
+
+        .hero h1 span {
+          color: #2563eb;
+        }
+
+        .hero-description {
+          max-width: 650px;
+          margin: 30px 0 0;
+          color: #666;
+          font-size: 19px;
+          line-height: 1.75;
+        }
+
+        .hero-actions {
+          display: flex;
+          gap: 10px;
+          margin-top: 34px;
+        }
+
+        .primary-button,
+        .secondary-button {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 12px 19px;
+          border-radius: 7px;
+          font-size: 14px;
+          font-weight: 600;
+        }
+
+        .primary-button {
+          background: #111;
+          color: white;
+        }
+
+        .secondary-button {
+          border: 1px solid #ddd;
+          color: #333;
+        }
+
+        .primary-button:hover {
+          background: #2563eb;
+        }
+
+        .secondary-button:hover {
+          border-color: #aaa;
+        }
+
+        .hero-info {
+          border-left: 1px solid #ddd;
+          padding-left: 28px;
+        }
+
+        .info-item {
+          margin-bottom: 25px;
+        }
+
+        .info-label {
+          display: block;
+          margin-bottom: 6px;
+          color: #999;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+        }
+
+        .info-value {
+          color: #333;
+          font-size: 14px;
+          line-height: 1.6;
+        }
+
+        .info-value a:hover {
+          color: #2563eb;
+        }
+
+        /* SECTIONS */
+
+        .section {
+          padding: 95px 0;
+          border-bottom: 1px solid #eaeaea;
+        }
+
+        .section-heading {
+          display: grid;
+          grid-template-columns: 0.5fr 1fr;
+          gap: 50px;
+          margin-bottom: 55px;
+        }
+
+        .section-number {
+          color: #2563eb;
+          font-size: 12px;
+          font-weight: 700;
+          letter-spacing: 0.15em;
+        }
+
+        .section-title {
+          margin: 0;
+          font-size: 42px;
+          line-height: 1.1;
+          letter-spacing: -0.045em;
+        }
+
+        .section-description {
+          margin: 15px 0 0;
+          max-width: 620px;
+          color: #777;
+          line-height: 1.75;
+        }
+
+        /* SKILLS */
+
+        .skills {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          border-top: 1px solid #ddd;
+          border-left: 1px solid #ddd;
+        }
+
+        .skill {
+          min-height: 110px;
+          padding: 25px;
+          border-right: 1px solid #ddd;
+          border-bottom: 1px solid #ddd;
+          display: flex;
+          align-items: flex-end;
+          font-size: 15px;
+          font-weight: 600;
+        }
+
+        .skill:hover {
+          background: #f7f9fc;
+          color: #2563eb;
+        }
+
+        /* EXPERIENCE */
+
+        .experience-item {
+          display: grid;
+          grid-template-columns: 180px 1fr;
+          gap: 50px;
+          padding: 35px 0;
+          border-top: 1px solid #ddd;
+        }
+
+        .experience-item:last-child {
+          border-bottom: 1px solid #ddd;
+        }
+
+        .period {
+          color: #999;
+          font-size: 13px;
+          padding-top: 5px;
+        }
+
+        .experience-role {
+          margin: 0;
+          font-size: 23px;
+          letter-spacing: -0.025em;
+        }
+
+        .company {
+          margin-top: 6px;
+          color: #2563eb;
+          font-size: 14px;
+          font-weight: 600;
+        }
+
+        .experience-description {
+          max-width: 700px;
+          margin: 18px 0;
+          color: #666;
+          line-height: 1.7;
+        }
+
+        .achievements {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 25px;
+          margin-top: 20px;
+        }
+
+        .achievement {
+          color: #555;
+          font-size: 14px;
+          line-height: 1.65;
+        }
+
+        .achievement::before {
+          content: "—";
+          color: #2563eb;
+          margin-right: 8px;
+        }
+
+        /* PROJECTS */
+
+        .projects {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 22px;
+        }
+
+        .project {
+          min-height: 340px;
+          padding: 30px;
+          border: 1px solid #ddd;
+          display: flex;
+          flex-direction: column;
+          transition: 0.2s ease;
+        }
+
+        .project:hover {
+          transform: translateY(-4px);
+          border-color: #bbb;
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
+        }
+
+        .project-number {
+          color: #aaa;
+          font-size: 12px;
+          font-weight: 700;
+        }
+
+        .project h3 {
+          margin: auto 0 15px;
+          font-size: 25px;
+          letter-spacing: -0.035em;
+        }
+
+        .project p {
+          margin: 0;
+          color: #666;
+          font-size: 14px;
+          line-height: 1.7;
+        }
+
+        .project-tags {
+          margin-top: 25px;
+          padding-top: 18px;
+          border-top: 1px solid #eee;
+          color: #999;
+          font-size: 12px;
+        }
+
+        /* CHAT */
+
+        .chat-section {
+          background: #f7f8fa;
+        }
+
+        .chat-layout {
+          display: grid;
+          grid-template-columns: 0.7fr 1.3fr;
+          gap: 70px;
+          align-items: start;
+        }
+
+        .chat-intro h2 {
+          margin: 0;
+          font-size: 45px;
+          letter-spacing: -0.045em;
+          line-height: 1.05;
+        }
+
+        .chat-intro h2 span {
+          color: #2563eb;
+        }
+
+        .chat-intro p {
+          max-width: 420px;
+          color: #777;
+          line-height: 1.75;
+        }
+
+        .chatbot {
+          background: white;
+          border: 1px solid #ddd;
+          border-radius: 10px;
+          overflow: hidden;
+        }
+
+        .chat-header {
+          padding: 20px;
+          border-bottom: 1px solid #eee;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .chat-avatar {
+          width: 38px;
+          height: 38px;
+          border-radius: 8px;
+          background: #111;
+          color: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 700;
+        }
+
+        .chat-header strong {
+          display: block;
+          font-size: 14px;
+        }
+
+        .chat-header span {
+          display: block;
+          margin-top: 3px;
+          color: #999;
+          font-size: 12px;
+        }
+
+        .chat-messages {
+          height: 300px;
+          padding: 20px;
+          overflow-y: auto;
+          background: #fafafa;
+        }
+
+        .message {
+          max-width: 78%;
+          margin-bottom: 12px;
+          padding: 11px 14px;
+          border-radius: 8px;
+          font-size: 13px;
+          line-height: 1.6;
+        }
+
+        .bot-message {
+          background: white;
+          border: 1px solid #e5e5e5;
+          color: #444;
+        }
+
+        .user-message {
+          margin-left: auto;
+          background: #111;
+          color: white;
+        }
+
+        .quick-questions {
+          padding: 12px 15px;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 7px;
+          border-top: 1px solid #eee;
+        }
+
+        .quick-questions button {
+          border: 1px solid #ddd;
+          background: white;
+          border-radius: 5px;
+          padding: 7px 10px;
+          color: #666;
+          font-size: 11px;
+          cursor: pointer;
+        }
+
+        .quick-questions button:hover {
+          border-color: #2563eb;
+          color: #2563eb;
+        }
+
+        .chat-input {
+          display: flex;
+          gap: 8px;
+          padding: 15px;
+          border-top: 1px solid #eee;
+        }
+
+        .chat-input input {
+          min-width: 0;
+          flex: 1;
+          border: 1px solid #ddd;
+          border-radius: 6px;
+          padding: 10px 12px;
+          outline: none;
+          font-size: 13px;
+        }
+
+        .chat-input input:focus {
+          border-color: #2563eb;
+        }
+
+        .chat-input button {
+          border: 0;
+          border-radius: 6px;
+          background: #111;
+          color: white;
+          padding: 0 17px;
+          cursor: pointer;
+          font-size: 12px;
+          font-weight: 600;
+        }
+
+        .chat-input button:hover {
+          background: #2563eb;
+        }
+
+        /* FOOTER */
+
+        .footer {
+          padding: 55px 0;
+          background: #111;
+          color: white;
+        }
+
+        .footer-inner {
+          display: flex;
+          justify-content: space-between;
+          gap: 30px;
+          align-items: center;
+        }
+
+        .footer-name {
+          font-size: 20px;
+          font-weight: 700;
+        }
+
+        .footer p {
+          margin: 7px 0 0;
+          color: #888;
+          font-size: 13px;
+        }
+
+        .footer-links {
+          display: flex;
+          gap: 22px;
+          color: #aaa;
+          font-size: 13px;
+        }
+
+        .footer-links a:hover {
+          color: white;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 800px) {
+          .nav-links {
+            display: none;
+          }
+
+          .nav-contact {
+            display: none;
+          }
+
+          .hero {
+            padding: 75px 0;
+          }
+
+          .hero-grid {
+            grid-template-columns: 1fr;
+            gap: 45px;
+          }
+
+          .hero-info {
+            border-left: 0;
+            border-top: 1px solid #ddd;
+            padding: 25px 0 0;
+          }
+
+          .section {
+            padding: 70px 0;
+          }
+
+          .section-heading {
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 35px;
+          }
+
+          .section-title {
+            font-size: 35px;
+          }
+
+          .skills {
+            grid-template-columns: repeat(2, 1fr);
+          }
+
+          .experience-item {
+            grid-template-columns: 1fr;
+            gap: 12px;
+          }
+
+          .achievements {
+            grid-template-columns: 1fr;
+            gap: 8px;
+          }
+
+          .projects {
+            grid-template-columns: 1fr;
+          }
+
+          .project {
+            min-height: 290px;
+          }
+
+          .chat-layout {
+            grid-template-columns: 1fr;
+            gap: 40px;
+          }
+
+          .chat-intro h2 {
+            font-size: 38px;
+          }
+
+          .footer-inner {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+
+          .container {
+            padding: 0 20px;
+          }
+
+          .nav-inner {
+            padding: 0 20px;
+          }
+        }
+      `}</style>
+
+      <div className="page">
+        {/* NAVIGATION */}
+        <nav className="nav">
+          <div className="nav-inner">
+            <a href="#top" className="logo">
+              Wallace<span>.</span>
+            </a>
+
+            <div className="nav-links">
+              <a href="#about">About</a>
+              <a href="#experience">Experience</a>
+              <a href="#projects">Projects</a>
+              <a href="#contact">Contact</a>
+            </div>
+
+            <a href={`mailto:${profile.email}`} className="nav-contact">
+              Let's talk
+            </a>
           </div>
-        )}
-      </header>
+        </nav>
 
-      {/* HERO */}
-      <section
-        id="top"
-        className="relative min-h-screen overflow-hidden bg-slate-950 pt-16 text-white"
-      >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(99,102,241,0.25),transparent_30%),radial-gradient(circle_at_85%_70%,rgba(6,182,212,0.18),transparent_30%)]" />
+        <main id="top">
+          {/* HERO */}
+          <section className="hero">
+            <div className="container">
+              <div className="hero-grid">
+                <div>
+                  <span className="eyebrow">
+                    Product · Strategy · Growth
+                  </span>
 
-        <div className="absolute inset-0 opacity-[0.07] bg-[linear-gradient(rgba(255,255,255,0.4)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.4)_1px,transparent_1px)] bg-[size:60px_60px]" />
+                  <h1>
+                    Building better
+                    <br />
+                    <span>digital products.</span>
+                  </h1>
 
-        <div className="relative max-w-7xl mx-auto px-5 lg:px-8 py-20 md:py-28 lg:py-32">
-          <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-14 items-center">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
-            >
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-slate-300 backdrop-blur mb-7">
-                <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-                Available for strategic opportunities
+                  <p className="hero-description">
+                    {profile.intro}
+                  </p>
+
+                  <div className="hero-actions">
+                    <a href="#projects" className="primary-button">
+                      View my work
+                    </a>
+
+                    <a
+                      href={`mailto:${profile.email}`}
+                      className="secondary-button"
+                    >
+                      Get in touch
+                    </a>
+                  </div>
+                </div>
+
+                <div className="hero-info">
+                  <div className="info-item">
+                    <span className="info-label">Based in</span>
+                    <div className="info-value">
+                      {profile.location}
+                    </div>
+                  </div>
+
+                  <div className="info-item">
+                    <span className="info-label">Email</span>
+                    <div className="info-value">
+                      <a href={`mailto:${profile.email}`}>
+                        {profile.email}
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="info-item">
+                    <span className="info-label">Connect</span>
+                    <div className="info-value">
+                      <a href={profile.github}>GitHub</a>
+                      {" · "}
+                      <a href={profile.linkedin}>LinkedIn</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* SKILLS */}
+          <section id="about" className="section">
+            <div className="container">
+              <div className="section-heading">
+                <span className="section-number">01 / CAPABILITIES</span>
+
+                <div>
+                  <h2 className="section-title">
+                    What I bring to the table.
+                  </h2>
+
+                  <p className="section-description">
+                    A combination of product thinking, business execution,
+                    analytical thinking, and modern AI workflows.
+                  </p>
+                </div>
               </div>
 
-              <p className="text-sm font-semibold tracking-[0.25em] uppercase text-indigo-300 mb-5">
-                Product · Strategy · Growth
-              </p>
+              <div className="skills">
+                {skills.map((skill) => (
+                  <div key={skill} className="skill">
+                    {skill}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
 
-              <h1 className="text-5xl sm:text-6xl lg:text-8xl font-bold tracking-[-0.05em] leading-[0.95]">
-                Building
-                <br />
-                <span className="bg-gradient-to-r from-indigo-300 via-violet-300 to-cyan-300 bg-clip-text text-transparent">
-                  useful things.
-                </span>
-              </h1>
+          {/* EXPERIENCE */}
+          <section id="experience" className="section">
+            <div className="container">
+              <div className="section-heading">
+                <span className="section-number">02 / EXPERIENCE</span>
 
-              <p className="mt-7 max-w-2xl text-base md:text-lg leading-8 text-slate-400">
-                {profile.tagline}
-              </p>
+                <div>
+                  <h2 className="section-title">
+                    Experience & impact.
+                  </h2>
 
-              <div className="mt-9 flex flex-wrap gap-3">
-                <a
-                  href="#projects"
-                  className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-slate-950 hover:bg-indigo-50 transition"
-                >
-                  View my work
-                  <ArrowUpRight size={16} />
-                </a>
-
-                <a
-                  href={`mailto:${profile.email}`}
-                  className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white hover:bg-white/10 transition"
-                >
-                  <Mail size={16} />
-                  Contact me
-                </a>
+                  <p className="section-description">
+                    A track record across product, strategy, business
+                    development, and project management.
+                  </p>
+                </div>
               </div>
 
-              <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-slate-400">
-                <span className="flex items-center gap-2">
-                  <MapPin size={15} />
-                  {profile.location}
-                </span>
+              {experience.map((job) => (
+                <div className="experience-item" key={job.role}>
+                  <div className="period">{job.period}</div>
 
-                <a
-                  href={profile.github}
-                  className="flex items-center gap-2 hover:text-white transition"
-                >
-                  <Github size={15} />
-                  GitHub
-                </a>
-
-                <a
-                  href={profile.linkedin}
-                  className="flex items-center gap-2 hover:text-white transition"
-                >
-                  <Linkedin size={15} />
-                  LinkedIn
-                </a>
-              </div>
-            </motion.div>
-
-            {/* HERO CARD */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.94 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.15 }}
-              className="relative"
-            >
-              <div className="absolute -inset-4 rounded-[40px] bg-gradient-to-r from-indigo-500/20 to-cyan-500/20 blur-2xl" />
-
-              <div className="relative rounded-[32px] border border-white/10 bg-white/[0.06] backdrop-blur-xl p-6 shadow-2xl">
-                <div className="flex items-start justify-between mb-12">
                   <div>
-                    <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
-                      Digital Profile
-                    </p>
-                    <p className="mt-2 text-slate-300 text-sm">
-                      Product-minded problem solver
-                    </p>
-                  </div>
+                    <h3 className="experience-role">
+                      {job.role}
+                    </h3>
 
-                  <div className="h-11 w-11 rounded-2xl bg-gradient-to-br from-indigo-400 to-cyan-400 flex items-center justify-center font-black text-slate-950">
-                    WC
-                  </div>
-                </div>
-
-                <div className="mb-10">
-                  <div className="text-6xl md:text-7xl font-bold tracking-tight">
-                    {profile.name.split(" ")[0]}
-                  </div>
-                  <div className="text-6xl md:text-7xl font-bold tracking-tight text-slate-600">
-                    {profile.name.split(" ")[1]}.
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
-                    <Target className="text-indigo-300 mb-5" size={20} />
-                    <p className="text-xs text-slate-500">Focus</p>
-                    <p className="mt-1 text-sm font-semibold text-slate-200">
-                      Strategy & Growth
-                    </p>
-                  </div>
-
-                  <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
-                    <Zap className="text-cyan-300 mb-5" size={20} />
-                    <p className="text-xs text-slate-500">Approach</p>
-                    <p className="mt-1 text-sm font-semibold text-slate-200">
-                      Practical & Data-driven
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-
-        <div className="absolute bottom-7 left-1/2 -translate-x-1/2 text-xs tracking-[0.25em] uppercase text-slate-600">
-          Scroll to explore
-        </div>
-      </section>
-
-      {/* ABOUT / SKILLS */}
-      <main>
-        <section
-          id="about"
-          className="max-w-7xl mx-auto px-5 lg:px-8 py-24 md:py-32"
-        >
-          <div className="grid lg:grid-cols-[0.75fr_1.25fr] gap-16">
-            <div>
-              <SectionTitle
-                eyebrow="Capabilities"
-                title="What I bring."
-                description="A mix of product thinking, business execution, data, and automation."
-                icon={Layers3}
-              />
-            </div>
-
-            <div className="grid sm:grid-cols-2 gap-4">
-              {skills.map((skill, index) => (
-                <motion.div
-                  key={skill}
-                  initial={{ opacity: 0, y: 15 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.05 }}
-                  className="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:-translate-y-1 hover:border-indigo-200 hover:shadow-xl hover:shadow-indigo-100/40 transition-all"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="font-semibold text-slate-800">
-                      {skill}
-                    </span>
-                    <ArrowUpRight
-                      size={17}
-                      className="text-slate-300 group-hover:text-indigo-500 transition"
-                    />
-                  </div>
-
-                  <div className="mt-5 h-1 w-8 rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 group-hover:w-16 transition-all" />
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* EXPERIENCE */}
-        <section
-          id="experience"
-          className="bg-white border-y border-slate-200"
-        >
-          <div className="max-w-7xl mx-auto px-5 lg:px-8 py-24 md:py-32">
-            <SectionTitle
-              eyebrow="Experience"
-              title="Where I've worked."
-              description="Experience across product, strategy, business development, and project execution."
-              icon={Briefcase}
-            />
-
-            <div className="relative">
-              <div className="absolute left-[11px] top-3 bottom-3 w-px bg-gradient-to-b from-indigo-400 via-slate-200 to-transparent" />
-
-              <div className="space-y-12">
-                {experience.map((job, index) => (
-                  <motion.div
-                    key={job.role}
-                    initial={{ opacity: 0, x: -15 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="relative pl-10 md:pl-14"
-                  >
-                    <div className="absolute left-0 top-1 h-6 w-6 rounded-full border-4 border-white bg-indigo-500 shadow-[0_0_0_4px_rgba(99,102,241,0.15)]" />
-
-                    <div className="grid md:grid-cols-[1fr_auto] gap-4 mb-4">
-                      <div>
-                        <h3 className="text-xl md:text-2xl font-bold text-slate-950">
-                          {job.role}
-                        </h3>
-                        <p className="mt-1 font-medium text-indigo-600">
-                          {job.company}
-                        </p>
-                      </div>
-
-                      <span className="text-sm font-semibold text-slate-400">
-                        {job.period}
-                      </span>
+                    <div className="company">
+                      {job.company}
                     </div>
 
-                    <p className="max-w-3xl text-slate-500 leading-7 mb-5">
+                    <p className="experience-description">
                       {job.description}
                     </p>
 
-                    <div className="grid md:grid-cols-3 gap-3">
-                      {job.points.map((point) => (
+                    <div className="achievements">
+                      {job.achievements.map((achievement) => (
                         <div
-                          key={point}
-                          className="rounded-xl bg-slate-50 border border-slate-100 p-4 text-sm leading-6 text-slate-600"
+                          className="achievement"
+                          key={achievement}
                         >
-                          <CheckCircle2
-                            size={16}
-                            className="text-emerald-500 mb-3"
-                          />
-                          {point}
+                          {achievement}
                         </div>
                       ))}
                     </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* EDUCATION */}
-        <section className="max-w-7xl mx-auto px-5 lg:px-8 py-24 md:py-28">
-          <div className="rounded-[32px] bg-slate-950 text-white p-7 md:p-10 overflow-hidden relative">
-            <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-indigo-500/20 blur-3xl" />
-
-            <div className="relative grid md:grid-cols-[auto_1fr] gap-6 items-start">
-              <div className="h-14 w-14 rounded-2xl bg-white/10 flex items-center justify-center">
-                <GraduationCap className="text-indigo-300" />
-              </div>
-
-              <div>
-                <p className="text-xs uppercase tracking-[0.2em] text-indigo-300 mb-3">
-                  Education & Certifications
-                </p>
-
-                <h3 className="text-2xl md:text-3xl font-bold">
-                  Your University / Certification
-                </h3>
-
-                <p className="mt-3 max-w-2xl text-slate-400 leading-7">
-                  Degree, major, certificate, or professional training.
-                  Replace this section with your real background and
-                  qualifications.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* PROJECTS */}
-        <section
-          id="projects"
-          className="bg-slate-100 border-y border-slate-200"
-        >
-          <div className="max-w-7xl mx-auto px-5 lg:px-8 py-24 md:py-32">
-            <SectionTitle
-              eyebrow="Selected Work"
-              title="Things I've built."
-              description="A few examples of how I turn ideas into practical digital experiences."
-              icon={Sparkles}
-            />
-
-            <div className="grid lg:grid-cols-3 gap-5">
-              {projects.map((project, index) => (
-                <motion.article
-                  key={project.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.08 }}
-                  className="group relative overflow-hidden rounded-[28px] bg-white border border-slate-200 p-7 shadow-sm hover:-translate-y-2 hover:shadow-2xl hover:shadow-slate-300/40 transition-all duration-300"
-                >
-                  <div
-                    className={`h-1.5 w-14 rounded-full bg-gradient-to-r ${project.color} mb-8 group-hover:w-24 transition-all`}
-                  />
-
-                  <div className="flex justify-between items-start">
-                    <span className="text-xs font-bold tracking-[0.2em] text-slate-300">
-                      {project.number}
-                    </span>
-
-                    <ArrowUpRight
-                      size={20}
-                      className="text-slate-300 group-hover:text-slate-950 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"
-                    />
                   </div>
-
-                  <h3 className="mt-8 text-2xl font-bold tracking-tight text-slate-950">
-                    {project.name}
-                  </h3>
-
-                  <p className="mt-4 text-sm leading-7 text-slate-500 min-h-[112px]">
-                    {project.description}
-                  </p>
-
-                  <div className="mt-7 flex flex-wrap gap-2">
-                    {project.tech.map((tech) => (
-                      <span
-                        key={tech}
-                        className="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-600"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </motion.article>
+                </div>
               ))}
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* AI CHAT */}
-        <section
-          id="chat"
-          className="max-w-7xl mx-auto px-5 lg:px-8 py-24 md:py-32"
-        >
-          <div className="grid lg:grid-cols-[0.8fr_1.2fr] gap-12 lg:gap-20 items-center">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-indigo-50 border border-indigo-100 px-4 py-2 text-xs font-bold text-indigo-600 mb-6">
-                <Bot size={14} />
-                INTERACTIVE RESUME
+          {/* PROJECTS */}
+          <section id="projects" className="section">
+            <div className="container">
+              <div className="section-heading">
+                <span className="section-number">03 / SELECTED WORK</span>
+
+                <div>
+                  <h2 className="section-title">
+                    Things I've built.
+                  </h2>
+
+                  <p className="section-description">
+                    Selected projects that demonstrate how I turn ideas
+                    into useful digital experiences.
+                  </p>
+                </div>
               </div>
 
-              <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-slate-950">
-                Ask my
-                <br />
-                <span className="text-indigo-600">resume.</span>
-              </h2>
+              <div className="projects">
+                {projects.map((project, index) => (
+                  <article className="project" key={project.title}>
+                    <span className="project-number">
+                      0{index + 1}
+                    </span>
 
-              <p className="mt-6 text-slate-500 leading-8 max-w-lg">
-                Instead of reading a long resume, just ask. The assistant can
-                answer common questions about my experience, skills, projects,
-                and background.
-              </p>
+                    <h3>{project.title}</h3>
 
-              <div className="mt-8 space-y-3">
-                {[
-                  "Built with React",
-                  "Runs directly on GitHub Pages",
-                  "No backend required",
-                ].map((item) => (
-                  <div
-                    key={item}
-                    className="flex items-center gap-3 text-sm font-medium text-slate-600"
-                  >
-                    <CheckCircle2
-                      size={17}
-                      className="text-emerald-500"
-                    />
-                    {item}
-                  </div>
+                    <p>{project.description}</p>
+
+                    <div className="project-tags">
+                      {project.tags}
+                    </div>
+                  </article>
                 ))}
               </div>
             </div>
+          </section>
 
-            <Chatbot />
-          </div>
-        </section>
-      </main>
+          {/* CHAT */}
+          <section id="contact" className="section chat-section">
+            <div className="container">
+              <div className="chat-layout">
+                <div className="chat-intro">
+                  <span className="eyebrow">
+                    Interactive Resume
+                  </span>
 
-      {/* FOOTER */}
-      <footer className="bg-slate-950 text-white">
-        <div className="max-w-7xl mx-auto px-5 lg:px-8 py-14">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
-            <div>
-              <p className="text-3xl font-bold tracking-tight">
-                Wallace<span className="text-indigo-400">.</span>
-              </p>
+                  <h2>
+                    Ask my
+                    <br />
+                    <span>resume.</span>
+                  </h2>
 
-              <p className="mt-3 max-w-md text-sm leading-6 text-slate-500">
-                Product, strategy, growth, and practical digital execution.
-              </p>
+                  <p>
+                    Want to know more about my background, skills,
+                    experience, or projects? Ask the resume assistant.
+                  </p>
+                </div>
+
+                <Chatbot />
+              </div>
             </div>
+          </section>
+        </main>
 
-            <div className="flex flex-wrap gap-3">
-              <a
-                href={profile.github}
-                className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2.5 text-sm text-slate-300 hover:bg-white/5 hover:text-white transition"
-              >
-                <Github size={16} />
-                GitHub
-              </a>
+        {/* FOOTER */}
+        <footer className="footer">
+          <div className="container">
+            <div className="footer-inner">
+              <div>
+                <div className="footer-name">
+                  Wallace Chen
+                </div>
 
-              <a
-                href={profile.linkedin}
-                className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2.5 text-sm text-slate-300 hover:bg-white/5 hover:text-white transition"
-              >
-                <Linkedin size={16} />
-                LinkedIn
-              </a>
+                <p>
+                  Product · Strategy · Growth
+                </p>
+              </div>
 
-              <a
-                href={`mailto:${profile.email}`}
-                className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-indigo-50 transition"
-              >
-                <Mail size={16} />
-                Email
-              </a>
+              <div className="footer-links">
+                <a href={profile.github}>GitHub</a>
+                <a href={profile.linkedin}>LinkedIn</a>
+                <a href={`mailto:${profile.email}`}>
+                  Email
+                </a>
+              </div>
             </div>
           </div>
-
-          <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between gap-3 text-xs text-slate-600">
-            <span>
-              © {year} {profile.name}. All rights reserved.
-            </span>
-
-            <span>Designed & built with React.</span>
-          </div>
-        </div>
-      </footer>
-    </div>
+        </footer>
+      </div>
+    </>
   );
 }
