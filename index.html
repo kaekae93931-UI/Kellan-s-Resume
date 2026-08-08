@@ -1066,8 +1066,15 @@
     }
 
     function askQuestion(question) {
-      document.getElementById("chatInput").value = question;
-      sendMessage();
+      const displayName = visitorName || "You";
+    
+      // 顯示使用者訊息
+      addMessage(`${displayName}: ${question}`, "user");
+    
+      // 直接 AI 回答，不進真人聊天室
+      setTimeout(() => {
+        addMessage(aiAnswers[question], "bot");
+      }, 300);
     }
 
     function shouldContactHuman(text) {
@@ -1153,6 +1160,7 @@
 
     // 初始載入歷史訊息
     loadHistory();
+    
   </script>
 </body>
 </html>
