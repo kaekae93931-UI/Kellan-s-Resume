@@ -1,1668 +1,669 @@
+## index.html
+
+```html
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Kellan Hung — Product · Strategy · Growth</title>
 
   <meta
     name="description"
     content="Kellan Hung — Product, Strategy and Growth professional."
-  >
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
 
   <style>
-
-    /* =========================================================
-       RESET
-    ========================================================== */
-
-    *,
-    *::before,
-    *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-
-    /* =========================================================
-       DESIGN TOKENS
-    ========================================================== */
-
     :root {
-      --black: #111827;
-      --dark: #1f2937;
-      --gray: #6b7280;
-      --light-gray: #9ca3af;
-
-      --border: #e5e7eb;
-      --background: #f8f9fb;
-      --white: #ffffff;
-
-      --blue: #4f46e5;
-      --blue-dark: #4338ca;
-      --blue-light: #eef2ff;
-
-      --green: #10b981;
-
-      --shadow-sm: 0 10px 30px rgba(15, 23, 42, 0.06);
-      --shadow-md: 0 20px 50px rgba(15, 23, 42, 0.08);
-      --shadow-lg: 0 25px 65px rgba(15, 23, 42, 0.12);
-
-      --radius-sm: 9px;
-      --radius-md: 16px;
-      --radius-lg: 20px;
-      --radius-pill: 999px;
-
-      --container: 1180px;
+      --bg: #0f172a;
+      --surface: #111827;
+      --surface-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --line: rgba(255,255,255,0.08);
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --radius: 18px;
     }
 
-
-    /* =========================================================
-       BASE
-    ========================================================== */
-
-    html {
-      scroll-behavior: smooth;
-    }
+    * { box-sizing: border-box; }
 
     body {
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Inter,
-        Helvetica,
-        Arial,
-        sans-serif;
-
-      background: var(--background);
-      color: var(--black);
-
+      margin: 0;
+      font-family: Inter, sans-serif;
+      background: var(--bg);
+      color: var(--text);
       line-height: 1.6;
-
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button,
-    input {
-      font: inherit;
-    }
-
-    button {
-      border: 0;
-    }
-
-
-    /* =========================================================
-       GLOBAL CONTAINER
-    ========================================================== */
+    a { color: inherit; text-decoration: none; }
 
     .container {
-      width: 100%;
-      max-width: var(--container);
+      width: min(1120px, calc(100% - 40px));
       margin: 0 auto;
-      padding: 0 30px;
     }
 
-    .section {
-      padding: 76px 0;
-    }
-
-    .section-label {
-      margin-bottom: 12px;
-
-      color: var(--blue);
-
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      line-height: 1.4;
-
-      text-transform: uppercase;
-    }
-
-    .section-title {
-      color: var(--black);
-
-      font-size: clamp(34px, 5vw, 56px);
-      line-height: 1.02;
-      letter-spacing: -0.055em;
-    }
-
-    .section-description {
-      max-width: 600px;
-      margin-top: 14px;
-
-      color: var(--gray);
-
-      font-size: 16px;
-      line-height: 1.7;
-    }
-
-
-    /* =========================================================
-       NAVIGATION
-    ========================================================== */
-
-    .navbar {
-      position: fixed;
-      inset: 0 0 auto;
+    .nav {
+      position: sticky;
+      top: 0;
       z-index: 100;
-
-      height: 66px;
-
-      background: rgba(248, 249, 251, 0.90);
-
-      border-bottom: 1px solid rgba(229, 231, 235, 0.8);
-
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+      backdrop-filter: blur(12px);
+      background: rgba(15,23,42,.72);
+      border-bottom: 1px solid var(--line);
     }
 
     .nav-inner {
+      height: 72px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-
-      width: 100%;
-      height: 100%;
-      max-width: var(--container);
-
-      margin: 0 auto;
-      padding: 0 30px;
+      gap: 24px;
     }
 
     .logo {
-      font-size: 20px;
       font-weight: 800;
-      letter-spacing: -0.05em;
+      font-size: 1.1rem;
+      letter-spacing: -.02em;
     }
 
-    .logo span {
-      color: var(--blue);
-    }
+    .logo span { color: var(--accent); }
 
     .nav-links {
       display: flex;
-      align-items: center;
       gap: 28px;
-
-      color: var(--gray);
-
-      font-size: 13px;
     }
 
     .nav-links a {
-      transition:
-        color 0.2s ease,
-        opacity 0.2s ease;
+      color: var(--muted);
+      font-size: .95rem;
+      transition: .2s;
     }
 
-    .nav-links a:hover {
-      color: var(--black);
-    }
+    .nav-links a:hover { color: var(--text); }
 
-    .nav-button {
+    .nav-button,
+    .button-primary {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-
-      padding: 8px 15px;
-
-      background: var(--black);
-      color: var(--white);
-
-      border-radius: var(--radius-sm);
-
-      font-size: 13px;
+      gap: 8px;
+      padding: 12px 18px;
+      border-radius: 999px;
       font-weight: 600;
+      transition: .2s;
+    }
 
-      transition:
-        background 0.2s ease,
-        transform 0.2s ease;
+    .nav-button {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
     }
 
     .nav-button:hover {
-      background: var(--blue);
+      background: rgba(255,255,255,.08);
+    }
+
+    .button-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #03131d;
+    }
+
+    .button-primary:hover {
       transform: translateY(-1px);
     }
 
-
-    /* =========================================================
-       HERO
-    ========================================================== */
-
     .hero {
-      position: relative;
-
-      min-height: 100vh;
-
-      padding-top: 66px;
-
-      display: flex;
-      align-items: center;
-
-      overflow: hidden;
-
-      background:
-        radial-gradient(
-          circle at 80% 20%,
-          rgba(79, 70, 229, 0.13),
-          transparent 30%
-        ),
-        radial-gradient(
-          circle at 20% 80%,
-          rgba(59, 130, 246, 0.08),
-          transparent 30%
-        ),
-        var(--background);
+      padding: 96px 0 72px;
     }
 
     .hero-grid {
       display: grid;
-
-      grid-template-columns:
-        minmax(0, 1.3fr)
-        minmax(280px, 0.7fr);
-
-      gap: 46px;
-
+      grid-template-columns: 1.25fr .75fr;
+      gap: 48px;
       align-items: center;
-    }
-
-    .hero-content {
-      min-width: 0;
     }
 
     .availability {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-
-      margin-bottom: 20px;
-      padding: 6px 11px;
-
-      background: #eff6ff;
-
-      border: 1px solid #dbeafe;
-      border-radius: var(--radius-pill);
-
-      color: #2563eb;
-
-      font-size: 11px;
-      font-weight: 700;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      font-size: .92rem;
     }
 
     .availability-dot {
-      width: 7px;
-      height: 7px;
-
-      background: #22c55e;
-
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
-
-      box-shadow:
-        0 0 0 4px rgba(34, 197, 94, 0.12);
+      background: #22c55e;
+      box-shadow: 0 0 0 6px rgba(34,197,94,.15);
     }
 
-    .hero h1 {
-      max-width: 850px;
-
-      color: var(--black);
-
-      font-size: clamp(52px, 8vw, 92px);
-      line-height: 0.95;
-      letter-spacing: -0.075em;
+    h1 {
+      margin: 28px 0 20px;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      line-height: .95;
+      letter-spacing: -.05em;
     }
 
-    .hero h1 .accent {
-      color: var(--blue);
-    }
+    .accent { color: var(--accent); }
 
     .hero-text {
-      max-width: 650px;
-
-      margin-top: 19px;
-
-      color: var(--gray);
-
-      font-size: 18px;
-      line-height: 1.7;
+      max-width: 640px;
+      color: var(--muted);
+      font-size: 1.1rem;
+      margin-bottom: 32px;
     }
 
     .hero-actions {
       display: flex;
-      align-items: center;
-      gap: 9px;
-
-      margin-top: 22px;
+      flex-wrap: wrap;
+      gap: 14px;
     }
-
-    .button-primary,
-    .button-secondary {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-
-      padding: 11px 17px;
-
-      border-radius: var(--radius-sm);
-
-      font-size: 13px;
-      font-weight: 700;
-
-      transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        color 0.2s ease,
-        transform 0.2s ease;
-    }
-
-    .button-primary {
-      background: var(--black);
-      color: var(--white);
-    }
-
-    .button-primary:hover {
-      background: var(--blue);
-      transform: translateY(-2px);
-    }
-
-    .button-secondary {
-      background: var(--white);
-
-      border: 1px solid var(--border);
-
-      color: var(--dark);
-    }
-
-    .button-secondary:hover {
-      background: var(--blue-light);
-      border-color: #c7d2fe;
-    }
-
-
-    /* =========================================================
-       PROFILE CARD
-    ========================================================== */
 
     .profile-card {
-      position: relative;
-
-      width: 100%;
-
-      padding: 25px;
-
-      background: rgba(255, 255, 255, 0.78);
-
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-
-      box-shadow: 0 22px 60px rgba(15, 23, 42, 0.08);
-
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      padding: 28px;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
     }
 
     .profile-top {
-      position: relative;
-
-      height: 145px;
-
-      margin: -25px -25px 22px;
-
-      overflow: hidden;
-
-      background:
-        radial-gradient(
-          circle at 20% 20%,
-          rgba(255, 255, 255, 0.35),
-          transparent 20%
-        ),
-        linear-gradient(
-          135deg,
-          #111827,
-          #312e81,
-          #4f46e5
-        );
-
-      border-radius:
-        var(--radius-lg)
-        var(--radius-lg)
-        0
-        0;
-    }
-
-    .profile-top::after {
-      content: "";
-
-      position: absolute;
-
-      width: 220px;
-      height: 220px;
-
-      right: -90px;
-      top: -95px;
-
-      border: 1px solid rgba(255, 255, 255, 0.25);
-
-      border-radius: 50%;
+      display: flex;
+      justify-content: flex-start;
+      margin-bottom: 18px;
     }
 
     .avatar {
-      position: absolute;
-
-      left: 23px;
-      bottom: -31px;
-
       width: 72px;
       height: 72px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      background: var(--white);
-
-      border: 5px solid var(--white);
-      border-radius: 19px;
-
-      color: var(--black);
-
-      font-size: 23px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #03131d;
+      display: grid;
+      place-items: center;
       font-weight: 800;
-
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.15);
+      font-size: 1.2rem;
     }
 
     .profile-name {
-      margin-top: 7px;
-
-      font-size: 24px;
-      font-weight: 800;
-      letter-spacing: -0.04em;
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 6px;
     }
 
     .profile-role {
-      margin-top: 3px;
-
-      color: var(--gray);
-
-      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 18px;
     }
 
     .profile-line {
       height: 1px;
-
-      margin: 16px 0;
-
-      background: var(--border);
+      background: var(--line);
+      margin: 18px 0;
     }
 
     .profile-detail {
-      display: grid;
-
-      grid-template-columns: 82px minmax(0, 1fr);
-
-      align-items: center;
-
-      column-gap: 14px;
-
-      min-height: 29px;
-
-      font-size: 12px;
-    }
-
-    .profile-detail span:first-child {
-      color: var(--light-gray);
-
-      white-space: nowrap;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 0;
+      color: var(--muted);
     }
 
     .profile-detail span:last-child {
-      color: var(--dark);
-
-      font-weight: 600;
-
+      color: var(--text);
       text-align: right;
-
-      overflow-wrap: anywhere;
     }
 
+    .section {
+      padding: 88px 0;
+      border-top: 1px solid var(--line);
+    }
 
-    /* =========================================================
-       SKILLS
-    ========================================================== */
+    .section-label {
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: .08em;
+      font-size: .78rem;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      margin: 0 0 16px;
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: -.03em;
+    }
+
+    .section-description {
+      max-width: 720px;
+      color: var(--muted);
+      margin-bottom: 36px;
+    }
 
     .skills-grid {
       display: grid;
-
-      grid-template-columns: repeat(4, 1fr);
-
-      margin-top: 34px;
-
-      border-top: 1px solid var(--border);
-      border-left: 1px solid var(--border);
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 18px;
     }
 
-    .skill {
-      min-height: 105px;
-
-      padding: 18px;
-
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-
-      background: var(--white);
-
-      border-right: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-
-      transition:
-        background 0.25s ease,
-        color 0.25s ease,
-        transform 0.25s ease;
+    .skill,
+    .project,
+    .education-box {
+      padding: 22px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
     }
 
     .skill-number {
-      margin-bottom: auto;
-
-      color: #c4c8d0;
-
-      font-size: 10px;
+      display: block;
+      color: var(--accent);
+      font-size: .8rem;
       font-weight: 700;
+      margin-bottom: 10px;
     }
 
     .skill-name {
-      font-size: 14px;
-      font-weight: 700;
+      font-weight: 600;
     }
-
-    .skill:hover {
-      background: #f5f7ff;
-      color: var(--blue);
-
-      transform: translateY(-2px);
-    }
-
-
-    /* =========================================================
-       EXPERIENCE
-    ========================================================== */
 
     .experience {
-      margin-top: 34px;
+      display: grid;
+      gap: 28px;
     }
 
     .experience-item {
       display: grid;
-
-      grid-template-columns:
-        105px
-        minmax(0, 1fr);
-
-      column-gap: 28px;
-
-      padding: 22px 0;
-
-      border-top: 1px solid var(--border);
-    }
-
-    .experience-item:last-child {
-      border-bottom: 1px solid var(--border);
+      grid-template-columns: 160px 1fr;
+      gap: 28px;
+      padding: 28px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
     }
 
     .experience-period {
-      padding-top: 3px;
-
-      color: var(--light-gray);
-
-      font-size: 12px;
+      color: var(--muted);
       font-weight: 600;
-      line-height: 1.4;
+      font-size: .95rem;
     }
 
     .experience-role {
-      font-size: 22px;
-
-      line-height: 1.2;
-
-      letter-spacing: -0.03em;
+      margin: 0 0 6px;
+      font-size: 1.25rem;
     }
 
     .experience-company {
-      margin-top: 3px;
-
-      color: var(--blue);
-
-      font-size: 13px;
-      font-weight: 700;
-      line-height: 1.4;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 14px;
     }
 
     .experience-description {
-      max-width: 700px;
-
-      margin-top: 9px;
-
-      color: var(--gray);
-
-      font-size: 14px;
-      line-height: 1.65;
+      color: var(--muted);
+      margin-bottom: 16px;
     }
 
     .experience-points {
       display: grid;
-
-      grid-template-columns: repeat(3, 1fr);
-
-      gap: 14px;
-
-      margin-top: 12px;
+      gap: 10px;
     }
 
     .experience-point {
-      color: #4b5563;
-
-      font-size: 12px;
-      line-height: 1.55;
+      position: relative;
+      padding-left: 18px;
+      color: var(--muted);
     }
 
     .experience-point::before {
-      content: "→";
-
-      margin-right: 6px;
-
-      color: var(--blue);
-
-      font-weight: 800;
-    }
-
-
-    /* =========================================================
-       EDUCATION
-    ========================================================== */
-
-    .education-box {
-      margin-top: 34px;
-
-      padding: 24px;
-
-      background: var(--white);
-
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
+      content: "";
+      position: absolute;
+      left: 0;
+      top: .6em;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
     }
 
     .education-title {
-      font-size: 19px;
-      font-weight: 800;
+      font-weight: 700;
+      margin-bottom: 8px;
     }
 
     .education-subtitle {
-      margin-top: 5px;
-
-      color: var(--blue);
-
-      font-size: 13px;
-      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 14px;
     }
 
     .education-text {
-      max-width: 700px;
-
-      margin-top: 12px;
-
-      color: var(--gray);
-
-      font-size: 13px;
-      line-height: 1.7;
+      color: var(--muted);
+      margin: 0;
     }
-
-
-    /* =========================================================
-       PROJECTS
-    ========================================================== */
 
     .projects-grid {
       display: grid;
-
-      grid-template-columns: repeat(3, 1fr);
-
-      gap: 15px;
-
-      margin-top: 34px;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 22px;
     }
 
     .project {
       position: relative;
-
-      min-height: 320px;
-
-      padding: 23px;
-
-      display: flex;
-      flex-direction: column;
-
       overflow: hidden;
-
-      background: var(--white);
-
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-
-      transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
-    }
-
-    .project:hover {
-      transform: translateY(-5px);
-
-      box-shadow:
-        0 20px 50px rgba(15, 23, 42, 0.09);
     }
 
     .project-glow {
       position: absolute;
-
-      width: 140px;
-      height: 140px;
-
-      right: -65px;
-      top: -65px;
-
-      background: #eef2ff;
-
-      border-radius: 50%;
+      inset: -30% auto auto -20%;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(56,189,248,.18), transparent 70%);
+      pointer-events: none;
     }
 
     .project-number {
-      color: #a5b4fc;
-
-      font-size: 11px;
-      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--accent);
+      font-size: .82rem;
+      font-weight: 700;
+      margin-bottom: 14px;
     }
 
     .project h3 {
-      margin-top: auto;
-
-      font-size: 25px;
-      line-height: 1.15;
-      letter-spacing: -0.04em;
+      margin: 0 0 12px;
+      font-size: 1.15rem;
     }
 
     .project-description {
-      margin-top: 12px;
-
-      color: var(--gray);
-
-      font-size: 13px;
-      line-height: 1.7;
+      color: var(--muted);
+      margin-bottom: 18px;
     }
 
     .project-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 5px;
-
-      margin-top: 18px;
+      gap: 8px;
     }
 
     .project-tag {
-      padding: 5px 8px;
-
-      background: #f3f4f6;
-
-      border-radius: var(--radius-pill);
-
-      color: var(--gray);
-
-      font-size: 10px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-size: .8rem;
       font-weight: 600;
-    }
-
-
-    /* =========================================================
-       AI SECTION
-    ========================================================== */
-
-    .ai-section {
-      color: var(--white);
-
-      background:
-        radial-gradient(
-          circle at 90% 10%,
-          rgba(79, 70, 229, 0.16),
-          transparent 30%
-        ),
-        #111827;
     }
 
     .ai-layout {
       display: grid;
-
-      grid-template-columns:
-        0.75fr
-        1.25fr;
-
-      gap: 48px;
-
+      grid-template-columns: .9fr 1.1fr;
+      gap: 40px;
       align-items: start;
     }
 
-    .ai-section .section-label {
-      color: #a5b4fc;
-    }
-
-    .ai-section .section-title {
-      color: var(--white);
-    }
-
     .ai-description {
-      max-width: 460px;
-
-      margin-top: 16px;
-
-      color: #9ca3af;
-
-      font-size: 15px;
-      line-height: 1.7;
+      color: var(--muted);
+      margin-bottom: 28px;
     }
 
     .ai-features {
-      margin-top: 22px;
+      display: grid;
+      gap: 14px;
     }
 
     .ai-feature {
       display: flex;
-
-      gap: 10px;
-
-      margin-top: 10px;
-
-      color: #d1d5db;
-
-      font-size: 12px;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
     }
 
     .check {
-      color: #818cf8;
-
+      color: #22c55e;
       font-weight: 800;
     }
 
-
-    /* =========================================================
-       CHAT
-    ========================================================== */
-
     .chat {
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(255,255,255,.03);
       overflow: hidden;
-
-      background: var(--white);
-
-      border: 1px solid rgba(255, 255, 255, 0.1);
-
-      border-radius: var(--radius-md);
-
-      box-shadow:
-        0 25px 65px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      min-height: 620px;
     }
 
     .chat-header {
       display: flex;
       align-items: center;
-
-      gap: 11px;
-
-      padding: 15px 18px;
-
-      border-bottom: 1px solid var(--border);
-
-      color: var(--black);
+      gap: 14px;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,.02);
     }
 
     .chat-avatar {
-      width: 36px;
-      height: 36px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      background: var(--blue);
-
-      border-radius: 10px;
-
-      color: var(--white);
-
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #03131d;
+      display: grid;
+      place-items: center;
       font-weight: 800;
     }
 
-    .chat-header strong {
-      display: block;
-
-      font-size: 13px;
-    }
-
     .chat-header small {
-      color: var(--light-gray);
-
-      font-size: 10px;
+      display: block;
+      color: var(--muted);
     }
 
     .chat-status {
+      margin-left: auto;
       display: flex;
       align-items: center;
-
-      gap: 6px;
-
-      margin-left: auto;
-
-      color: var(--green);
-
-      font-size: 10px;
-      font-weight: 700;
+      gap: 8px;
+      color: var(--muted);
+      font-size: .9rem;
     }
 
     .status-dot {
-      width: 6px;
-      height: 6px;
-
-      background: var(--green);
-
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
+      background: #22c55e;
     }
 
     .chat-messages {
-      height: 300px;
-
-      padding: 18px;
-
+      flex: 1;
+      padding: 20px;
       overflow-y: auto;
-
-      background: #f9fafb;
+      display: grid;
+      gap: 14px;
     }
 
     .message {
-      max-width: 80%;
-
-      margin-bottom: 10px;
-
-      padding: 10px 13px;
-
-      border-radius: 12px;
-
-      font-size: 12px;
-      line-height: 1.6;
+      max-width: 86%;
+      padding: 12px 14px;
+      border-radius: 16px;
+      font-size: .95rem;
+      white-space: pre-wrap;
+      word-break: break-word;
     }
 
     .message.bot {
-      background: var(--white);
-
-      border: 1px solid var(--border);
-
-      color: #374151;
+      justify-self: start;
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--line);
     }
 
     .message.user {
-      margin-left: auto;
-
-      background: var(--black);
-
-      color: var(--white);
+      justify-self: end;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #03131d;
     }
 
     .quick-questions {
       display: flex;
       flex-wrap: wrap;
-
-      gap: 6px;
-
-      padding: 11px;
-
-      border-top: 1px solid var(--border);
+      gap: 10px;
+      padding: 0 20px 18px;
     }
 
     .quick-question {
-      padding: 6px 9px;
-
-      background: var(--white);
-
-      border: 1px solid var(--border);
-
-      border-radius: var(--radius-pill);
-
-      color: var(--gray);
-
-      font-size: 10px;
-
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
       cursor: pointer;
-
-      transition:
-        color 0.2s ease,
-        background 0.2s ease,
-        border-color 0.2s ease;
+      transition: .2s;
     }
 
     .quick-question:hover {
-      background: var(--blue-light);
-
-      border-color: #c7d2fe;
-
-      color: var(--blue);
+      background: rgba(255,255,255,.08);
+      color: var(--text);
     }
 
     .chat-input {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      padding: 18px 20px 20px;
+      border-top: 1px solid var(--line);
+      background: rgba(255,255,255,.02);
+    }
 
-      gap: 7px;
-
-      padding: 11px;
-
-      border-top: 1px solid var(--border);
+    #visitorNameInput {
+      grid-column: 1 / -1;
     }
 
     .chat-input input {
-      min-width: 0;
-      flex: 1;
-
-      padding: 9px 11px;
-
-      background: var(--white);
-
-      border: 1px solid var(--border);
-
-      border-radius: var(--radius-sm);
-
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      font: inherit;
       outline: none;
+    }
 
-      color: var(--black);
-
-      font-size: 12px;
+    .chat-input input::placeholder {
+      color: #64748b;
     }
 
     .chat-input input:focus {
-      border-color: #a5b4fc;
-
-      box-shadow:
-        0 0 0 3px var(--blue-light);
+      border-color: rgba(56,189,248,.6);
+      box-shadow: 0 0 0 3px rgba(56,189,248,.15);
     }
 
     .chat-send {
-      width: 39px;
-      height: 39px;
-
-      background: var(--blue);
-
-      border-radius: var(--radius-sm);
-
-      color: var(--white);
-
+      width: 52px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #03131d;
+      font-size: 1.1rem;
+      font-weight: 800;
       cursor: pointer;
-
-      font-size: 13px;
-
-      transition:
-        background 0.2s ease;
+      transition: .2s;
     }
 
     .chat-send:hover {
-      background: var(--blue-dark);
+      transform: translateY(-1px);
     }
 
-
-    /* =========================================================
-       FOOTER
-    ========================================================== */
-
-    footer {
-      padding: 40px 0;
-
-      background: #0b1120;
-
-      color: var(--white);
+    .footer {
+      border-top: 1px solid var(--line);
+      padding: 36px 0 48px;
     }
 
     .footer-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
-
-      gap: 25px;
+      gap: 24px;
+      flex-wrap: wrap;
     }
 
     .footer-name {
-      font-size: 18px;
-      font-weight: 800;
+      font-weight: 700;
+      margin-bottom: 6px;
     }
 
     .footer-description {
-      margin-top: 4px;
-
-      color: #6b7280;
-
-      font-size: 11px;
+      color: var(--muted);
     }
 
     .footer-links {
       display: flex;
-
       gap: 18px;
-
-      color: #9ca3af;
-
-      font-size: 12px;
+      flex-wrap: wrap;
     }
 
     .footer-links a {
-      transition: color 0.2s ease;
+      color: var(--muted);
+      transition: .2s;
     }
 
     .footer-links a:hover {
-      color: var(--white);
+      color: var(--text);
     }
 
+    @media (max-width: 960px) {
+      .hero-grid,
+      .ai-layout,
+      .projects-grid,
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
 
-    /* =========================================================
-       TABLET
-    ========================================================== */
-
-    @media (max-width: 850px) {
+      .experience-item {
+        grid-template-columns: 1fr;
+      }
 
       .nav-links {
         display: none;
       }
-
-      .hero {
-        min-height: auto;
-
-        padding-top: 105px;
-        padding-bottom: 65px;
-      }
-
-      .hero-grid {
-        grid-template-columns: 1fr;
-
-        gap: 38px;
-      }
-
-      .hero h1 {
-        font-size: 58px;
-      }
-
-      .skills-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .experience-item {
-        grid-template-columns: 1fr;
-
-        row-gap: 5px;
-
-        padding: 20px 0;
-      }
-
-      .experience-period {
-        padding-top: 0;
-      }
-
-      .experience-points {
-        grid-template-columns: 1fr;
-
-        gap: 7px;
-      }
-
-      .projects-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .ai-layout {
-        grid-template-columns: 1fr;
-
-        gap: 38px;
-      }
-
-      .footer-inner {
-        flex-direction: column;
-        align-items: flex-start;
-      }
     }
-
-
-    /* =========================================================
-       MOBILE
-    ========================================================== */
-
-    @media (max-width: 520px) {
-
-      .container {
-        padding: 0 18px;
-      }
-
-      .nav-inner {
-        padding: 0 18px;
-      }
-
-      .navbar {
-        height: 60px;
-      }
-
-      .nav-button {
-        padding: 7px 11px;
-
-        font-size: 11px;
-      }
-
-      .hero {
-        padding-top: 98px;
-        padding-bottom: 52px;
-      }
-
-      .hero-grid {
-        gap: 30px;
-      }
-
-      .availability {
-        margin-bottom: 16px;
-
-        padding: 6px 10px;
-
-        font-size: 10px;
-      }
-
-      .hero h1 {
-        font-size: 43px;
-
-        line-height: 0.98;
-      }
-
-      .hero-text {
-        margin-top: 16px;
-
-        font-size: 15px;
-
-        line-height: 1.65;
-      }
-
-      .hero-actions {
-        gap: 7px;
-
-        margin-top: 19px;
-      }
-
-      .button-primary,
-      .button-secondary {
-        flex: 1;
-
-        padding: 11px 10px;
-
-        font-size: 12px;
-      }
-
-      .profile-card {
-        padding: 21px;
-
-        border-radius: 18px;
-      }
-
-      .profile-top {
-        height: 130px;
-
-        margin: -21px -21px 20px;
-
-        border-radius: 18px 18px 0 0;
-      }
-
-      .avatar {
-        left: 19px;
-        bottom: -29px;
-
-        width: 66px;
-        height: 66px;
-
-        border-radius: 17px;
-
-        font-size: 21px;
-      }
-
-      .profile-name {
-        font-size: 22px;
-      }
-
-      .profile-role {
-        font-size: 12px;
-      }
-
-      .profile-line {
-        margin: 14px 0;
-      }
-
-      .profile-detail {
-        grid-template-columns: 70px minmax(0, 1fr);
-
-        column-gap: 10px;
-
-        min-height: 28px;
-
-        font-size: 11px;
-      }
-
-      .profile-detail span:last-child {
-        text-align: right;
-      }
-
-      .section {
-        padding: 52px 0;
-      }
-
-      .section-label {
-        margin-bottom: 10px;
-      }
-
-      .section-title {
-        font-size: 36px;
-      }
-
-      .section-description {
-        margin-top: 11px;
-
-        font-size: 14px;
-
-        line-height: 1.65;
-      }
-
-
-      /* -------------------------------------------------------
-         Skills
-      -------------------------------------------------------- */
-
-      .skills-grid {
-        grid-template-columns: 1fr 1fr;
-
-        margin-top: 27px;
-      }
-
-      .skill {
-        min-height: 82px;
-
-        padding: 14px;
-      }
-
-      .skill-name {
-        font-size: 13px;
-      }
-
-
-      /* -------------------------------------------------------
-         Experience
-      -------------------------------------------------------- */
-
-      .experience {
-        margin-top: 27px;
-      }
-
-      .experience-item {
-        padding: 18px 0;
-      }
-
-      .experience-role {
-        font-size: 20px;
-      }
-
-      .experience-company {
-        font-size: 12px;
-      }
-
-      .experience-description {
-        margin-top: 7px;
-
-        font-size: 13px;
-
-        line-height: 1.6;
-      }
-
-      .experience-points {
-        gap: 6px;
-
-        margin-top: 10px;
-      }
-
-      .experience-point {
-        font-size: 11px;
-
-        line-height: 1.5;
-      }
-
-
-      /* -------------------------------------------------------
-         Education
-      -------------------------------------------------------- */
-
-      .education-box {
-        margin-top: 27px;
-
-        padding: 20px;
-      }
-
-      .education-title {
-        font-size: 18px;
-      }
-
-      .education-subtitle {
-        font-size: 12px;
-      }
-
-      .education-text {
-        margin-top: 10px;
-
-        font-size: 12px;
-      }
-
-
-      /* -------------------------------------------------------
-         Projects
-      -------------------------------------------------------- */
-
-      .projects-grid {
-        gap: 11px;
-
-        margin-top: 27px;
-      }
-
-      .project {
-        min-height: 275px;
-
-        padding: 20px;
-
-        border-radius: 14px;
-      }
-
-      .project h3 {
-        font-size: 23px;
-      }
-
-      .project-description {
-        margin-top: 10px;
-
-        font-size: 12px;
-      }
-
-      .project-tags {
-        margin-top: 15px;
-      }
-
-      .project-tag {
-        font-size: 9px;
-      }
-
-
-      /* -------------------------------------------------------
-         AI
-      -------------------------------------------------------- */
-
-      .ai-layout {
-        gap: 30px;
-      }
-
-      .ai-description {
-        margin-top: 13px;
-
-        font-size: 13px;
-
-        line-height: 1.65;
-      }
-
-      .ai-features {
-        margin-top: 19px;
-      }
-
-      .ai-feature {
-        margin-top: 8px;
-
-        font-size: 11px;
-      }
-
-      .chat-messages {
-        height: 260px;
-
-        padding: 14px;
-      }
-
-      .message {
-        max-width: 88%;
-
-        font-size: 11px;
-      }
-
-      .quick-questions {
-        padding: 9px;
-      }
-
-      .quick-question {
-        font-size: 9px;
-      }
-
-
-      /* -------------------------------------------------------
-         Footer
-      -------------------------------------------------------- */
-
-      footer {
-        padding: 34px 0;
-      }
-
-      .footer-inner {
-        gap: 18px;
-      }
-
-      .footer-links {
-        flex-wrap: wrap;
-
-        gap: 10px 15px;
-      }
-    }
-
-
-    /* =========================================================
-       VERY SMALL PHONES
-    ========================================================== */
-
-    @media (max-width: 380px) {
-
-      .container {
-        padding: 0 16px;
-      }
-
-      .nav-inner {
-        padding: 0 16px;
-      }
-
-      .hero h1 {
-        font-size: 39px;
-      }
-
-      .hero-actions {
-        flex-direction: column;
-      }
-
-      .button-primary,
-      .button-secondary {
-        width: 100%;
-      }
-
-      .skills-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .skill {
-        min-height: 72px;
-      }
-
-      .profile-detail {
-        grid-template-columns: 1fr;
-
-        gap: 1px;
-
-        padding: 6px 0;
-      }
-
-      .profile-detail span:last-child {
-        text-align: left;
-      }
-    }
-
   </style>
 </head>
 
+<body id="top">
 
-<body>
-
-
-  <!-- =========================================================
-       NAVIGATION
-  ========================================================== -->
-
-  <nav class="navbar">
-
-    <div class="nav-inner">
-
+  <header class="nav">
+    <div class="container nav-inner">
       <a href="#top" class="logo">
-        Wallace<span>.</span>
+        Kellan<span>.</span>
       </a>
 
-      <div class="nav-links">
-
-        <a href="#about">
-          About
-        </a>
-
-        <a href="#experience">
-          Experience
-        </a>
-
-        <a href="#projects">
-          Projects
-        </a>
-
-        <a href="#assistant">
-          AI Assistant
-        </a>
-
-      </div>
-
-      <!-- DO NOT CHANGE: ORIGINAL LET'S TALK BUTTON -->
+      <nav class="nav-links">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#assistant">AI Assistant</a>
+      </nav>
 
       <a
         href="https://line.me/ti/p/4GwwNnu_bA"
@@ -1672,69 +673,34 @@
       >
         Let's Talk
       </a>
-
     </div>
+  </header>
 
-  </nav>
-
-
-  <main id="top">
-
-
-    <!-- =========================================================
-         HERO
-    ========================================================== -->
-
+  <main>
     <section class="hero">
-
       <div class="container">
-
         <div class="hero-grid">
-
-
-          <!-- HERO CONTENT -->
-
           <div class="hero-content">
-
             <div class="availability">
-
               <span class="availability-dot"></span>
-
               Available for strategic opportunities
-
             </div>
 
-
             <h1>
-
               Building
-
-              <br>
-
-              <span class="accent">
-                useful things.
-              </span>
-
+              <br />
+              <span class="accent">useful things.</span>
             </h1>
 
-
             <p class="hero-text">
-
               I turn business problems into practical digital products,
               smarter workflows, and measurable growth.
-
             </p>
 
-
             <div class="hero-actions">
-
-              <a
-                href="#projects"
-                class="button-primary"
-              >
+              <a href="#projects" class="button-primary">
                 View my work
               </a>
-
 
               <a
                 href="https://mail.google.com/mail/?view=cm&fs=1&to=kaekae939311@gmail.com"
@@ -1744,298 +710,120 @@
               >
                 Contact me
               </a>
-
-
             </div>
-
           </div>
 
-
-          <!-- PROFILE CARD -->
-
-          <div class="profile-card">
-
+          <aside class="profile-card">
             <div class="profile-top">
-
-              <div class="avatar">
-                WC
-              </div>
-
+              <div class="avatar">KH</div>
             </div>
 
-
-            <div class="profile-name">
-              Kellan Hung
-            </div>
-
-            <div class="profile-role">
-              Product · Strategy · Growth
-            </div>
-
+            <div class="profile-name">Kellan Hung</div>
+            <div class="profile-role">Product · Strategy · Growth</div>
 
             <div class="profile-line"></div>
 
-
             <div class="profile-detail">
-
-              <span>
-                Location
-              </span>
-
-              <span>
-                Taipei / Remote
-              </span>
-
+              <span>Location</span>
+              <span>Taipei / Remote</span>
             </div>
 
-
             <div class="profile-detail">
-
-              <span>
-                Focus
-              </span>
-
-              <span>
-                Strategy &amp; Growth
-              </span>
-
+              <span>Focus</span>
+              <span>Strategy &amp; Growth</span>
             </div>
 
-
             <div class="profile-detail">
-
-              <span>
-                Approach
-              </span>
-
-              <span>
-                Practical &amp; Data-driven
-              </span>
-
+              <span>Approach</span>
+              <span>Practical &amp; Data-driven</span>
             </div>
 
-
             <div class="profile-detail">
-
-              <span>
-                Email
-              </span>
-
-              <span>
-                kaekae939311@gmail.com
-              </span>
-
+              <span>Email</span>
+              <span>kaekae939311@gmail.com</span>
             </div>
-
-          </div>
-
-
+          </aside>
         </div>
-
       </div>
-
     </section>
 
-
-    <!-- =========================================================
-         01 / ABOUT / SKILLS
-    ========================================================== -->
-
-    <section
-      id="about"
-      class="section"
-    >
-
+    <section id="about" class="section">
       <div class="container">
-
-        <div class="section-label">
-          01 / CAPABILITIES
-        </div>
-
-        <h2 class="section-title">
-          What I bring to the table.
-        </h2>
-
+        <div class="section-label">01 / CAPABILITIES</div>
+        <h2 class="section-title">What I bring to the table.</h2>
         <p class="section-description">
-
           A combination of product thinking, business execution,
           analytical thinking, and modern AI workflows.
-
         </p>
-
 
         <div class="skills-grid">
-
-
           <div class="skill">
-
-            <span class="skill-number">
-              01
-            </span>
-
-            <span class="skill-name">
-              Product Strategy
-            </span>
-
+            <span class="skill-number">01</span>
+            <span class="skill-name">Product Strategy</span>
           </div>
 
-
           <div class="skill">
-
-            <span class="skill-number">
-              02
-            </span>
-
-            <span class="skill-name">
-              Data Analysis
-            </span>
-
+            <span class="skill-number">02</span>
+            <span class="skill-name">Data Analysis</span>
           </div>
 
-
           <div class="skill">
-
-            <span class="skill-number">
-              03
-            </span>
-
-            <span class="skill-name">
-              Business Development
-            </span>
-
+            <span class="skill-number">03</span>
+            <span class="skill-name">Business Development</span>
           </div>
 
-
           <div class="skill">
-
-            <span class="skill-number">
-              04
-            </span>
-
-            <span class="skill-name">
-              AI Workflow
-            </span>
-
+            <span class="skill-number">04</span>
+            <span class="skill-name">AI Workflow</span>
           </div>
 
-
           <div class="skill">
-
-            <span class="skill-number">
-              05
-            </span>
-
-            <span class="skill-name">
-              Project Management
-            </span>
-
+            <span class="skill-number">05</span>
+            <span class="skill-name">Project Management</span>
           </div>
 
-
           <div class="skill">
-
-            <span class="skill-number">
-              06
-            </span>
-
-            <span class="skill-name">
-              Customer Research
-            </span>
-
+            <span class="skill-number">06</span>
+            <span class="skill-name">Customer Research</span>
           </div>
 
-
           <div class="skill">
-
-            <span class="skill-number">
-              07
-            </span>
-
-            <span class="skill-name">
-              Automation
-            </span>
-
+            <span class="skill-number">07</span>
+            <span class="skill-name">Automation</span>
           </div>
 
-
           <div class="skill">
-
-            <span class="skill-number">
-              08
-            </span>
-
-            <span class="skill-name">
-              Digital Products
-            </span>
-
+            <span class="skill-number">08</span>
+            <span class="skill-name">Digital Products</span>
           </div>
-
-
         </div>
-
       </div>
-
     </section>
 
-
-    <!-- =========================================================
-         02 / EXPERIENCE
-    ========================================================== -->
-
-    <section
-      id="experience"
-      class="section"
-    >
-
+    <section id="experience" class="section">
       <div class="container">
-
-        <div class="section-label">
-          02 / EXPERIENCE
-        </div>
-
-        <h2 class="section-title">
-          Experience &amp; impact.
-        </h2>
-
+        <div class="section-label">02 / EXPERIENCE</div>
+        <h2 class="section-title">Experience &amp; impact.</h2>
         <p class="section-description">
-
           A track record across product, strategy,
           business development, and project management.
-
         </p>
 
-
         <div class="experience">
-
-
           <article class="experience-item">
-
-            <div class="experience-period">
-              2023 — Present
-            </div>
-
+            <div class="experience-period">2023 — Present</div>
 
             <div>
-
-              <h3 class="experience-role">
-                Product / Strategy Specialist
-              </h3>
-
-              <div class="experience-company">
-                Your Company
-              </div>
+              <h3 class="experience-role">Product / Strategy Specialist</h3>
+              <div class="experience-company">Your Company</div>
 
               <p class="experience-description">
-
                 Driving cross-functional initiatives from discovery
                 to execution, connecting business goals with practical
                 product solutions.
-
               </p>
 
-
               <div class="experience-points">
-
                 <div class="experience-point">
                   Led cross-functional projects from discovery to launch.
                 </div>
@@ -2047,41 +835,23 @@
                 <div class="experience-point">
                   Built dashboards to support business decisions.
                 </div>
-
               </div>
-
             </div>
-
           </article>
 
-
           <article class="experience-item">
-
-            <div class="experience-period">
-              2020 — 2023
-            </div>
-
+            <div class="experience-period">2020 — 2023</div>
 
             <div>
-
-              <h3 class="experience-role">
-                Business Development / Project Manager
-              </h3>
-
-              <div class="experience-company">
-                Previous Company
-              </div>
+              <h3 class="experience-role">Business Development / Project Manager</h3>
+              <div class="experience-company">Previous Company</div>
 
               <p class="experience-description">
-
                 Worked across clients, internal teams, and business
                 stakeholders to turn customer needs into actionable projects.
-
               </p>
 
-
               <div class="experience-points">
-
                 <div class="experience-point">
                   Managed client communication and partnerships.
                 </div>
@@ -2093,40 +863,19 @@
                 <div class="experience-point">
                   Translated customer needs into improvements.
                 </div>
-
               </div>
-
             </div>
-
           </article>
-
-
         </div>
-
       </div>
-
     </section>
 
-
-    <!-- =========================================================
-         03 / EDUCATION
-    ========================================================== -->
-
     <section class="section">
-
       <div class="container">
-
-        <div class="section-label">
-          03 / EDUCATION
-        </div>
-
-        <h2 class="section-title">
-          Education &amp; certifications.
-        </h2>
-
+        <div class="section-label">03 / EDUCATION</div>
+        <h2 class="section-title">Education &amp; certifications.</h2>
 
         <div class="education-box">
-
           <div class="education-title">
             Your University / Certification
           </div>
@@ -2136,689 +885,345 @@
           </div>
 
           <p class="education-text">
-
             Replace this section with your real academic background,
             certifications, professional training, or other qualifications.
-
           </p>
-
         </div>
-
       </div>
-
     </section>
 
-
-    <!-- =========================================================
-         04 / PROJECTS
-    ========================================================== -->
-
-    <section
-      id="projects"
-      class="section"
-    >
-
+    <section id="projects" class="section">
       <div class="container">
-
-        <div class="section-label">
-          04 / SELECTED WORK
-        </div>
-
-        <h2 class="section-title">
-          Things I've built.
-        </h2>
-
+        <div class="section-label">04 / SELECTED WORK</div>
+        <h2 class="section-title">Things I've built.</h2>
         <p class="section-description">
-
           Selected projects that demonstrate how I turn ideas
           into useful digital experiences.
-
         </p>
 
-
         <div class="projects-grid">
-
-
           <article class="project">
-
             <div class="project-glow"></div>
+            <span class="project-number">01</span>
 
-            <span class="project-number">
-              01
-            </span>
-
-            <h3>
-              AI Resume Chatbot
-            </h3>
+            <h3>AI Resume Chatbot</h3>
 
             <p class="project-description">
-
               An interactive portfolio assistant that answers questions
               about my background, skills, experience, and projects.
-
             </p>
 
             <div class="project-tags">
-
-              <span class="project-tag">
-                HTML
-              </span>
-
-              <span class="project-tag">
-                JavaScript
-              </span>
-
-              <span class="project-tag">
-                GitHub Pages
-              </span>
-
+              <span class="project-tag">HTML</span>
+              <span class="project-tag">JavaScript</span>
+              <span class="project-tag">GitHub Pages</span>
             </div>
-
           </article>
 
-
           <article class="project">
-
             <div class="project-glow"></div>
+            <span class="project-number">02</span>
 
-            <span class="project-number">
-              02
-            </span>
-
-            <h3>
-              Business Analytics Dashboard
-            </h3>
+            <h3>Business Analytics Dashboard</h3>
 
             <p class="project-description">
-
               A dashboard concept designed to turn growth metrics,
               sales pipelines, and operational data into actionable insights.
-
             </p>
 
             <div class="project-tags">
-
-              <span class="project-tag">
-                Analytics
-              </span>
-
-              <span class="project-tag">
-                Visualization
-              </span>
-
-              <span class="project-tag">
-                Strategy
-              </span>
-
+              <span class="project-tag">Analytics</span>
+              <span class="project-tag">Visualization</span>
+              <span class="project-tag">Strategy</span>
             </div>
-
           </article>
-
 
           <article class="project">
-
             <div class="project-glow"></div>
+            <span class="project-number">03</span>
 
-            <span class="project-number">
-              03
-            </span>
-
-            <h3>
-              Workflow Automation Kit
-            </h3>
+            <h3>Workflow Automation Kit</h3>
 
             <p class="project-description">
-
               Reusable AI and automation workflows designed
               to reduce repetitive tasks and improve productivity.
-
             </p>
 
             <div class="project-tags">
-
-              <span class="project-tag">
-                AI
-              </span>
-
-              <span class="project-tag">
-                Automation
-              </span>
-
-              <span class="project-tag">
-                Operations
-              </span>
-
+              <span class="project-tag">AI</span>
+              <span class="project-tag">Automation</span>
+              <span class="project-tag">Operations</span>
             </div>
-
           </article>
-
-
         </div>
-
       </div>
-
     </section>
 
-
-    <!-- =========================================================
-         AI ASSISTANT
-    ========================================================== -->
-
-    <section
-      id="assistant"
-      class="section ai-section"
-    >
-
+    <section id="assistant" class="section ai-section">
       <div class="container">
-
         <div class="ai-layout">
-
-
           <div>
-
-            <div class="section-label">
-              INTERACTIVE RESUME
-            </div>
+            <div class="section-label">INTERACTIVE RESUME</div>
 
             <h2 class="section-title">
-
               Ask my
-
-              <br>
-
+              <br />
               resume.
-
             </h2>
 
             <p class="ai-description">
-
-              Instead of reading a long resume,
-              just ask. The assistant can answer common
-              questions about my experience, skills,
-              projects, and background.
-
+              Instead of reading a long resume, just ask.
+              The assistant can answer common questions about my experience,
+              skills, projects, and background.
             </p>
 
-
             <div class="ai-features">
-
               <div class="ai-feature">
-
-                <span class="check">
-                  ✓
-                </span>
-
+                <span class="check">✓</span>
                 Built with HTML &amp; JavaScript
-
               </div>
 
-
               <div class="ai-feature">
-
-                <span class="check">
-                  ✓
-                </span>
-
+                <span class="check">✓</span>
                 Runs directly on GitHub Pages
-
               </div>
-
 
               <div class="ai-feature">
-
-                <span class="check">
-                  ✓
-                </span>
-
-                No backend required
-
+                <span class="check">✓</span>
+                Cloudflare Worker + KV powered chat support
               </div>
-
             </div>
-
           </div>
-
-
-          <!-- CHAT -->
 
           <div class="chat">
-
-
             <div class="chat-header">
-
-              <div class="chat-avatar">
-                W
-              </div>
-
+              <div class="chat-avatar">K</div>
 
               <div>
-
-                <strong>
-                  Wallace Resume Assistant
-                </strong>
-
-                <small>
-                  Ask me about Wallace
-                </small>
-
+                <strong>Kellan Resume Assistant</strong>
+                <small>Ask me about Kellan</small>
               </div>
-
 
               <div class="chat-status">
-
                 <span class="status-dot"></span>
-
                 Online
-
               </div>
-
             </div>
 
-
-            <div
-              id="chatMessages"
-              class="chat-messages"
-            >
-
+            <div id="chatMessages" class="chat-messages">
               <div class="message bot">
-
-                Hi 👋 I'm Wallace's resume assistant.
-                Ask me about his skills, experience,
-                projects, or background.
-
+                Hi 👋 I'm Kellan's resume assistant.
+                Ask me about his skills, experience, projects, or background.
               </div>
-
             </div>
-
 
             <div class="quick-questions">
-
-              <button
-                class="quick-question"
-                onclick="askQuestion('你是誰？')"
-              >
-                你是誰？
+              <button class="quick-question" onclick="askQuestion('Who are you?')">
+                Who are you?
               </button>
 
-
-              <button
-                class="quick-question"
-                onclick="askQuestion('你的技能？')"
-              >
-                你的技能？
+              <button class="quick-question" onclick="askQuestion('What are your skills?')">
+                Skills
               </button>
 
-
-              <button
-                class="quick-question"
-                onclick="askQuestion('你的作品？')"
-              >
-                你的作品？
+              <button class="quick-question" onclick="askQuestion('Tell me about your projects.')">
+                Projects
               </button>
 
-
-              <button
-                class="quick-question"
-                onclick="askQuestion('怎麼聯絡你？')"
-              >
-                怎麼聯絡你？
+              <button class="quick-question" onclick="askQuestion('How can I contact you?')">
+                Contact
               </button>
-
             </div>
 
-
- 
-
             <div class="chat-input">
-            
-              <div class="chat-input">
-              
-                <input
-                  id="visitorNameInput"
-                  type="text"
-                  placeholder="Your name"
-                >
-              
-                <input
-                  id="chatInput"
-                  type="text"
-                  placeholder="Ask about Kellan..."
-                  onkeydown="handleEnter(event)"
-                >
-              
-                <button
-                  class="chat-send"
-                  onclick="sendMessage()"
-                >
-                  →
-                </button>
-              
-              </div>
+              <input
+                id="visitorNameInput"
+                type="text"
+                placeholder="Your name"
+                autocomplete="name"
+              />
 
+              <input
+                id="chatInput"
+                type="text"
+                placeholder="Ask about Kellan..."
+                autocomplete="off"
+                onkeydown="handleEnter(event)"
+              />
+
+              <button
+                class="chat-send"
+                type="button"
+                onclick="sendMessage()"
+                aria-label="Send message"
+              >
+                →
+              </button>
+            </div>
           </div>
-
         </div>
-
       </div>
-
     </section>
-
-
   </main>
 
-
-  <!-- =========================================================
-       FOOTER
-  ========================================================== -->
-
-  <footer>
-
+  <footer class="footer">
     <div class="container">
-
       <div class="footer-inner">
-
-
         <div>
-
-          <div class="footer-name">
-            Kellan Hung
-          </div>
-
+          <div class="footer-name">Kellan Hung</div>
           <div class="footer-description">
             Product · Strategy · Growth
           </div>
-
         </div>
 
-
         <div class="footer-links">
-
           <a
-            href="https://github.com/yourusername"
+            href="https://github.com/kaekae939311"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             GitHub
           </a>
 
-
-          <a
-            href="https://linkedin.com/in/yourusername"
-          >
-            LinkedIn
-          </a>
-
-
-          <a
-            href="mailto:kaekae939311@gmail.com"
-          >
+          <a href="mailto:kaekae939311@gmail.com">
             Email
           </a>
-
         </div>
-
-
       </div>
-
     </div>
-
   </footer>
 
-
-  <!-- =========================================================
-       JAVASCRIPT
-  ========================================================== -->
-
   <script>
+    const WORKER_URL = "https://hung.kaekae939311.workers.dev";
 
-    const answers = {
+    let sessionId = sessionStorage.getItem("chatSessionId");
 
-      "你是誰":
-        "我是 Kellan Hung，專注產品策略、專案管理、商業成長與 AI 工作流程。我擅長把商業問題拆解成可以執行的產品與流程。",
-
-      "你的技能":
-        "我的核心能力包含 Product Strategy、Data Analysis、Business Development、AI Workflow、Project Management、Customer Research 與 Automation。",
-
-      "你的作品":
-        "目前展示的作品包含 AI Resume Chatbot、Business Analytics Dashboard 與 Workflow Automation Kit。",
-
-      "怎麼聯絡你":
-        "你可以透過 kaekae939311@gmail.com 聯絡我，也可以透過 GitHub 或 LinkedIn 找到我。",
-
-      "你的經歷":
-        "我有產品策略、商務開發與專案管理相關經驗，曾負責跨部門專案、流程改善、客戶需求整理與數據分析。"
-
-    };
-
-
-    function findAnswer(message) {
-
-      const text =
-        message.toLowerCase();
-
-
-      if (
-        text.includes("誰") ||
-        text.includes("介紹") ||
-        text.includes("about") ||
-        text.includes("who")
-      ) {
-
-        return answers["你是誰"];
-
-      }
-
-
-      if (
-        text.includes("技能") ||
-        text.includes("能力") ||
-        text.includes("skill")
-      ) {
-
-        return answers["你的技能"];
-
-      }
-
-
-      if (
-        text.includes("作品") ||
-        text.includes("專案") ||
-        text.includes("project")
-      ) {
-
-        return answers["你的作品"];
-
-      }
-
-
-      if (
-        text.includes("聯絡") ||
-        text.includes("email") ||
-        text.includes("contact") ||
-        text.includes("怎麼找")
-      ) {
-
-        return answers["怎麼聯絡你"];
-
-      }
-
-
-      if (
-        text.includes("經歷") ||
-        text.includes("工作") ||
-        text.includes("履歷") ||
-        text.includes("experience")
-      ) {
-
-        return answers["你的經歷"];
-
-      }
-
-
-      return "我可以回答關於 Wallace 的介紹、技能、經歷、作品與聯絡方式。試著問我「你的技能？」或「你的作品？」";
-
+    if (!sessionId) {
+      sessionId = crypto.randomUUID();
+      sessionStorage.setItem("chatSessionId", sessionId);
     }
 
+    const nameInput = document.getElementById("visitorNameInput");
 
-    function addMessage(text, type) {
+    let visitorName = localStorage.getItem("visitorName") || "";
+    nameInput.value = visitorName;
 
-      const container =
-        document.getElementById("chatMessages");
+    nameInput.addEventListener("change", () => {
+      visitorName = nameInput.value.trim();
 
-
-      const message =
-        document.createElement("div");
-
-
-      message.className =
-        "message " + type;
-
-
-      message.textContent =
-        text;
-
-
-      container.appendChild(message);
-
-
-      container.scrollTop =
-        container.scrollHeight;
-
-    }
-
-
-  const WORKER_URL = "https://hung.kaekae939311.workers.dev";
-  
-  // ===== 每個分頁獨立聊天室 =====
-  let sessionId = sessionStorage.getItem("chatSessionId");
-  
-  if (!sessionId) {
-    sessionId = crypto.randomUUID();
-    sessionStorage.setItem("chatSessionId", sessionId);
-  }
-  
-  // ===== 訪客名稱 =====
-  const nameInput = document.getElementById("visitorNameInput");
-  
-  let visitorName = localStorage.getItem("visitorName") || "";
-  nameInput.value = visitorName;
-  
-  nameInput.addEventListener("change", () => {
-    visitorName = nameInput.value.trim();
-  
-    if (visitorName) {
-      localStorage.setItem("visitorName", visitorName);
-    } else {
-      localStorage.removeItem("visitorName");
-    }
-  });
-  
-  let renderedCount = 0;
-  
-  function escapeHtml(text) {
-    return text
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
-  
-  function addMessage(text, sender) {
-    const container = document.getElementById("chatMessages");
-  
-    const div = document.createElement("div");
-    div.className = `message ${sender}`;
-    div.innerHTML = escapeHtml(text);
-  
-    container.appendChild(div);
-    container.scrollTop = container.scrollHeight;
-  }
-  
-  async function sendMessage() {
-    const input = document.getElementById("chatInput");
-    const text = input.value.trim();
-  
-    if (!text) return;
-  
-    const name = visitorName || "Anonymous";
-  
-    try {
-      const response = await fetch(`${WORKER_URL}/send`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          text,
-          name,
-          sessionId
-        })
-      });
-  
-      const data = await response.json();
-  
-      if (!data.ok) {
-        throw new Error("Send failed");
+      if (visitorName) {
+        localStorage.setItem("visitorName", visitorName);
+      } else {
+        localStorage.removeItem("visitorName");
       }
-  
-      input.value = "";
-      await syncMessages();
-    } catch (error) {
-      addMessage("❌ Failed to send message.", "bot");
-      console.error(error);
+    });
+
+    function escapeHtml(text) {
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
     }
-  }
-  
-  function handleEnter(event) {
-    if (event.key === "Enter") {
+
+    function addMessage(text, sender = "bot") {
+      const container = document.getElementById("chatMessages");
+
+      const div = document.createElement("div");
+      div.className = `message ${sender}`;
+      div.innerHTML = escapeHtml(text);
+
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById("chatInput");
+      const text = input.value.trim();
+
+      if (!text) return;
+
+      const name = visitorName || "Anonymous";
+
+      try {
+        const response = await fetch(`${WORKER_URL}/send`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            text,
+            name,
+            sessionId
+          })
+        });
+
+        const data = await response.json();
+
+        if (!data.ok) {
+          throw new Error("Failed to send message");
+        }
+
+        input.value = "";
+      } catch (error) {
+        addMessage("❌ Failed to send message. Please try again later.", "bot");
+        console.error(error);
+      }
+    }
+
+    function handleEnter(event) {
+      if (event.key === "Enter") {
+        sendMessage();
+      }
+    }
+
+    function askQuestion(question) {
+      document.getElementById("chatInput").value = question;
       sendMessage();
     }
-  }
-  
-  async function syncMessages() {
-    try {
-      const response = await fetch(
-        `${WORKER_URL}/messages?sessionId=${sessionId}`
-      );
-  
-      const messages = await response.json();
-  
-      if (messages.length === renderedCount) return;
-  
-      const container = document.getElementById("chatMessages");
-      container.innerHTML = "";
-  
-      messages.forEach(msg => {
-        let content;
-  
-        if (msg.role === "admin") {
-          content = msg.text;
-        } else {
-          content = `${msg.name || "Anonymous"}: ${msg.text}`;
-        }
-  
-        addMessage(
-          content,
-          msg.role === "admin" ? "bot" : "user"
+
+    let renderedCount = 1;
+
+    async function syncMessages() {
+      try {
+        const response = await fetch(
+          `${WORKER_URL}/messages?sessionId=${sessionId}`
         );
-      });
-  
-      renderedCount = messages.length;
-    } catch (error) {
-      console.error(error);
+
+        const messages = await response.json();
+
+        if (messages.length === renderedCount - 1) return;
+
+        const container = document.getElementById("chatMessages");
+
+        container.innerHTML = `
+          <div class="message bot">
+            Hi 👋 I'm Kellan's resume assistant.
+            Ask me about his skills, experience, projects, or background.
+          </div>
+        `;
+
+        messages.forEach(msg => {
+          const content = msg.role === "admin"
+            ? msg.text
+            : `${msg.name || "Anonymous"}: ${msg.text}`;
+
+          addMessage(
+            content,
+            msg.role === "admin" ? "bot" : "user"
+          );
+        });
+
+        renderedCount = messages.length + 1;
+      } catch (error) {
+        console.error(error);
+      }
     }
-  }
-  
-  // 初始同步
-  syncMessages();
-  
-  // 每 2 秒同步一次
-  setInterval(syncMessages, 2000);
-    
 
-    
+    syncMessages();
+    setInterval(syncMessages, 2000);
   </script>
-
-
 </body>
-
 </html>
+```
