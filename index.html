@@ -1096,11 +1096,12 @@
   <script>
     const WORKER_URL = "https://hung.kaekae939311.workers.dev";
 
-    let sessionId = sessionStorage.getItem("chatSessionId");
-
+    // ===== 永久聊天室 ID（手機關掉也不會消失） =====
+    let sessionId = localStorage.getItem("kellanChatSessionId");
+    
     if (!sessionId) {
       sessionId = crypto.randomUUID();
-      sessionStorage.setItem("chatSessionId", sessionId);
+      localStorage.setItem("kellanChatSessionId", sessionId);
     }
 
     const nameInput = document.getElementById("visitorNameInput");
@@ -1138,6 +1139,34 @@
       container.scrollTop = container.scrollHeight;
     }
 
+  // ===== 載入歷史訊息 =====
+  async function loadHistory() {
+    try {
+      const response = await fetch(
+        `${WORKER_URL}/messages?sessionId=${sessionId}`
+      );
+  
+      const messages = await response.json();
+  
+      // 保留第一則 AI 歡迎訊息
+      const container = document.getElementById("chatMessages");
+  
+      messages.forEach(msg => {
+        const content = msg.role === "admin"
+          ? msg.text
+          : `${msg.name || "Anonymous"}: ${msg.text}`;
+  
+        addMessage(
+          content,
+          msg.role === "admin" ? "bot" : "user"
+        );
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+    
     async function sendMessage() {
       const input = document.getElementById("chatInput");
       const text = input.value.trim();
@@ -1177,7 +1206,8 @@
         sendMessage();
       }
     }
-
+    // ===== 頁面開啟時載入聊天紀錄 =====
+    loadHistory();
     function askQuestion(question) {
       document.getElementById("chatInput").value = question;
       sendMessage();
