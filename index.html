@@ -1,37 +1,27 @@
-## index.html
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Kellan Hung — Product · Strategy · Growth</title>
+  <meta name="description" content="Kellan Hung — Product, Strategy and Growth professional." />
 
-  <meta
-    name="description"
-    content="Kellan Hung — Product, Strategy and Growth professional."
-  />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet"
-  />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg: #0f172a;
-      --surface: #111827;
-      --surface-2: #1f2937;
-      --text: #e5e7eb;
+      --bg: #070b16;
+      --surface: rgba(15, 23, 42, 0.72);
+      --surface-2: rgba(30, 41, 59, 0.78);
+      --text: #e2e8f0;
       --muted: #94a3b8;
       --line: rgba(255,255,255,0.08);
       --accent: #38bdf8;
       --accent-2: #0ea5e9;
-      --radius: 18px;
+      --accent-3: #8b5cf6;
+      --radius: 20px;
     }
 
     * { box-sizing: border-box; }
@@ -42,6 +32,38 @@
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      width: 520px;
+      height: 520px;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.18;
+      z-index: -1;
+      animation: float 14s ease-in-out infinite alternate;
+    }
+
+    body::before {
+      background: var(--accent);
+      top: -180px;
+      left: -120px;
+    }
+
+    body::after {
+      background: var(--accent-3);
+      right: -160px;
+      bottom: -220px;
+      animation-delay: 3s;
+    }
+
+    @keyframes float {
+      from { transform: translate3d(0,0,0) scale(1); }
+      to { transform: translate3d(40px,30px,0) scale(1.08); }
     }
 
     a { color: inherit; text-decoration: none; }
@@ -55,8 +77,8 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      backdrop-filter: blur(12px);
-      background: rgba(15,23,42,.72);
+      backdrop-filter: blur(16px);
+      background: rgba(7, 11, 22, 0.72);
       border-bottom: 1px solid var(--line);
     }
 
@@ -70,7 +92,7 @@
 
     .logo {
       font-weight: 800;
-      font-size: 1.1rem;
+      font-size: 1.08rem;
       letter-spacing: -.02em;
     }
 
@@ -84,7 +106,7 @@
     .nav-links a {
       color: var(--muted);
       font-size: .95rem;
-      transition: .2s;
+      transition: color .2s ease;
     }
 
     .nav-links a:hover { color: var(--text); }
@@ -98,34 +120,38 @@
       padding: 12px 18px;
       border-radius: 999px;
       font-weight: 600;
-      transition: .2s;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
     }
 
     .nav-button {
       border: 1px solid var(--line);
-      background: rgba(255,255,255,.03);
+      background: rgba(255,255,255,.04);
     }
 
     .nav-button:hover {
+      transform: translateY(-1px);
       background: rgba(255,255,255,.08);
+      border-color: rgba(56,189,248,.28);
     }
 
     .button-primary {
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
       color: #03131d;
+      box-shadow: 0 10px 30px rgba(14,165,233,.28);
     }
 
     .button-primary:hover {
-      transform: translateY(-1px);
+      transform: translateY(-2px);
+      box-shadow: 0 16px 36px rgba(14,165,233,.34);
     }
 
     .hero {
-      padding: 96px 0 72px;
+      padding: 104px 0 76px;
     }
 
     .hero-grid {
       display: grid;
-      grid-template-columns: 1.25fr .75fr;
+      grid-template-columns: 1.2fr .8fr;
       gap: 48px;
       align-items: center;
     }
@@ -137,9 +163,10 @@
       padding: 10px 14px;
       border-radius: 999px;
       border: 1px solid var(--line);
-      background: rgba(255,255,255,.03);
+      background: rgba(255,255,255,.04);
       color: var(--muted);
       font-size: .92rem;
+      backdrop-filter: blur(12px);
     }
 
     .availability-dot {
@@ -147,23 +174,28 @@
       height: 10px;
       border-radius: 50%;
       background: #22c55e;
-      box-shadow: 0 0 0 6px rgba(34,197,94,.15);
+      box-shadow: 0 0 0 6px rgba(34,197,94,.16);
     }
 
     h1 {
       margin: 28px 0 20px;
-      font-size: clamp(3rem, 7vw, 5.5rem);
-      line-height: .95;
+      font-size: clamp(3.2rem, 7vw, 5.8rem);
+      line-height: .94;
       letter-spacing: -.05em;
     }
 
-    .accent { color: var(--accent); }
+    .accent {
+      background: linear-gradient(135deg, var(--accent), #a855f7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
 
     .hero-text {
       max-width: 640px;
       color: var(--muted);
-      font-size: 1.1rem;
-      margin-bottom: 32px;
+      font-size: 1.08rem;
+      margin-bottom: 34px;
     }
 
     .hero-actions {
@@ -172,11 +204,16 @@
       gap: 14px;
     }
 
-    .profile-card {
-      padding: 28px;
-      border-radius: 24px;
+    .glass-card {
       border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      backdrop-filter: blur(18px);
+      box-shadow: 0 12px 40px rgba(2, 6, 23, 0.38);
+    }
+
+    .profile-card {
+      padding: 30px;
+      border-radius: 26px;
     }
 
     .profile-top {
@@ -186,19 +223,20 @@
     }
 
     .avatar {
-      width: 72px;
-      height: 72px;
-      border-radius: 22px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      width: 78px;
+      height: 78px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-3));
       color: #03131d;
       display: grid;
       place-items: center;
       font-weight: 800;
-      font-size: 1.2rem;
+      font-size: 1.25rem;
+      box-shadow: 0 12px 30px rgba(56,189,248,.28);
     }
 
     .profile-name {
-      font-size: 1.35rem;
+      font-size: 1.38rem;
       font-weight: 700;
       margin-bottom: 6px;
     }
@@ -229,7 +267,7 @@
 
     .section {
       padding: 88px 0;
-      border-top: 1px solid var(--line);
+      border-top: 1px solid rgba(255,255,255,.05);
     }
 
     .section-label {
@@ -261,11 +299,25 @@
 
     .skill,
     .project,
+    .education-box,
+    .experience-item {
+      border-radius: var(--radius);
+      transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease;
+    }
+
+    .skill:hover,
+    .project:hover,
+    .education-box:hover,
+    .experience-item:hover {
+      transform: translateY(-4px);
+      border-color: rgba(56,189,248,.22);
+      box-shadow: 0 16px 40px rgba(2, 6, 23, 0.28);
+    }
+
+    .skill,
+    .project,
     .education-box {
       padding: 22px;
-      border-radius: var(--radius);
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.03);
     }
 
     .skill-number {
@@ -276,9 +328,7 @@
       margin-bottom: 10px;
     }
 
-    .skill-name {
-      font-weight: 600;
-    }
+    .skill-name { font-weight: 600; }
 
     .experience {
       display: grid;
@@ -290,9 +340,6 @@
       grid-template-columns: 160px 1fr;
       gap: 28px;
       padding: 28px;
-      border-radius: var(--radius);
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.03);
     }
 
     .experience-period {
@@ -303,7 +350,7 @@
 
     .experience-role {
       margin: 0 0 6px;
-      font-size: 1.25rem;
+      font-size: 1.22rem;
     }
 
     .experience-company {
@@ -332,7 +379,7 @@
       content: "";
       position: absolute;
       left: 0;
-      top: .6em;
+      top: .62em;
       width: 6px;
       height: 6px;
       border-radius: 50%;
@@ -370,7 +417,7 @@
       inset: -30% auto auto -20%;
       width: 180px;
       height: 180px;
-      background: radial-gradient(circle, rgba(56,189,248,.18), transparent 70%);
+      background: radial-gradient(circle, rgba(56,189,248,.22), transparent 70%);
       pointer-events: none;
     }
 
@@ -444,9 +491,7 @@
     }
 
     .chat {
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      background: rgba(255,255,255,.03);
+      border-radius: 26px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -459,14 +504,15 @@
       gap: 14px;
       padding: 18px 20px;
       border-bottom: 1px solid var(--line);
-      background: rgba(255,255,255,.02);
+      background: rgba(255,255,255,.03);
+      backdrop-filter: blur(14px);
     }
 
     .chat-avatar {
       width: 42px;
       height: 42px;
       border-radius: 14px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      background: linear-gradient(135deg, var(--accent), var(--accent-3));
       color: #03131d;
       display: grid;
       place-items: center;
@@ -509,6 +555,12 @@
       font-size: .95rem;
       white-space: pre-wrap;
       word-break: break-word;
+      animation: fadeIn .24s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .message.bot {
@@ -521,6 +573,7 @@
       justify-self: end;
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
       color: #03131d;
+      box-shadow: 0 10px 24px rgba(14,165,233,.22);
     }
 
     .quick-questions {
@@ -537,10 +590,11 @@
       background: rgba(255,255,255,.03);
       color: var(--muted);
       cursor: pointer;
-      transition: .2s;
+      transition: transform .18s ease, background .18s ease, color .18s ease;
     }
 
     .quick-question:hover {
+      transform: translateY(-1px);
       background: rgba(255,255,255,.08);
       color: var(--text);
     }
@@ -551,7 +605,8 @@
       gap: 12px;
       padding: 18px 20px 20px;
       border-top: 1px solid var(--line);
-      background: rgba(255,255,255,.02);
+      background: rgba(255,255,255,.03);
+      backdrop-filter: blur(14px);
     }
 
     #visitorNameInput {
@@ -567,6 +622,7 @@
       color: var(--text);
       font: inherit;
       outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
     }
 
     .chat-input input::placeholder {
@@ -574,8 +630,9 @@
     }
 
     .chat-input input:focus {
-      border-color: rgba(56,189,248,.6);
+      border-color: rgba(56,189,248,.58);
       box-shadow: 0 0 0 3px rgba(56,189,248,.15);
+      background: rgba(255,255,255,.06);
     }
 
     .chat-send {
@@ -584,18 +641,20 @@
       border-radius: 14px;
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
       color: #03131d;
-      font-size: 1.1rem;
+      font-size: 1.08rem;
       font-weight: 800;
       cursor: pointer;
-      transition: .2s;
+      transition: transform .2s ease, box-shadow .2s ease;
+      box-shadow: 0 10px 24px rgba(14,165,233,.24);
     }
 
     .chat-send:hover {
       transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(14,165,233,.3);
     }
 
     .footer {
-      border-top: 1px solid var(--line);
+      border-top: 1px solid rgba(255,255,255,.05);
       padding: 36px 0 48px;
     }
 
@@ -624,7 +683,7 @@
 
     .footer-links a {
       color: var(--muted);
-      transition: .2s;
+      transition: color .2s ease;
     }
 
     .footer-links a:hover {
@@ -651,12 +710,9 @@
 </head>
 
 <body id="top">
-
   <header class="nav">
     <div class="container nav-inner">
-      <a href="#top" class="logo">
-        Kellan<span>.</span>
-      </a>
+      <a href="#top" class="logo">Kellan<span>.</span></a>
 
       <nav class="nav-links">
         <a href="#about">About</a>
@@ -698,9 +754,7 @@
             </p>
 
             <div class="hero-actions">
-              <a href="#projects" class="button-primary">
-                View my work
-              </a>
+              <a href="#projects" class="button-primary">View my work</a>
 
               <a
                 href="https://mail.google.com/mail/?view=cm&fs=1&to=kaekae939311@gmail.com"
@@ -713,7 +767,7 @@
             </div>
           </div>
 
-          <aside class="profile-card">
+          <aside class="profile-card glass-card">
             <div class="profile-top">
               <div class="avatar">KH</div>
             </div>
@@ -752,50 +806,18 @@
         <div class="section-label">01 / CAPABILITIES</div>
         <h2 class="section-title">What I bring to the table.</h2>
         <p class="section-description">
-          A combination of product thinking, business execution,
-          analytical thinking, and modern AI workflows.
+          A combination of product thinking, business execution, analytical thinking, and modern AI workflows.
         </p>
 
         <div class="skills-grid">
-          <div class="skill">
-            <span class="skill-number">01</span>
-            <span class="skill-name">Product Strategy</span>
-          </div>
-
-          <div class="skill">
-            <span class="skill-number">02</span>
-            <span class="skill-name">Data Analysis</span>
-          </div>
-
-          <div class="skill">
-            <span class="skill-number">03</span>
-            <span class="skill-name">Business Development</span>
-          </div>
-
-          <div class="skill">
-            <span class="skill-number">04</span>
-            <span class="skill-name">AI Workflow</span>
-          </div>
-
-          <div class="skill">
-            <span class="skill-number">05</span>
-            <span class="skill-name">Project Management</span>
-          </div>
-
-          <div class="skill">
-            <span class="skill-number">06</span>
-            <span class="skill-name">Customer Research</span>
-          </div>
-
-          <div class="skill">
-            <span class="skill-number">07</span>
-            <span class="skill-name">Automation</span>
-          </div>
-
-          <div class="skill">
-            <span class="skill-number">08</span>
-            <span class="skill-name">Digital Products</span>
-          </div>
+          <div class="skill glass-card"><span class="skill-number">01</span><span class="skill-name">Product Strategy</span></div>
+          <div class="skill glass-card"><span class="skill-number">02</span><span class="skill-name">Data Analysis</span></div>
+          <div class="skill glass-card"><span class="skill-number">03</span><span class="skill-name">Business Development</span></div>
+          <div class="skill glass-card"><span class="skill-number">04</span><span class="skill-name">AI Workflow</span></div>
+          <div class="skill glass-card"><span class="skill-number">05</span><span class="skill-name">Project Management</span></div>
+          <div class="skill glass-card"><span class="skill-number">06</span><span class="skill-name">Customer Research</span></div>
+          <div class="skill glass-card"><span class="skill-number">07</span><span class="skill-name">Automation</span></div>
+          <div class="skill glass-card"><span class="skill-number">08</span><span class="skill-name">Digital Products</span></div>
         </div>
       </div>
     </section>
@@ -805,12 +827,11 @@
         <div class="section-label">02 / EXPERIENCE</div>
         <h2 class="section-title">Experience &amp; impact.</h2>
         <p class="section-description">
-          A track record across product, strategy,
-          business development, and project management.
+          A track record across product, strategy, business development, and project management.
         </p>
 
         <div class="experience">
-          <article class="experience-item">
+          <article class="experience-item glass-card">
             <div class="experience-period">2023 — Present</div>
 
             <div>
@@ -818,28 +839,18 @@
               <div class="experience-company">Your Company</div>
 
               <p class="experience-description">
-                Driving cross-functional initiatives from discovery
-                to execution, connecting business goals with practical
-                product solutions.
+                Driving cross-functional initiatives from discovery to execution, connecting business goals with practical product solutions.
               </p>
 
               <div class="experience-points">
-                <div class="experience-point">
-                  Led cross-functional projects from discovery to launch.
-                </div>
-
-                <div class="experience-point">
-                  Improved workflows through AI-assisted automation.
-                </div>
-
-                <div class="experience-point">
-                  Built dashboards to support business decisions.
-                </div>
+                <div class="experience-point">Led cross-functional projects from discovery to launch.</div>
+                <div class="experience-point">Improved workflows through AI-assisted automation.</div>
+                <div class="experience-point">Built dashboards to support business decisions.</div>
               </div>
             </div>
           </article>
 
-          <article class="experience-item">
+          <article class="experience-item glass-card">
             <div class="experience-period">2020 — 2023</div>
 
             <div>
@@ -847,22 +858,13 @@
               <div class="experience-company">Previous Company</div>
 
               <p class="experience-description">
-                Worked across clients, internal teams, and business
-                stakeholders to turn customer needs into actionable projects.
+                Worked across clients, internal teams, and business stakeholders to turn customer needs into actionable projects.
               </p>
 
               <div class="experience-points">
-                <div class="experience-point">
-                  Managed client communication and partnerships.
-                </div>
-
-                <div class="experience-point">
-                  Coordinated teams to deliver projects on schedule.
-                </div>
-
-                <div class="experience-point">
-                  Translated customer needs into improvements.
-                </div>
+                <div class="experience-point">Managed client communication and partnerships.</div>
+                <div class="experience-point">Coordinated teams to deliver projects on schedule.</div>
+                <div class="experience-point">Translated customer needs into improvements.</div>
               </div>
             </div>
           </article>
@@ -875,18 +877,11 @@
         <div class="section-label">03 / EDUCATION</div>
         <h2 class="section-title">Education &amp; certifications.</h2>
 
-        <div class="education-box">
-          <div class="education-title">
-            Your University / Certification
-          </div>
-
-          <div class="education-subtitle">
-            Degree · Major · Professional Training
-          </div>
-
+        <div class="education-box glass-card">
+          <div class="education-title">Your University / Certification</div>
+          <div class="education-subtitle">Degree · Major · Professional Training</div>
           <p class="education-text">
-            Replace this section with your real academic background,
-            certifications, professional training, or other qualifications.
+            Replace this section with your real academic background, certifications, professional training, or other qualifications.
           </p>
         </div>
       </div>
@@ -897,22 +892,15 @@
         <div class="section-label">04 / SELECTED WORK</div>
         <h2 class="section-title">Things I've built.</h2>
         <p class="section-description">
-          Selected projects that demonstrate how I turn ideas
-          into useful digital experiences.
+          Selected projects that demonstrate how I turn ideas into useful digital experiences.
         </p>
 
         <div class="projects-grid">
-          <article class="project">
+          <article class="project glass-card">
             <div class="project-glow"></div>
             <span class="project-number">01</span>
-
             <h3>AI Resume Chatbot</h3>
-
-            <p class="project-description">
-              An interactive portfolio assistant that answers questions
-              about my background, skills, experience, and projects.
-            </p>
-
+            <p class="project-description">An interactive portfolio assistant that answers questions about my background, skills, experience, and projects.</p>
             <div class="project-tags">
               <span class="project-tag">HTML</span>
               <span class="project-tag">JavaScript</span>
@@ -920,17 +908,11 @@
             </div>
           </article>
 
-          <article class="project">
+          <article class="project glass-card">
             <div class="project-glow"></div>
             <span class="project-number">02</span>
-
             <h3>Business Analytics Dashboard</h3>
-
-            <p class="project-description">
-              A dashboard concept designed to turn growth metrics,
-              sales pipelines, and operational data into actionable insights.
-            </p>
-
+            <p class="project-description">A dashboard concept designed to turn growth metrics, sales pipelines, and operational data into actionable insights.</p>
             <div class="project-tags">
               <span class="project-tag">Analytics</span>
               <span class="project-tag">Visualization</span>
@@ -938,17 +920,11 @@
             </div>
           </article>
 
-          <article class="project">
+          <article class="project glass-card">
             <div class="project-glow"></div>
             <span class="project-number">03</span>
-
             <h3>Workflow Automation Kit</h3>
-
-            <p class="project-description">
-              Reusable AI and automation workflows designed
-              to reduce repetitive tasks and improve productivity.
-            </p>
-
+            <p class="project-description">Reusable AI and automation workflows designed to reduce repetitive tasks and improve productivity.</p>
             <div class="project-tags">
               <span class="project-tag">AI</span>
               <span class="project-tag">Automation</span>
@@ -965,37 +941,20 @@
           <div>
             <div class="section-label">INTERACTIVE RESUME</div>
 
-            <h2 class="section-title">
-              Ask my
-              <br />
-              resume.
-            </h2>
+            <h2 class="section-title">Ask my<br />resume.</h2>
 
             <p class="ai-description">
-              Instead of reading a long resume, just ask.
-              The assistant can answer common questions about my experience,
-              skills, projects, and background.
+              Instead of reading a long resume, just ask. The assistant can answer common questions about my experience, skills, projects, and background.
             </p>
 
             <div class="ai-features">
-              <div class="ai-feature">
-                <span class="check">✓</span>
-                Built with HTML &amp; JavaScript
-              </div>
-
-              <div class="ai-feature">
-                <span class="check">✓</span>
-                Runs directly on GitHub Pages
-              </div>
-
-              <div class="ai-feature">
-                <span class="check">✓</span>
-                Cloudflare Worker + KV powered chat support
-              </div>
+              <div class="ai-feature"><span class="check">✓</span>Built with HTML &amp; JavaScript</div>
+              <div class="ai-feature"><span class="check">✓</span>Runs directly on GitHub Pages</div>
+              <div class="ai-feature"><span class="check">✓</span>Cloudflare Worker + KV powered chat support</div>
             </div>
           </div>
 
-          <div class="chat">
+          <div class="chat glass-card">
             <div class="chat-header">
               <div class="chat-avatar">K</div>
 
@@ -1012,53 +971,23 @@
 
             <div id="chatMessages" class="chat-messages">
               <div class="message bot">
-                Hi 👋 I'm Kellan's resume assistant.
-                Ask me about his skills, experience, projects, or background.
+                Hi 👋 I'm Kellan's resume assistant. Ask me about his skills, experience, projects, or background.
               </div>
             </div>
 
             <div class="quick-questions">
-              <button class="quick-question" onclick="askQuestion('Who are you?')">
-                Who are you?
-              </button>
-
-              <button class="quick-question" onclick="askQuestion('What are your skills?')">
-                Skills
-              </button>
-
-              <button class="quick-question" onclick="askQuestion('Tell me about your projects.')">
-                Projects
-              </button>
-
-              <button class="quick-question" onclick="askQuestion('How can I contact you?')">
-                Contact
-              </button>
+              <button class="quick-question" onclick="askQuestion('Who are you?')">Who are you?</button>
+              <button class="quick-question" onclick="askQuestion('What are your skills?')">Skills</button>
+              <button class="quick-question" onclick="askQuestion('Tell me about your projects.')">Projects</button>
+              <button class="quick-question" onclick="askQuestion('How can I contact you?')">Contact</button>
             </div>
 
             <div class="chat-input">
-              <input
-                id="visitorNameInput"
-                type="text"
-                placeholder="Your name"
-                autocomplete="name"
-              />
+              <input id="visitorNameInput" type="text" placeholder="Your name" autocomplete="name" />
 
-              <input
-                id="chatInput"
-                type="text"
-                placeholder="Ask about Kellan..."
-                autocomplete="off"
-                onkeydown="handleEnter(event)"
-              />
+              <input id="chatInput" type="text" placeholder="Ask about Kellan..." autocomplete="off" onkeydown="handleEnter(event)" />
 
-              <button
-                class="chat-send"
-                type="button"
-                onclick="sendMessage()"
-                aria-label="Send message"
-              >
-                →
-              </button>
+              <button class="chat-send" type="button" onclick="sendMessage()" aria-label="Send message">→</button>
             </div>
           </div>
         </div>
@@ -1071,23 +1000,12 @@
       <div class="footer-inner">
         <div>
           <div class="footer-name">Kellan Hung</div>
-          <div class="footer-description">
-            Product · Strategy · Growth
-          </div>
+          <div class="footer-description">Product · Strategy · Growth</div>
         </div>
 
         <div class="footer-links">
-          <a
-            href="https://github.com/kaekae939311"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            GitHub
-          </a>
-
-          <a href="mailto:kaekae939311@gmail.com">
-            Email
-          </a>
+          <a href="https://github.com/kaekae939311" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="mailto:kaekae939311@gmail.com">Email</a>
         </div>
       </div>
     </div>
@@ -1096,16 +1014,16 @@
   <script>
     const WORKER_URL = "https://hung.kaekae939311.workers.dev";
 
-    // ===== 永久聊天室 ID（手機關掉也不會消失） =====
+    // ===== 永久聊天室 ID =====
     let sessionId = localStorage.getItem("kellanChatSessionId");
-    
+
     if (!sessionId) {
       sessionId = crypto.randomUUID();
       localStorage.setItem("kellanChatSessionId", sessionId);
     }
 
+    // ===== 訪客名稱 =====
     const nameInput = document.getElementById("visitorNameInput");
-
     let visitorName = localStorage.getItem("visitorName") || "";
     nameInput.value = visitorName;
 
@@ -1118,6 +1036,14 @@
         localStorage.removeItem("visitorName");
       }
     });
+
+    // ===== AI 回答 =====
+    const aiAnswers = {
+      "Who are you?": "I'm Kellan Hung's resume assistant 🤖. I can answer questions about his background, skills, projects, and experience.",
+      "What are your skills?": "Kellan focuses on Product Strategy, Data Analysis, Business Development, AI Workflow, Automation, and Digital Products.",
+      "Tell me about your projects.": "Kellan has built an AI Resume Chatbot, a Business Analytics Dashboard concept, and a Workflow Automation Kit for productivity and operations.",
+      "How can I contact you?": "You can contact Kellan via LINE, email (kaekae939311@gmail.com), or the Let's Talk button in the top-right corner."
+    };
 
     function escapeHtml(text) {
       return text
@@ -1139,66 +1065,84 @@
       container.scrollTop = container.scrollHeight;
     }
 
-  // ===== 載入歷史訊息 =====
-  async function loadHistory() {
-    try {
-      const response = await fetch(
-        `${WORKER_URL}/messages?sessionId=${sessionId}`
-      );
-  
-      const messages = await response.json();
-  
-      // 保留第一則 AI 歡迎訊息
-      const container = document.getElementById("chatMessages");
-  
-      messages.forEach(msg => {
-        const content = msg.role === "admin"
-          ? msg.text
-          : `${msg.name || "Anonymous"}: ${msg.text}`;
-  
-        addMessage(
-          content,
-          msg.role === "admin" ? "bot" : "user"
-        );
-      });
-    } catch (e) {
-      console.error(e);
+    function askQuestion(question) {
+      document.getElementById("chatInput").value = question;
+      sendMessage();
     }
-  }
 
-    
+    function shouldContactHuman(text) {
+      const keywords = [
+        "合作", "聯絡", "報價", "email", "line", "LINE",
+        "contact", "hire", "project", "business", "meeting", "collaboration"
+      ];
+
+      return keywords.some(k =>
+        text.toLowerCase().includes(k.toLowerCase())
+      );
+    }
+
+    async function loadHistory() {
+      try {
+        const response = await fetch(`${WORKER_URL}/messages?sessionId=${sessionId}`);
+        const messages = await response.json();
+
+        messages.forEach(msg => {
+          const content = msg.role === "admin"
+            ? msg.text
+            : `${msg.name || "Anonymous"}: ${msg.text}`;
+
+          addMessage(content, msg.role === "admin" ? "bot" : "user");
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
     async function sendMessage() {
       const input = document.getElementById("chatInput");
       const text = input.value.trim();
 
       if (!text) return;
 
-      const name = visitorName || "Anonymous";
+      addMessage(text, "user");
+      input.value = "";
 
-      try {
-        const response = await fetch(`${WORKER_URL}/send`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            text,
-            name,
-            sessionId
-          })
-        });
+      // AI 回答
+      if (aiAnswers[text]) {
+        setTimeout(() => {
+          addMessage(aiAnswers[text], "bot");
+        }, 400);
+        return;
+      }
 
-        const data = await response.json();
+      // 真人聯絡
+      if (shouldContactHuman(text)) {
+        try {
+          await fetch(`${WORKER_URL}/send`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              text,
+              name: visitorName || "Website Visitor",
+              sessionId
+            })
+          });
 
-        if (!data.ok) {
-          throw new Error("Failed to send message");
+          addMessage("📩 I've notified Kellan about your inquiry. He'll get back to you through LINE or email soon.", "bot");
+        } catch (error) {
+          addMessage("❌ Failed to send the inquiry. Please try again later.", "bot");
+          console.error(error);
         }
 
-        input.value = "";
-      } catch (error) {
-        addMessage("❌ Failed to send message. Please try again later.", "bot");
-        console.error(error);
+        return;
       }
+
+      // 一般 AI 回答
+      setTimeout(() => {
+        addMessage("Thanks for your question! I can answer common questions about Kellan's skills, experience, projects, and contact information. If you'd like to discuss collaboration or business opportunities, please mention that you want to get in touch.", "bot");
+      }, 500);
     }
 
     function handleEnter(event) {
@@ -1206,54 +1150,9 @@
         sendMessage();
       }
     }
-    // ===== 頁面開啟時載入聊天紀錄 =====
+
+    // 初始載入歷史訊息
     loadHistory();
-    function askQuestion(question) {
-      document.getElementById("chatInput").value = question;
-      sendMessage();
-    }
-
-    let renderedCount = 1;
-
-    async function syncMessages() {
-      try {
-        const response = await fetch(
-          `${WORKER_URL}/messages?sessionId=${sessionId}`
-        );
-
-        const messages = await response.json();
-
-        if (messages.length === renderedCount - 1) return;
-
-        const container = document.getElementById("chatMessages");
-
-        container.innerHTML = `
-          <div class="message bot">
-            Hi 👋 I'm Kellan's resume assistant.
-            Ask me about his skills, experience, projects, or background.
-          </div>
-        `;
-
-        messages.forEach(msg => {
-          const content = msg.role === "admin"
-            ? msg.text
-            : `${msg.name || "Anonymous"}: ${msg.text}`;
-
-          addMessage(
-            content,
-            msg.role === "admin" ? "bot" : "user"
-          );
-        });
-
-        renderedCount = messages.length + 1;
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    syncMessages();
-    setInterval(syncMessages, 2000);
   </script>
 </body>
 </html>
-```
