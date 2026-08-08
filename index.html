@@ -542,57 +542,65 @@
     
     .chat-messages {
       flex: 1;
-      padding: 18px;
+      padding: 16px 18px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 6px;
       scroll-behavior: smooth;
     }
     
     .message {
-      max-width: 78%;
-      padding: 10px 14px;
-      border-radius: 18px;
-      font-size: 0.95rem;
-      line-height: 1.45;
+      max-width: 88%;
+      padding: 8px 12px;
+      border-radius: 16px;
+      font-size: 0.94rem;
+      line-height: 1.4;
       white-space: pre-wrap;
       word-break: break-word;
-      animation: messageIn .18s ease;
+      animation: messageIn .15s ease;
     }
     
     .message.bot {
       align-self: flex-start;
-      background: #1f2937;
+      background: #1e293b;
       color: #e5e7eb;
-      border: 1px solid rgba(255,255,255,.06);
-      border-bottom-left-radius: 6px;
+      border-bottom-left-radius: 4px;
     }
     
     .message.user {
       align-self: flex-end;
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: #fff;
-      border-bottom-right-radius: 6px;
-      box-shadow: 0 4px 12px rgba(37,99,235,.22);
+      background: #2563eb;
+      color: #ffffff;
+      border-bottom-right-radius: 4px;
+    }
+    
+    .message-name {
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+      opacity: .85;
+      line-height: 1.2;
+    }
+    
+    .message.user .message-name {
+      color: #dbeafe;
+      text-align: right;
+    }
+    
+    .message.bot .message-name {
+      color: #7dd3fc;
     }
     
     @keyframes messageIn {
       from {
         opacity: 0;
-        transform: translateY(4px);
+        transform: translateY(3px);
       }
       to {
         opacity: 1;
         transform: translateY(0);
       }
-    }
-    
-    .message-name {
-      font-size: .72rem;
-      font-weight: 700;
-      margin-bottom: 4px;
-      opacity: .9;
     }
     
     .message.user .message-name {
