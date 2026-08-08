@@ -1108,48 +1108,41 @@
     async function sendMessage() {
       const input = document.getElementById("chatInput");
       const text = input.value.trim();
-
+    
       if (!text) return;
-
+    
+      const displayName = visitorName || "You";
+    
+      // 先顯示在畫面上
+      addMessage(`${displayName}: ${text}`, "user");
       input.value = "";
-
-      // AI 回答
-      if (aiAnswers[text]) {
-        addMessage(`${visitorName || "You"}: ${text}`, "user");
-        setTimeout(() => {
-          addMessage(aiAnswers[text], "bot");
-        }, 400);
-        return;
-      }
-
-      // 真人聯絡
-      if (shouldContactHuman(text)) {
-        try {
-          await fetch(`${WORKER_URL}/send`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              text,
-              name: visitorName || "Website Visitor",
-              sessionId
-            })
-          });
-
-          addMessage("📩 I've notified Kellan about your inquiry. He'll get back to you through LINE or email soon.", "bot");
-        } catch (error) {
-          addMessage("❌ Failed to send the inquiry. Please try again later.", "bot");
-          console.error(error);
+    
+      try {
+        const response = await fetch(`${WORKER_URL}/send`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            text,
+            name: visitorName || "Website Visitor",
+            sessionId
+          })
+        });
+    
+        const data = await response.json();
+    
+        if (!data.ok) {
+          throw new Error("Failed to send message");
         }
-
-        return;
+    
+      } catch (error) {
+        addMessage(
+          "❌ Failed to send the message. Please try again later.",
+          "bot"
+        );
+        console.error(error);
       }
-
-      // 一般 AI 回答
-      setTimeout(() => {
-        addMessage("Thanks for your question! I can answer common questions about Kellan's skills, experience, projects, and contact information. If you'd like to discuss collaboration or business opportunities, please mention that you want to get in touch.", "bot");
-      }, 500);
     }
 
     function handleEnter(event) {
