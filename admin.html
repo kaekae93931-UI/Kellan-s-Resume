@@ -4,17 +4,21 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>聊天室管理</title>
 
   <style>
     body {
-      font-family: sans-serif;
-      max-width: 800px;
+      font-family: Arial, sans-serif;
+      max-width: 900px;
       margin: 40px auto;
       padding: 20px;
       background: #f5f5f5;
+    }
+
+    h2 {
+      margin-bottom: 20px;
     }
 
     #sessions {
@@ -26,14 +30,15 @@
     }
 
     .session {
-      padding: 8px 12px;
-      border-radius: 6px;
+      padding: 10px 12px;
+      border-radius: 8px;
       cursor: pointer;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      background: #f8fafc;
     }
 
     .session:hover {
-      background: #eef4ff;
+      background: #e2e8f0;
     }
 
     .session.active {
@@ -45,7 +50,7 @@
       background: white;
       border: 1px solid #ddd;
       border-radius: 10px;
-      height: 400px;
+      height: 450px;
       overflow-y: auto;
       padding: 15px;
       margin-bottom: 15px;
@@ -61,12 +66,13 @@
       margin: 8px 0;
     }
 
-    input {
+    #text {
       width: 100%;
       padding: 12px;
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 8px;
+      box-sizing: border-box;
     }
   </style>
 </head>
@@ -82,14 +88,14 @@
 
   <div id="messages"></div>
 
-  <input id="text" placeholder="輸入回覆後按 Enter">
+  <input id="text" placeholder="輸入回覆後按 Enter" />
 
   <script>
     const WORKER = "https://hung.kaekae939311.workers.dev";
 
     let currentSession = null;
 
-    // 取得所有聊天室 ID
+    // 取得聊天室列表
     async function loadSessions() {
       const res = await fetch(`${WORKER}/sessions`);
       const sessions = await res.json();
@@ -101,6 +107,10 @@
         const div = document.createElement("div");
         div.className = "session";
         div.textContent = id;
+
+        if (id === currentSession) {
+          div.classList.add("active");
+        }
 
         div.onclick = () => {
           currentSession = id;
@@ -117,15 +127,15 @@
         list.appendChild(div);
       });
 
-      // 自動選第一個
+      // 自動選第一個聊天室
       if (!currentSession && sessions.length > 0) {
         currentSession = sessions[0];
         list.firstChild.classList.add("active");
-        loadMessages();
+        await loadMessages();
       }
     }
 
-    // 載入某個聊天室訊息
+    // 載入訊息
     async function loadMessages() {
       if (!currentSession) return;
 
@@ -152,9 +162,12 @@
       box.scrollTop = box.scrollHeight;
     }
 
-    // 回覆訊息
+    // 回覆
     async function reply() {
-      if (!currentSession) return;
+      if (!currentSession) {
+        alert("請先選擇聊天室");
+        return;
+      }
 
       const input = document.getElementById("text");
       const text = input.value.trim();
@@ -173,7 +186,7 @@
       });
 
       input.value = "";
-      loadMessages();
+      await loadMessages();
     }
 
     document.getElementById("text").addEventListener("keydown", e => {
@@ -182,13 +195,14 @@
       }
     });
 
-    // 每 2 秒更新
-    setInterval(() => {
-      loadSessions();
-      loadMessages();
-    }, 2000);
-
+    // 初始載入
     loadSessions();
+
+    // 每 2 秒更新
+    setInterval(async () => {
+      await loadSessions();
+      await loadMessages();
+    }, 2000);
   </script>
 
 </body>
