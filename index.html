@@ -1104,11 +1104,11 @@
 
       if (!text) return;
 
-      addMessage(text, "user");
       input.value = "";
 
       // AI 回答
       if (aiAnswers[text]) {
+        addMessage(`${visitorName || "You"}: ${text}`, "user");
         setTimeout(() => {
           addMessage(aiAnswers[text], "bot");
         }, 400);
