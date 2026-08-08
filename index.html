@@ -1162,7 +1162,7 @@
         console.error(error);
       }
     }
-
+    let lastMessageHash = "";
     function handleEnter(event) {
       if (event.key === "Enter") {
         sendMessage();
@@ -1178,7 +1178,15 @@
         );
     
         const messages = await response.json();
-    
+        
+        // 沒有新訊息就不要重畫，避免閃爍
+        const currentHash = JSON.stringify(
+          messages.map(m => [m.role, m.name, m.text, m.time])
+        );
+        
+        if (currentHash === lastMessageHash) return;
+        lastMessageHash = currentHash;
+        
         const container = document.getElementById("chatMessages");
     
         // 保留第一則歡迎訊息
@@ -1192,7 +1200,7 @@
         // 顯示所有聊天紀錄
         messages.forEach(msg => {
           const content = msg.role === "admin"
-            ? msg.text
+            ? `Kellan: ${msg.text}`
             : `${msg.name || "Anonymous"}: ${msg.text}`;
     
           addMessage(
