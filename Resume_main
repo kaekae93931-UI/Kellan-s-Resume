@@ -1,1 +1,339 @@
 
+import React, { useMemo, useState } from "react";
+import { motion } from "framer-motion";
+import { Mail, Phone, MapPin, Github, Linkedin, ExternalLink, Send, Bot, User, Briefcase, GraduationCap, Sparkles, Award, Code2 } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+
+const profile = {
+  name: "Wallace Chen",
+  title: "Product / Strategy / Growth",
+  tagline: "I build practical digital products, improve workflows, and turn business goals into measurable execution.",
+  location: "Taipei / Remote",
+  email: "your.email@example.com",
+  phone: "+886 900 000 000",
+  github: "https://github.com/yourusername",
+  linkedin: "https://linkedin.com/in/yourusername",
+  resumeUrl: "#",
+};
+
+const skills = [
+  "Product Strategy",
+  "Data Analysis",
+  "Business Development",
+  "AI Workflow",
+  "Project Management",
+  "Customer Research",
+  "GitHub Pages",
+  "Automation",
+];
+
+const experience = [
+  {
+    role: "Product / Strategy Specialist",
+    company: "Your Company",
+    period: "2023 — Present",
+    points: [
+      "Led cross-functional projects from discovery to launch.",
+      "Improved operational workflow through AI-assisted automation.",
+      "Created dashboards and reports for decision-making.",
+    ],
+  },
+  {
+    role: "Business Development / Project Manager",
+    company: "Previous Company",
+    period: "2020 — 2023",
+    points: [
+      "Managed client communication and strategic partnership opportunities.",
+      "Coordinated internal teams to deliver projects on schedule.",
+      "Translated customer needs into product and service improvements.",
+    ],
+  },
+];
+
+const projects = [
+  {
+    name: "AI Resume Chatbot",
+    description: "A portfolio assistant that answers questions about my background, skills, projects, and contact information.",
+    tech: "React · GitHub Pages · JavaScript",
+  },
+  {
+    name: "Business Analytics Dashboard",
+    description: "A clean dashboard concept for tracking growth metrics, sales pipeline, and operational performance.",
+    tech: "Data · Visualization · Strategy",
+  },
+  {
+    name: "Workflow Automation Kit",
+    description: "A collection of reusable templates for reducing repeated manual tasks across teams.",
+    tech: "AI · Automation · Operations",
+  },
+];
+
+const qa = [
+  {
+    keys: ["who", "你是誰", "介紹", "about"],
+    answer: "我是 Wallace Chen，專注產品策略、專案管理、商業成長與 AI 工作流程。我擅長把想法變成可執行的產品與流程。",
+  },
+  {
+    keys: ["skill", "技能", "能力", "會什麼"],
+    answer: "我的核心技能包含 Product Strategy、Data Analysis、Business Development、AI Workflow、Project Management、Customer Research 與 Automation。",
+  },
+  {
+    keys: ["experience", "經歷", "工作", "履歷"],
+    answer: "我有產品策略、商務開發與專案管理相關經驗，曾負責跨部門專案、流程改善、客戶需求整理與數據報告。你可以在 Experience 區塊看到更多。",
+  },
+  {
+    keys: ["project", "作品", "專案"],
+    answer: "目前展示的作品包含 AI Resume Chatbot、Business Analytics Dashboard 與 Workflow Automation Kit。你可以依照真實作品替換內容。",
+  },
+  {
+    keys: ["contact", "聯絡", "email", "mail"],
+    answer: `你可以透過 ${profile.email} 聯絡我，也可以在頁面上方找到 GitHub 與 LinkedIn 連結。`,
+  },
+  {
+    keys: ["github", "部署", "pages", "網站"],
+    answer: "這個履歷網站可以放到 GitHub Pages。做法是建立 repository，放入網站檔案，然後在 Settings > Pages 啟用部署。",
+  },
+];
+
+function getBotAnswer(message) {
+  const text = message.toLowerCase();
+  const found = qa.find((item) => item.keys.some((key) => text.includes(key.toLowerCase())));
+  return found
+    ? found.answer
+    : "我目前可以回答：你是誰、技能、經歷、作品、聯絡方式、GitHub 部署。你也可以把 QA 資料改成你的真實履歷內容。";
+}
+
+function Chatbot() {
+  const [messages, setMessages] = useState([
+    { from: "bot", text: "你好，我是 Wallace 的履歷小助手。你可以問我：技能、經歷、作品、聯絡方式。" },
+  ]);
+  const [input, setInput] = useState("");
+
+  const quickQuestions = ["你是誰？", "你的技能？", "你的作品？", "怎麼聯絡你？"];
+
+  const sendMessage = (text = input) => {
+    const clean = text.trim();
+    if (!clean) return;
+    const answer = getBotAnswer(clean);
+    setMessages((prev) => [...prev, { from: "user", text: clean }, { from: "bot", text: answer }]);
+    setInput("");
+  };
+
+  return (
+    <Card className="rounded-2xl shadow-xl border-slate-200 bg-white/90 backdrop-blur">
+      <CardContent className="p-5">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="h-10 w-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center">
+            <Bot size={20} />
+          </div>
+          <div>
+            <h3 className="font-semibold text-slate-900">Resume Q&A Bot</h3>
+            <p className="text-sm text-slate-500">Ask about skills, experience, projects, contact</p>
+          </div>
+        </div>
+
+        <div className="h-80 overflow-y-auto rounded-2xl bg-slate-50 p-4 space-y-3 mb-4">
+          {messages.map((msg, index) => (
+            <div key={index} className={`flex gap-2 ${msg.from === "user" ? "justify-end" : "justify-start"}`}>
+              {msg.from === "bot" && <Bot className="mt-2 text-slate-500" size={16} />}
+              <div className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm leading-relaxed ${msg.from === "user" ? "bg-slate-900 text-white" : "bg-white text-slate-700 border"}`}>
+                {msg.text}
+              </div>
+              {msg.from === "user" && <User className="mt-2 text-slate-500" size={16} />}
+            </div>
+          ))}
+        </div>
+
+        <div className="flex flex-wrap gap-2 mb-3">
+          {quickQuestions.map((q) => (
+            <button key={q} onClick={() => sendMessage(q)} className="text-xs px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700">
+              {q}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex gap-2">
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+            placeholder="Ask me anything..."
+            className="flex-1 rounded-xl border border-slate-200 px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-900"
+          />
+          <Button onClick={() => sendMessage()} className="rounded-xl bg-slate-900 hover:bg-slate-700">
+            <Send size={16} />
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+export default function ResumeWebsite() {
+  const year = useMemo(() => new Date().getFullYear(), []);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 text-slate-900">
+      <header className="sticky top-0 z-20 bg-white/80 backdrop-blur border-b border-slate-200">
+        <div className="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between">
+          <div className="font-bold tracking-tight text-lg">{profile.name}</div>
+          <nav className="hidden md:flex items-center gap-6 text-sm text-slate-600">
+            <a href="#about" className="hover:text-slate-900">About</a>
+            <a href="#experience" className="hover:text-slate-900">Experience</a>
+            <a href="#projects" className="hover:text-slate-900">Projects</a>
+            <a href="#chat" className="hover:text-slate-900">Q&A Bot</a>
+          </nav>
+        </div>
+      </header>
+
+      <main className="max-w-6xl mx-auto px-5 py-10 md:py-16">
+        <section id="about" className="grid md:grid-cols-[1.1fr_0.9fr] gap-8 items-center mb-16">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <div className="inline-flex items-center gap-2 rounded-full bg-slate-900 text-white px-4 py-2 text-sm mb-6">
+              <Sparkles size={16} /> Available for strategic opportunities
+            </div>
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-5">
+              {profile.title}
+            </h1>
+            <p className="text-lg md:text-xl text-slate-600 leading-relaxed mb-7">
+              {profile.tagline}
+            </p>
+            <div className="flex flex-wrap gap-3 mb-7">
+              <a href={`mailto:${profile.email}`} className="inline-flex items-center gap-2 rounded-xl bg-slate-900 text-white px-4 py-2 text-sm hover:bg-slate-700">
+                <Mail size={16} /> Contact Me
+              </a>
+              <a href={profile.github} className="inline-flex items-center gap-2 rounded-xl border border-slate-300 px-4 py-2 text-sm hover:bg-slate-50">
+                <Github size={16} /> GitHub
+              </a>
+              <a href={profile.linkedin} className="inline-flex items-center gap-2 rounded-xl border border-slate-300 px-4 py-2 text-sm hover:bg-slate-50">
+                <Linkedin size={16} /> LinkedIn
+              </a>
+            </div>
+            <div className="grid sm:grid-cols-3 gap-3 text-sm text-slate-600">
+              <div className="flex items-center gap-2"><MapPin size={16} /> {profile.location}</div>
+              <div className="flex items-center gap-2"><Mail size={16} /> {profile.email}</div>
+              <div className="flex items-center gap-2"><Phone size={16} /> {profile.phone}</div>
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6, delay: 0.1 }}>
+            <Card className="rounded-3xl shadow-2xl border-slate-200 overflow-hidden">
+              <CardContent className="p-0">
+                <div className="h-44 bg-gradient-to-br from-slate-900 via-slate-700 to-slate-500" />
+                <div className="p-6">
+                  <div className="h-24 w-24 -mt-16 rounded-3xl bg-white border-4 border-white shadow-lg flex items-center justify-center text-3xl font-bold text-slate-900">
+                    WC
+                  </div>
+                  <h2 className="mt-4 text-2xl font-bold">{profile.name}</h2>
+                  <p className="text-slate-500 mb-4">Digital Resume + AI Q&A Assistant</p>
+                  <div className="flex flex-wrap gap-2">
+                    {skills.slice(0, 6).map((skill) => (
+                      <span key={skill} className="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-700">{skill}</span>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </section>
+
+        <section className="mb-16">
+          <div className="flex items-center gap-3 mb-6">
+            <Code2 className="text-slate-700" />
+            <h2 className="text-3xl font-bold">Core Skills</h2>
+          </div>
+          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-3">
+            {skills.map((skill) => (
+              <div key={skill} className="rounded-2xl bg-white border border-slate-200 p-4 shadow-sm text-sm font-medium">{skill}</div>
+            ))}
+          </div>
+        </section>
+
+        <section id="experience" className="mb-16">
+          <div className="flex items-center gap-3 mb-6">
+            <Briefcase className="text-slate-700" />
+            <h2 className="text-3xl font-bold">Experience</h2>
+          </div>
+          <div className="space-y-4">
+            {experience.map((job) => (
+              <Card key={job.role} className="rounded-2xl shadow-sm border-slate-200">
+                <CardContent className="p-6">
+                  <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2 mb-3">
+                    <div>
+                      <h3 className="text-xl font-semibold">{job.role}</h3>
+                      <p className="text-slate-500">{job.company}</p>
+                    </div>
+                    <span className="text-sm text-slate-500">{job.period}</span>
+                  </div>
+                  <ul className="list-disc pl-5 text-slate-600 space-y-1">
+                    {job.points.map((p) => <li key={p}>{p}</li>)}
+                  </ul>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        <section className="mb-16">
+          <div className="flex items-center gap-3 mb-6">
+            <GraduationCap className="text-slate-700" />
+            <h2 className="text-3xl font-bold">Education & Certifications</h2>
+          </div>
+          <Card className="rounded-2xl shadow-sm border-slate-200">
+            <CardContent className="p-6">
+              <h3 className="font-semibold text-lg">Your University / Certification</h3>
+              <p className="text-slate-600">Degree, major, certificate, or professional training. Replace this section with your real background.</p>
+            </CardContent>
+          </Card>
+        </section>
+
+        <section id="projects" className="mb-16">
+          <div className="flex items-center gap-3 mb-6">
+            <Award className="text-slate-700" />
+            <h2 className="text-3xl font-bold">Selected Projects</h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-4">
+            {projects.map((project) => (
+              <Card key={project.name} className="rounded-2xl shadow-sm border-slate-200 hover:shadow-lg transition-shadow">
+                <CardContent className="p-6">
+                  <h3 className="text-lg font-semibold mb-2">{project.name}</h3>
+                  <p className="text-slate-600 text-sm leading-relaxed mb-4">{project.description}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-slate-500">{project.tech}</span>
+                    <ExternalLink size={16} className="text-slate-400" />
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        <section id="chat" className="grid md:grid-cols-[0.8fr_1.2fr] gap-8 items-start mb-16">
+          <div>
+            <h2 className="text-3xl font-bold mb-4">Ask My Resume</h2>
+            <p className="text-slate-600 leading-relaxed mb-4">
+              This built-in chatbot answers common questions about your resume. For GitHub Pages, this version works without a backend by using preset Q&A rules.
+            </p>
+            <p className="text-slate-600 leading-relaxed">
+              Later, you can connect it to an AI API or a serverless function if you want a real AI assistant.
+            </p>
+          </div>
+          <Chatbot />
+        </section>
+      </main>
+
+      <footer className="border-t border-slate-200 bg-white">
+        <div className="max-w-6xl mx-auto px-5 py-8 flex flex-col md:flex-row gap-3 md:items-center md:justify-between text-sm text-slate-500">
+          <div>© {year} {profile.name}. Built for GitHub Pages.</div>
+          <div className="flex gap-4">
+            <a href={profile.github} className="hover:text-slate-900">GitHub</a>
+            <a href={profile.linkedin} className="hover:text-slate-900">LinkedIn</a>
+            <a href={`mailto:${profile.email}`} className="hover:text-slate-900">Email</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
