@@ -6,12 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Kellan Hung — Product · Strategy · Growth</title>
+
   <meta
     name="description"
     content="Kellan Hung — Product, Strategy and Growth professional."
   >
 
   <style>
+
     /* =========================================================
        RESET
     ========================================================== */
@@ -23,6 +25,7 @@
       padding: 0;
       box-sizing: border-box;
     }
+
 
     /* =========================================================
        DESIGN TOKENS
@@ -56,6 +59,7 @@
       --container: 1180px;
     }
 
+
     /* =========================================================
        BASE
     ========================================================== */
@@ -78,6 +82,7 @@
       color: var(--black);
 
       line-height: 1.6;
+
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
     }
@@ -95,6 +100,7 @@
     button {
       border: 0;
     }
+
 
     /* =========================================================
        GLOBAL CONTAINER
@@ -115,10 +121,12 @@
       margin-bottom: 12px;
 
       color: var(--blue);
+
       font-size: 11px;
       font-weight: 800;
       letter-spacing: 0.14em;
       line-height: 1.4;
+
       text-transform: uppercase;
     }
 
@@ -135,9 +143,11 @@
       margin-top: 14px;
 
       color: var(--gray);
+
       font-size: 16px;
       line-height: 1.7;
     }
+
 
     /* =========================================================
        NAVIGATION
@@ -151,6 +161,7 @@
       height: 66px;
 
       background: rgba(248, 249, 251, 0.90);
+
       border-bottom: 1px solid rgba(229, 231, 235, 0.8);
 
       backdrop-filter: blur(18px);
@@ -165,6 +176,7 @@
       width: 100%;
       height: 100%;
       max-width: var(--container);
+
       margin: 0 auto;
       padding: 0 30px;
     }
@@ -185,6 +197,7 @@
       gap: 28px;
 
       color: var(--gray);
+
       font-size: 13px;
     }
 
@@ -223,6 +236,7 @@
       transform: translateY(-1px);
     }
 
+
     /* =========================================================
        HERO
     ========================================================== */
@@ -231,6 +245,7 @@
       position: relative;
 
       min-height: 100vh;
+
       padding-top: 66px;
 
       display: flex;
@@ -254,12 +269,18 @@
 
     .hero-grid {
       display: grid;
+
       grid-template-columns:
         minmax(0, 1.3fr)
         minmax(280px, 0.7fr);
 
       gap: 46px;
+
       align-items: center;
+    }
+
+    .hero-content {
+      min-width: 0;
     }
 
     .availability {
@@ -271,6 +292,7 @@
       padding: 6px 11px;
 
       background: #eff6ff;
+
       border: 1px solid #dbeafe;
       border-radius: var(--radius-pill);
 
@@ -285,6 +307,7 @@
       height: 7px;
 
       background: #22c55e;
+
       border-radius: 50%;
 
       box-shadow:
@@ -307,6 +330,7 @@
 
     .hero-text {
       max-width: 650px;
+
       margin-top: 19px;
 
       color: var(--gray);
@@ -317,6 +341,7 @@
 
     .hero-actions {
       display: flex;
+      align-items: center;
       gap: 9px;
 
       margin-top: 22px;
@@ -354,7 +379,9 @@
 
     .button-secondary {
       background: var(--white);
+
       border: 1px solid var(--border);
+
       color: var(--dark);
     }
 
@@ -363,6 +390,7 @@
       border-color: #c7d2fe;
     }
 
+
     /* =========================================================
        PROFILE CARD
     ========================================================== */
@@ -370,9 +398,12 @@
     .profile-card {
       position: relative;
 
+      width: 100%;
+
       padding: 25px;
 
       background: rgba(255, 255, 255, 0.78);
+
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
 
@@ -404,7 +435,11 @@
           #4f46e5
         );
 
-      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      border-radius:
+        var(--radius-lg)
+        var(--radius-lg)
+        0
+        0;
     }
 
     .profile-top::after {
@@ -419,6 +454,7 @@
       top: -95px;
 
       border: 1px solid rgba(255, 255, 255, 0.25);
+
       border-radius: 50%;
     }
 
@@ -436,6 +472,7 @@
       justify-content: center;
 
       background: var(--white);
+
       border: 5px solid var(--white);
       border-radius: 19px;
 
@@ -459,6 +496,7 @@
       margin-top: 3px;
 
       color: var(--gray);
+
       font-size: 13px;
     }
 
@@ -471,107 +509,35 @@
     }
 
     .profile-detail {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
+      display: grid;
 
-      padding: 7px 0;
+      grid-template-columns: 82px minmax(0, 1fr);
+
+      align-items: center;
+
+      column-gap: 14px;
+
+      min-height: 29px;
 
       font-size: 12px;
     }
 
     .profile-detail span:first-child {
       color: var(--light-gray);
+
+      white-space: nowrap;
     }
 
     .profile-detail span:last-child {
       color: var(--dark);
+
       font-weight: 600;
+
       text-align: right;
+
+      overflow-wrap: anywhere;
     }
 
-    /* =========================================================
-       COMPACT CONTENT SYSTEM
-       01 → TITLE → CONTENT → 02
-    ========================================================== */
-
-    .content-list {
-      margin-top: 34px;
-    }
-
-    .content-item {
-      display: grid;
-      grid-template-columns: 74px minmax(0, 1fr);
-      column-gap: 22px;
-
-      padding: 20px 0;
-
-      border-top: 1px solid var(--border);
-    }
-
-    .content-item:last-child {
-      border-bottom: 1px solid var(--border);
-    }
-
-    .content-number {
-      padding-top: 3px;
-
-      color: var(--light-gray);
-
-      font-size: 11px;
-      font-weight: 700;
-      line-height: 1.3;
-    }
-
-    .content-title {
-      font-size: 22px;
-      line-height: 1.15;
-      letter-spacing: -0.035em;
-    }
-
-    .content-subtitle {
-      margin-top: 3px;
-
-      color: var(--blue);
-
-      font-size: 13px;
-      font-weight: 700;
-      line-height: 1.4;
-    }
-
-    .content-text {
-      max-width: 720px;
-      margin-top: 8px;
-
-      color: var(--gray);
-
-      font-size: 14px;
-      line-height: 1.65;
-    }
-
-    .content-points {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-
-      margin-top: 12px;
-    }
-
-    .content-point {
-      color: #4b5563;
-
-      font-size: 12px;
-      line-height: 1.55;
-    }
-
-    .content-point::before {
-      content: "→";
-
-      margin-right: 6px;
-
-      color: var(--blue);
-      font-weight: 800;
-    }
 
     /* =========================================================
        SKILLS
@@ -579,6 +545,7 @@
 
     .skills-grid {
       display: grid;
+
       grid-template-columns: repeat(4, 1fr);
 
       margin-top: 34px;
@@ -628,6 +595,7 @@
       transform: translateY(-2px);
     }
 
+
     /* =========================================================
        EXPERIENCE
     ========================================================== */
@@ -638,7 +606,11 @@
 
     .experience-item {
       display: grid;
-      grid-template-columns: 105px minmax(0, 1fr);
+
+      grid-template-columns:
+        105px
+        minmax(0, 1fr);
+
       column-gap: 28px;
 
       padding: 22px 0;
@@ -662,7 +634,9 @@
 
     .experience-role {
       font-size: 22px;
+
       line-height: 1.2;
+
       letter-spacing: -0.03em;
     }
 
@@ -678,6 +652,7 @@
 
     .experience-description {
       max-width: 700px;
+
       margin-top: 9px;
 
       color: var(--gray);
@@ -688,7 +663,9 @@
 
     .experience-points {
       display: grid;
+
       grid-template-columns: repeat(3, 1fr);
+
       gap: 14px;
 
       margin-top: 12px;
@@ -707,8 +684,10 @@
       margin-right: 6px;
 
       color: var(--blue);
+
       font-weight: 800;
     }
+
 
     /* =========================================================
        EDUCATION
@@ -716,9 +695,11 @@
 
     .education-box {
       margin-top: 34px;
+
       padding: 24px;
 
       background: var(--white);
+
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
     }
@@ -739,6 +720,7 @@
 
     .education-text {
       max-width: 700px;
+
       margin-top: 12px;
 
       color: var(--gray);
@@ -747,13 +729,16 @@
       line-height: 1.7;
     }
 
+
     /* =========================================================
        PROJECTS
     ========================================================== */
 
     .projects-grid {
       display: grid;
+
       grid-template-columns: repeat(3, 1fr);
+
       gap: 15px;
 
       margin-top: 34px;
@@ -763,6 +748,7 @@
       position: relative;
 
       min-height: 320px;
+
       padding: 23px;
 
       display: flex;
@@ -771,6 +757,7 @@
       overflow: hidden;
 
       background: var(--white);
+
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
 
@@ -782,7 +769,8 @@
     .project:hover {
       transform: translateY(-5px);
 
-      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.09);
+      box-shadow:
+        0 20px 50px rgba(15, 23, 42, 0.09);
     }
 
     .project-glow {
@@ -795,6 +783,7 @@
       top: -65px;
 
       background: #eef2ff;
+
       border-radius: 50%;
     }
 
@@ -834,6 +823,7 @@
       padding: 5px 8px;
 
       background: #f3f4f6;
+
       border-radius: var(--radius-pill);
 
       color: var(--gray);
@@ -841,6 +831,7 @@
       font-size: 10px;
       font-weight: 600;
     }
+
 
     /* =========================================================
        AI SECTION
@@ -860,9 +851,13 @@
 
     .ai-layout {
       display: grid;
-      grid-template-columns: 0.75fr 1.25fr;
+
+      grid-template-columns:
+        0.75fr
+        1.25fr;
 
       gap: 48px;
+
       align-items: start;
     }
 
@@ -876,6 +871,7 @@
 
     .ai-description {
       max-width: 460px;
+
       margin-top: 16px;
 
       color: #9ca3af;
@@ -890,6 +886,7 @@
 
     .ai-feature {
       display: flex;
+
       gap: 10px;
 
       margin-top: 10px;
@@ -901,8 +898,10 @@
 
     .check {
       color: #818cf8;
+
       font-weight: 800;
     }
+
 
     /* =========================================================
        CHAT
@@ -914,14 +913,17 @@
       background: var(--white);
 
       border: 1px solid rgba(255, 255, 255, 0.1);
+
       border-radius: var(--radius-md);
 
-      box-shadow: 0 25px 65px rgba(0, 0, 0, 0.3);
+      box-shadow:
+        0 25px 65px rgba(0, 0, 0, 0.3);
     }
 
     .chat-header {
       display: flex;
       align-items: center;
+
       gap: 11px;
 
       padding: 15px 18px;
@@ -940,6 +942,7 @@
       justify-content: center;
 
       background: var(--blue);
+
       border-radius: 10px;
 
       color: var(--white);
@@ -955,12 +958,14 @@
 
     .chat-header small {
       color: var(--light-gray);
+
       font-size: 10px;
     }
 
     .chat-status {
       display: flex;
       align-items: center;
+
       gap: 6px;
 
       margin-left: auto;
@@ -976,6 +981,7 @@
       height: 6px;
 
       background: var(--green);
+
       border-radius: 50%;
     }
 
@@ -993,6 +999,7 @@
       max-width: 80%;
 
       margin-bottom: 10px;
+
       padding: 10px 13px;
 
       border-radius: 12px;
@@ -1003,7 +1010,9 @@
 
     .message.bot {
       background: var(--white);
+
       border: 1px solid var(--border);
+
       color: #374151;
     }
 
@@ -1011,12 +1020,14 @@
       margin-left: auto;
 
       background: var(--black);
+
       color: var(--white);
     }
 
     .quick-questions {
       display: flex;
       flex-wrap: wrap;
+
       gap: 6px;
 
       padding: 11px;
@@ -1028,7 +1039,9 @@
       padding: 6px 9px;
 
       background: var(--white);
+
       border: 1px solid var(--border);
+
       border-radius: var(--radius-pill);
 
       color: var(--gray);
@@ -1045,12 +1058,15 @@
 
     .quick-question:hover {
       background: var(--blue-light);
+
       border-color: #c7d2fe;
+
       color: var(--blue);
     }
 
     .chat-input {
       display: flex;
+
       gap: 7px;
 
       padding: 11px;
@@ -1065,19 +1081,23 @@
       padding: 9px 11px;
 
       background: var(--white);
+
       border: 1px solid var(--border);
+
       border-radius: var(--radius-sm);
 
       outline: none;
 
       color: var(--black);
+
       font-size: 12px;
     }
 
     .chat-input input:focus {
       border-color: #a5b4fc;
 
-      box-shadow: 0 0 0 3px var(--blue-light);
+      box-shadow:
+        0 0 0 3px var(--blue-light);
     }
 
     .chat-send {
@@ -1085,6 +1105,7 @@
       height: 39px;
 
       background: var(--blue);
+
       border-radius: var(--radius-sm);
 
       color: var(--white);
@@ -1093,12 +1114,14 @@
 
       font-size: 13px;
 
-      transition: background 0.2s ease;
+      transition:
+        background 0.2s ease;
     }
 
     .chat-send:hover {
       background: var(--blue-dark);
     }
+
 
     /* =========================================================
        FOOTER
@@ -1108,6 +1131,7 @@
       padding: 40px 0;
 
       background: #0b1120;
+
       color: var(--white);
     }
 
@@ -1134,6 +1158,7 @@
 
     .footer-links {
       display: flex;
+
       gap: 18px;
 
       color: #9ca3af;
@@ -1148,6 +1173,7 @@
     .footer-links a:hover {
       color: var(--white);
     }
+
 
     /* =========================================================
        TABLET
@@ -1168,6 +1194,7 @@
 
       .hero-grid {
         grid-template-columns: 1fr;
+
         gap: 38px;
       }
 
@@ -1181,6 +1208,7 @@
 
       .experience-item {
         grid-template-columns: 1fr;
+
         row-gap: 5px;
 
         padding: 20px 0;
@@ -1192,6 +1220,7 @@
 
       .experience-points {
         grid-template-columns: 1fr;
+
         gap: 7px;
       }
 
@@ -1201,6 +1230,7 @@
 
       .ai-layout {
         grid-template-columns: 1fr;
+
         gap: 38px;
       }
 
@@ -1209,6 +1239,7 @@
         align-items: flex-start;
       }
     }
+
 
     /* =========================================================
        MOBILE
@@ -1245,6 +1276,7 @@
 
       .availability {
         margin-bottom: 16px;
+
         padding: 6px 10px;
 
         font-size: 10px;
@@ -1252,6 +1284,7 @@
 
       .hero h1 {
         font-size: 43px;
+
         line-height: 0.98;
       }
 
@@ -1259,11 +1292,13 @@
         margin-top: 16px;
 
         font-size: 15px;
+
         line-height: 1.65;
       }
 
       .hero-actions {
         gap: 7px;
+
         margin-top: 19px;
       }
 
@@ -1278,6 +1313,7 @@
 
       .profile-card {
         padding: 21px;
+
         border-radius: 18px;
       }
 
@@ -1314,9 +1350,17 @@
       }
 
       .profile-detail {
-        padding: 6px 0;
+        grid-template-columns: 70px minmax(0, 1fr);
+
+        column-gap: 10px;
+
+        min-height: 28px;
 
         font-size: 11px;
+      }
+
+      .profile-detail span:last-child {
+        text-align: right;
       }
 
       .section {
@@ -1335,57 +1379,10 @@
         margin-top: 11px;
 
         font-size: 14px;
+
         line-height: 1.65;
       }
 
-      /* -------------------------------------------------------
-         Compact Numbered Sections
-      -------------------------------------------------------- */
-
-      .content-list {
-        margin-top: 25px;
-      }
-
-      .content-item {
-        grid-template-columns: 42px minmax(0, 1fr);
-        column-gap: 13px;
-
-        padding: 17px 0;
-      }
-
-      .content-number {
-        padding-top: 2px;
-
-        font-size: 10px;
-      }
-
-      .content-title {
-        font-size: 20px;
-      }
-
-      .content-subtitle {
-        margin-top: 2px;
-
-        font-size: 12px;
-      }
-
-      .content-text {
-        margin-top: 7px;
-
-        font-size: 13px;
-        line-height: 1.6;
-      }
-
-      .content-points {
-        grid-template-columns: 1fr;
-        gap: 6px;
-
-        margin-top: 10px;
-      }
-
-      .content-point {
-        font-size: 11px;
-      }
 
       /* -------------------------------------------------------
          Skills
@@ -1399,12 +1396,14 @@
 
       .skill {
         min-height: 82px;
+
         padding: 14px;
       }
 
       .skill-name {
         font-size: 13px;
       }
+
 
       /* -------------------------------------------------------
          Experience
@@ -1430,6 +1429,7 @@
         margin-top: 7px;
 
         font-size: 13px;
+
         line-height: 1.6;
       }
 
@@ -1441,8 +1441,10 @@
 
       .experience-point {
         font-size: 11px;
+
         line-height: 1.5;
       }
+
 
       /* -------------------------------------------------------
          Education
@@ -1450,6 +1452,7 @@
 
       .education-box {
         margin-top: 27px;
+
         padding: 20px;
       }
 
@@ -1467,12 +1470,14 @@
         font-size: 12px;
       }
 
+
       /* -------------------------------------------------------
          Projects
       -------------------------------------------------------- */
 
       .projects-grid {
         gap: 11px;
+
         margin-top: 27px;
       }
 
@@ -1502,6 +1507,7 @@
         font-size: 9px;
       }
 
+
       /* -------------------------------------------------------
          AI
       -------------------------------------------------------- */
@@ -1514,6 +1520,7 @@
         margin-top: 13px;
 
         font-size: 13px;
+
         line-height: 1.65;
       }
 
@@ -1529,6 +1536,7 @@
 
       .chat-messages {
         height: 260px;
+
         padding: 14px;
       }
 
@@ -1546,6 +1554,7 @@
         font-size: 9px;
       }
 
+
       /* -------------------------------------------------------
          Footer
       -------------------------------------------------------- */
@@ -1560,9 +1569,11 @@
 
       .footer-links {
         flex-wrap: wrap;
+
         gap: 10px 15px;
       }
     }
+
 
     /* =========================================================
        VERY SMALL PHONES
@@ -1600,25 +1611,31 @@
       }
 
       .profile-detail {
-        flex-direction: column;
+        grid-template-columns: 1fr;
+
         gap: 1px;
+
+        padding: 6px 0;
       }
 
       .profile-detail span:last-child {
         text-align: left;
       }
     }
+
   </style>
 </head>
+
 
 <body>
 
 
-  <!-- =========================
+  <!-- =========================================================
        NAVIGATION
-  ========================== -->
+  ========================================================== -->
 
   <nav class="navbar">
+
     <div class="nav-inner">
 
       <a href="#top" class="logo">
@@ -1626,11 +1643,26 @@
       </a>
 
       <div class="nav-links">
-        <a href="#about">About</a>
-        <a href="#experience">Experience</a>
-        <a href="#projects">Projects</a>
-        <a href="#assistant">AI Assistant</a>
+
+        <a href="#about">
+          About
+        </a>
+
+        <a href="#experience">
+          Experience
+        </a>
+
+        <a href="#projects">
+          Projects
+        </a>
+
+        <a href="#assistant">
+          AI Assistant
+        </a>
+
       </div>
+
+      <!-- DO NOT CHANGE: ORIGINAL LET'S TALK BUTTON -->
 
       <a
         href="https://line.me/ti/p/4GwwNnu_bA"
@@ -1641,16 +1673,17 @@
         Let's Talk
       </a>
 
-
     </div>
+
   </nav>
 
 
   <main id="top">
 
-    <!-- =========================
+
+    <!-- =========================================================
          HERO
-    ========================== -->
+    ========================================================== -->
 
     <section class="hero">
 
@@ -1658,23 +1691,40 @@
 
         <div class="hero-grid">
 
-          <div>
+
+          <!-- HERO CONTENT -->
+
+          <div class="hero-content">
 
             <div class="availability">
+
               <span class="availability-dot"></span>
+
               Available for strategic opportunities
+
             </div>
 
+
             <h1>
+
               Building
+
               <br>
-              <span class="accent">useful things.</span>
+
+              <span class="accent">
+                useful things.
+              </span>
+
             </h1>
 
+
             <p class="hero-text">
+
               I turn business problems into practical digital products,
               smarter workflows, and measurable growth.
+
             </p>
+
 
             <div class="hero-actions">
 
@@ -1685,20 +1735,22 @@
                 View my work
               </a>
 
+
+              <!-- CONTACT ME = EMAIL -->
+
               <a
-                href="https://line.me/ti/p/4GwwNnu_bA"
+                href="mailto:kaekae939311@gmail.com"
                 class="nav-button"
-                target="_blank"
-                rel="noopener noreferrer"
               >
-                  Contact me
+                Contact me
               </a>
 
+            </div>
 
           </div>
 
 
-          <!-- PROFILE -->
+          <!-- PROFILE CARD -->
 
           <div class="profile-card">
 
@@ -1710,6 +1762,7 @@
 
             </div>
 
+
             <div class="profile-name">
               Kellan Hung
             </div>
@@ -1718,29 +1771,63 @@
               Product · Strategy · Growth
             </div>
 
+
             <div class="profile-line"></div>
 
-            <div class="profile-detail">
-              <span>Location</span>
-              <span>Taipei / Remote</span>
-            </div>
 
             <div class="profile-detail">
-              <span>Focus</span>
-              <span>Strategy &amp; Growth</span>
+
+              <span>
+                Location
+              </span>
+
+              <span>
+                Taipei / Remote
+              </span>
+
             </div>
 
-            <div class="profile-detail">
-              <span>Approach</span>
-              <span>Practical &amp; Data-driven</span>
-            </div>
 
             <div class="profile-detail">
-              <span>Website</span>
-              <span>GitHub Pages</span>
+
+              <span>
+                Focus
+              </span>
+
+              <span>
+                Strategy &amp; Growth
+              </span>
+
+            </div>
+
+
+            <div class="profile-detail">
+
+              <span>
+                Approach
+              </span>
+
+              <span>
+                Practical &amp; Data-driven
+              </span>
+
+            </div>
+
+
+            <div class="profile-detail">
+
+              <span>
+                Email
+              </span>
+
+              <span>
+                kaekae939311@gmail.com
+              </span>
+
             </div>
 
           </div>
+
 
         </div>
 
@@ -1748,9 +1835,10 @@
 
     </section>
 
-    <!-- =====================================================
-         ABOUT / SKILLS
-    ====================================================== -->
+
+    <!-- =========================================================
+         01 / ABOUT / SKILLS
+    ========================================================== -->
 
     <section
       id="about"
@@ -1777,45 +1865,110 @@
 
         <div class="skills-grid">
 
-          <div class="skill">
-            <span class="skill-number">01</span>
-            <span class="skill-name">Product Strategy</span>
-          </div>
 
           <div class="skill">
-            <span class="skill-number">02</span>
-            <span class="skill-name">Data Analysis</span>
+
+            <span class="skill-number">
+              01
+            </span>
+
+            <span class="skill-name">
+              Product Strategy
+            </span>
+
           </div>
 
-          <div class="skill">
-            <span class="skill-number">03</span>
-            <span class="skill-name">Business Development</span>
-          </div>
 
           <div class="skill">
-            <span class="skill-number">04</span>
-            <span class="skill-name">AI Workflow</span>
+
+            <span class="skill-number">
+              02
+            </span>
+
+            <span class="skill-name">
+              Data Analysis
+            </span>
+
           </div>
 
-          <div class="skill">
-            <span class="skill-number">05</span>
-            <span class="skill-name">Project Management</span>
-          </div>
 
           <div class="skill">
-            <span class="skill-number">06</span>
-            <span class="skill-name">Customer Research</span>
+
+            <span class="skill-number">
+              03
+            </span>
+
+            <span class="skill-name">
+              Business Development
+            </span>
+
           </div>
 
-          <div class="skill">
-            <span class="skill-number">07</span>
-            <span class="skill-name">Automation</span>
-          </div>
 
           <div class="skill">
-            <span class="skill-number">08</span>
-            <span class="skill-name">Digital Products</span>
+
+            <span class="skill-number">
+              04
+            </span>
+
+            <span class="skill-name">
+              AI Workflow
+            </span>
+
           </div>
+
+
+          <div class="skill">
+
+            <span class="skill-number">
+              05
+            </span>
+
+            <span class="skill-name">
+              Project Management
+            </span>
+
+          </div>
+
+
+          <div class="skill">
+
+            <span class="skill-number">
+              06
+            </span>
+
+            <span class="skill-name">
+              Customer Research
+            </span>
+
+          </div>
+
+
+          <div class="skill">
+
+            <span class="skill-number">
+              07
+            </span>
+
+            <span class="skill-name">
+              Automation
+            </span>
+
+          </div>
+
+
+          <div class="skill">
+
+            <span class="skill-number">
+              08
+            </span>
+
+            <span class="skill-name">
+              Digital Products
+            </span>
+
+          </div>
+
 
         </div>
 
@@ -1824,9 +1977,9 @@
     </section>
 
 
-    <!-- =====================================================
-         EXPERIENCE
-    ====================================================== -->
+    <!-- =========================================================
+         02 / EXPERIENCE
+    ========================================================== -->
 
     <section
       id="experience"
@@ -1840,7 +1993,7 @@
         </div>
 
         <h2 class="section-title">
-          Experience & impact.
+          Experience &amp; impact.
         </h2>
 
         <p class="section-description">
@@ -1854,13 +2007,12 @@
         <div class="experience">
 
 
-          <!-- JOB 1 -->
-
           <article class="experience-item">
 
             <div class="experience-period">
               2023 — Present
             </div>
+
 
             <div>
 
@@ -1879,6 +2031,7 @@
                 product solutions.
 
               </p>
+
 
               <div class="experience-points">
 
@@ -1901,13 +2054,12 @@
           </article>
 
 
-          <!-- JOB 2 -->
-
           <article class="experience-item">
 
             <div class="experience-period">
               2020 — 2023
             </div>
+
 
             <div>
 
@@ -1925,6 +2077,7 @@
                 stakeholders to turn customer needs into actionable projects.
 
               </p>
+
 
               <div class="experience-points">
 
@@ -1954,9 +2107,9 @@
     </section>
 
 
-    <!-- =====================================================
-         EDUCATION
-    ====================================================== -->
+    <!-- =========================================================
+         03 / EDUCATION
+    ========================================================== -->
 
     <section class="section">
 
@@ -1967,8 +2120,9 @@
         </div>
 
         <h2 class="section-title">
-          Education & certifications.
+          Education &amp; certifications.
         </h2>
+
 
         <div class="education-box">
 
@@ -1994,9 +2148,9 @@
     </section>
 
 
-    <!-- =====================================================
-         PROJECTS
-    ====================================================== -->
+    <!-- =========================================================
+         04 / PROJECTS
+    ========================================================== -->
 
     <section
       id="projects"
@@ -2023,8 +2177,6 @@
 
         <div class="projects-grid">
 
-
-          <!-- PROJECT 1 -->
 
           <article class="project">
 
@@ -2064,8 +2216,6 @@
           </article>
 
 
-          <!-- PROJECT 2 -->
-
           <article class="project">
 
             <div class="project-glow"></div>
@@ -2103,8 +2253,6 @@
 
           </article>
 
-
-          <!-- PROJECT 3 -->
 
           <article class="project">
 
@@ -2151,9 +2299,9 @@
     </section>
 
 
-    <!-- =====================================================
+    <!-- =========================================================
          AI ASSISTANT
-    ====================================================== -->
+    ========================================================== -->
 
     <section
       id="assistant"
@@ -2172,9 +2320,13 @@
             </div>
 
             <h2 class="section-title">
+
               Ask my
-              <br />
+
+              <br>
+
               resume.
+
             </h2>
 
             <p class="ai-description">
@@ -2186,21 +2338,39 @@
 
             </p>
 
+
             <div class="ai-features">
 
               <div class="ai-feature">
-                <span class="check">✓</span>
-                Built with HTML & JavaScript
+
+                <span class="check">
+                  ✓
+                </span>
+
+                Built with HTML &amp; JavaScript
+
               </div>
 
+
               <div class="ai-feature">
-                <span class="check">✓</span>
+
+                <span class="check">
+                  ✓
+                </span>
+
                 Runs directly on GitHub Pages
+
               </div>
 
+
               <div class="ai-feature">
-                <span class="check">✓</span>
+
+                <span class="check">
+                  ✓
+                </span>
+
                 No backend required
+
               </div>
 
             </div>
@@ -2212,11 +2382,13 @@
 
           <div class="chat">
 
+
             <div class="chat-header">
 
               <div class="chat-avatar">
                 W
               </div>
+
 
               <div>
 
@@ -2229,6 +2401,7 @@
                 </small>
 
               </div>
+
 
               <div class="chat-status">
 
@@ -2266,6 +2439,7 @@
                 你是誰？
               </button>
 
+
               <button
                 class="quick-question"
                 onclick="askQuestion('你的技能？')"
@@ -2273,12 +2447,14 @@
                 你的技能？
               </button>
 
+
               <button
                 class="quick-question"
                 onclick="askQuestion('你的作品？')"
               >
                 你的作品？
               </button>
+
 
               <button
                 class="quick-question"
@@ -2297,7 +2473,8 @@
                 type="text"
                 placeholder="Ask about Wallace..."
                 onkeydown="handleEnter(event)"
-              />
+              >
+
 
               <button
                 class="chat-send"
@@ -2320,15 +2497,16 @@
   </main>
 
 
-  <!-- =======================================================
+  <!-- =========================================================
        FOOTER
-  ======================================================== -->
+  ========================================================== -->
 
   <footer>
 
     <div class="container">
 
       <div class="footer-inner">
+
 
         <div>
 
@@ -2342,21 +2520,31 @@
 
         </div>
 
+
         <div class="footer-links">
 
-          <a href="https://github.com/yourusername">
+          <a
+            href="https://github.com/yourusername"
+          >
             GitHub
           </a>
 
-          <a href="https://linkedin.com/in/yourusername">
+
+          <a
+            href="https://linkedin.com/in/yourusername"
+          >
             LinkedIn
           </a>
 
-          <a href="mailto:kaekae939311@gmail.com">
+
+          <a
+            href="mailto:kaekae939311@gmail.com"
+          >
             Email
           </a>
 
         </div>
+
 
       </div>
 
@@ -2365,9 +2553,9 @@
   </footer>
 
 
-  <!-- =======================================================
+  <!-- =========================================================
        JAVASCRIPT
-  ======================================================== -->
+  ========================================================== -->
 
   <script>
 
@@ -2383,7 +2571,7 @@
         "目前展示的作品包含 AI Resume Chatbot、Business Analytics Dashboard 與 Workflow Automation Kit。",
 
       "怎麼聯絡你":
-        "你可以透過 your.email@example.com 聯絡我，也可以透過 GitHub 或 LinkedIn 找到我。",
+        "你可以透過 kaekae939311@gmail.com 聯絡我，也可以透過 GitHub 或 LinkedIn 找到我。",
 
       "你的經歷":
         "我有產品策略、商務開發與專案管理相關經驗，曾負責跨部門專案、流程改善、客戶需求整理與數據分析。"
@@ -2393,7 +2581,9 @@
 
     function findAnswer(message) {
 
-      const text = message.toLowerCase();
+      const text =
+        message.toLowerCase();
+
 
       if (
         text.includes("誰") ||
@@ -2401,24 +2591,33 @@
         text.includes("about") ||
         text.includes("who")
       ) {
+
         return answers["你是誰"];
+
       }
+
 
       if (
         text.includes("技能") ||
         text.includes("能力") ||
         text.includes("skill")
       ) {
+
         return answers["你的技能"];
+
       }
+
 
       if (
         text.includes("作品") ||
         text.includes("專案") ||
         text.includes("project")
       ) {
+
         return answers["你的作品"];
+
       }
+
 
       if (
         text.includes("聯絡") ||
@@ -2426,8 +2625,11 @@
         text.includes("contact") ||
         text.includes("怎麼找")
       ) {
+
         return answers["怎麼聯絡你"];
+
       }
+
 
       if (
         text.includes("經歷") ||
@@ -2435,10 +2637,14 @@
         text.includes("履歷") ||
         text.includes("experience")
       ) {
+
         return answers["你的經歷"];
+
       }
 
+
       return "我可以回答關於 Wallace 的介紹、技能、經歷、作品與聯絡方式。試著問我「你的技能？」或「你的作品？」";
+
     }
 
 
@@ -2447,18 +2653,25 @@
       const container =
         document.getElementById("chatMessages");
 
+
       const message =
         document.createElement("div");
+
 
       message.className =
         "message " + type;
 
-      message.textContent = text;
+
+      message.textContent =
+        text;
+
 
       container.appendChild(message);
 
+
       container.scrollTop =
         container.scrollHeight;
+
     }
 
 
@@ -2467,21 +2680,33 @@
       const input =
         document.getElementById("chatInput");
 
+
       const text =
         input.value.trim();
 
+
       if (!text) return;
 
-      addMessage(text, "user");
+
+      addMessage(
+        text,
+        "user"
+      );
+
 
       const answer =
         findAnswer(text);
 
+
       setTimeout(() => {
 
-        addMessage(answer, "bot");
+        addMessage(
+          answer,
+          "bot"
+        );
 
       }, 250);
+
 
       input.value = "";
 
@@ -2493,7 +2718,10 @@
       const input =
         document.getElementById("chatInput");
 
-      input.value = question;
+
+      input.value =
+        question;
+
 
       sendMessage();
 
@@ -2510,5 +2738,7 @@
 
   </script>
 
+
 </body>
+
 </html>
