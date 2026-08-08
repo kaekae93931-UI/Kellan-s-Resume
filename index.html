@@ -576,6 +576,43 @@
       box-shadow: 0 10px 24px rgba(14,165,233,.22);
     }
 
+    .message-name {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      color: #7dd3fc;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.16);
+      animation: glowPulse 2.4s ease-in-out infinite;
+    }
+    
+    .message-name::before {
+      content: "✦";
+      font-size: 0.7rem;
+      color: #38bdf8;
+    }
+    
+    @keyframes glowPulse {
+      0%,
+      100% {
+        box-shadow: 0 0 10px rgba(56, 189, 248, 0.12);
+        transform: translateY(0);
+      }
+      50% {
+        box-shadow: 0 0 18px rgba(56, 189, 248, 0.32);
+        transform: translateY(-1px);
+      }
+    }
+
+    
     .quick-questions {
       display: flex;
       flex-wrap: wrap;
@@ -1056,15 +1093,32 @@
 
     function addMessage(text, sender = "bot") {
       const container = document.getElementById("chatMessages");
-
+    
       const div = document.createElement("div");
       div.className = `message ${sender}`;
-      div.innerHTML = escapeHtml(text);
-
+    
+      // 支援「名字: 內容」格式
+      if (text.includes(": ")) {
+        const [name, ...rest] = text.split(": ");
+        const content = rest.join(": ");
+    
+        div.innerHTML = `
+          <div class="message-name">${escapeHtml(name)}</div>
+          <div>${escapeHtml(content)}</div>
+        `;
+      } else {
+        div.innerHTML = escapeHtml(text);
+      }
+    
       container.appendChild(div);
-      container.scrollTop = container.scrollHeight;
+    
+      const isNearBottom =
+        container.scrollHeight - container.scrollTop - container.clientHeight < 120;
+    
+      if (isNearBottom) {
+        container.scrollTop = container.scrollHeight;
+      }
     }
-
     function askQuestion(question) {
       const displayName = visitorName || "You";
     
