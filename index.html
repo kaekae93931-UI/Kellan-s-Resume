@@ -2688,26 +2688,48 @@
 
 
   const WORKER_URL = "https://hung.kaekae939311.workers.dev";
-  // ===== 每個訪客的名字 =====
+  
+  // ===== 每個分頁獨立聊天室 =====
+  let sessionId = sessionStorage.getItem("chatSessionId");
+  
+  if (!sessionId) {
+    sessionId = crypto.randomUUID();
+    sessionStorage.setItem("chatSessionId", sessionId);
+  }
+  
+  // ===== 訪客名稱 =====
   const nameInput = document.getElementById("visitorNameInput");
   
   let visitorName = localStorage.getItem("visitorName") || "";
   nameInput.value = visitorName;
   
   nameInput.addEventListener("change", () => {
-    visitorName = nameInput.value.trim() || "匿名訪客";
-    localStorage.setItem("visitorName", visitorName);
+    visitorName = nameInput.value.trim();
+  
+    if (visitorName) {
+      localStorage.setItem("visitorName", visitorName);
+    } else {
+      localStorage.removeItem("visitorName");
+    }
   });
-
-    
-  let lastRendered = 0;
+  
+  let renderedCount = 0;
+  
+  function escapeHtml(text) {
+    return text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
   
   function addMessage(text, sender) {
     const container = document.getElementById("chatMessages");
   
     const div = document.createElement("div");
     div.className = `message ${sender}`;
-    div.innerHTML = `<div class="message-content">${text}</div>`;
+    div.innerHTML = escapeHtml(text);
   
     container.appendChild(div);
     container.scrollTop = container.scrollHeight;
@@ -2719,30 +2741,32 @@
   
     if (!text) return;
   
+    const name = visitorName || "Anonymous";
+  
     try {
-      const res = await fetch(`${WORKER_URL}/send`, {
+      const response = await fetch(`${WORKER_URL}/send`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
           text,
-          name: visitorName || "匿名訪客",
+          name,
           sessionId
         })
-        
       });
   
-      const data = await res.json();
+      const data = await response.json();
   
-      if (data.ok) {
-        input.value = "";
-        await syncMessages();
-      } else {
-        addMessage("❌ LINE 通知失敗：" + JSON.stringify(data), "bot");
+      if (!data.ok) {
+        throw new Error("Send failed");
       }
-    } catch (err) {
-      addMessage("❌ 連線失敗：" + err.message, "bot");
+  
+      input.value = "";
+      await syncMessages();
+    } catch (error) {
+      addMessage("❌ Failed to send message.", "bot");
+      console.error(error);
     }
   }
   
@@ -2754,32 +2778,43 @@
   
   async function syncMessages() {
     try {
-      const res = await fetch(`${WORKER_URL}/messages`);
-      const data = await res.json();
+      const response = await fetch(
+        `${WORKER_URL}/messages?sessionId=${sessionId}`
+      );
   
-      if (data.length === lastRendered) return;
+      const messages = await response.json();
+  
+      if (messages.length === renderedCount) return;
   
       const container = document.getElementById("chatMessages");
       container.innerHTML = "";
   
-      data.forEach(msg => {
+      messages.forEach(msg => {
+        let content;
+  
+        if (msg.role === "admin") {
+          content = msg.text;
+        } else {
+          content = `${msg.name || "Anonymous"}: ${msg.text}`;
+        }
+  
         addMessage(
-          msg.text,
+          content,
           msg.role === "admin" ? "bot" : "user"
         );
       });
   
-      lastRendered = data.length;
-    } catch (err) {
-      console.error(err);
+      renderedCount = messages.length;
+    } catch (error) {
+      console.error(error);
     }
   }
   
-  // 每 2 秒同步一次聊天室
-  setInterval(syncMessages, 2000);
-  
-  // 網頁載入時先同步
+  // 初始同步
   syncMessages();
+  
+  // 每 2 秒同步一次
+  setInterval(syncMessages, 2000);
     
 
     
