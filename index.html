@@ -2684,27 +2684,13 @@
   
     addMessage(text, "user");
   
-    try {
-      const response = await fetch("https://hung.kaekae939311.workers.dev/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ message: text })
-      });
-  
-      const result = await response.text();
-      console.log(result);
-  
-      if (response.ok) {
-        addMessage("✅ 已收到訊息，我會盡快回覆你。", "bot");
-      } else {
-        addMessage("❌ LINE API 錯誤：" + result, "bot");
-      }
-    } catch (error) {
-      console.error(error);
-      addMessage("❌ 連線失敗：" + error.message, "bot");
-    }
+    await fetch("https://hung.kaekae939311.workers.dev/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ text })
+    });
   
     input.value = "";
   }
@@ -2717,24 +2703,25 @@
   }
   
   // ===== 新增這段 =====
-  async function checkReply() {
-    try {
-      const res = await fetch(
-        "https://hung.kaekae939311.workers.dev/reply"
+  async function syncMessages() {
+    const res = await fetch(
+      "https://hung.kaekae939311.workers.dev/messages"
+    );
+  
+    const data = await res.json();
+  
+    const container = document.getElementById("chatMessages");
+    container.innerHTML = "";
+  
+    data.forEach(msg => {
+      addMessage(
+        msg.text,
+        msg.role === "admin" ? "bot" : "user"
       );
-  
-      const data = await res.json();
-  
-      if (data.reply && data.reply !== window.lastReply) {
-        window.lastReply = data.reply;
-        addMessage(data.reply, "bot");
-      }
-    } catch (e) {
-      console.error(e);
-    }
+    });
   }
   
-  setInterval(checkReply, 2000);
+  setInterval(syncMessages, 2000);
     
   </script>
 
