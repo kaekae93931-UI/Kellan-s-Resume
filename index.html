@@ -73,7 +73,7 @@
   .nav-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
   
   .hero{min-height:auto;display:flex;align-items:center;padding:55px 0 45px;overflow:hidden}
-  
+  .hero + .section { position: relative; border-top: 2px solid transparent; background-clip: padding-box; } .hero + .section::before { content: ""; position: absolute; top: -2px; left: 50%; width: min(100% - 40px, var(--max-width)); height: 2px; transform: translateX(-50%); background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.9) 25%, #38bdf8 50%, rgba(139, 92, 246, 0.8) 75%, transparent); box-shadow: 0 0 18px rgba(34, 211, 238, 0.35); }
   .hero-grid{display:grid;grid-template-columns:minmax(0,1.22fr) minmax(340px,.78fr);gap:48px;align-items:stretch;width:100%}
   
   .hero-grid>div:first-child{min-width:0;display:flex;flex-direction:column;justify-content:center}
