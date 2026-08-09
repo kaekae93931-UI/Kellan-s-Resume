@@ -702,5 +702,323 @@
 
   </section>
 
+<script>
+const API = window.API || "";
+
+let sessions = [];
+let currentSessionId = null;
+
+const sessionList = document.getElementById("sessionList");
+const sessionCount = document.getElementById("sessionCount");
+const messages = document.getElementById("messages");
+const text = document.getElementById("text");
+const sendButton = document.getElementById("sendButton");
+const deleteButton = document.getElementById("deleteButton");
+const currentSessionName = document.getElementById("currentSessionName");
+const currentSessionStatus = document.getElementById("currentSessionStatus");
+
+async function loadSessions() {
+  try {
+    const response = await fetch(`${API}/sessions`);
+    const data = await response.json();
+
+    sessions = Array.isArray(data) ? data : [];
+
+    sessionCount.textContent = `${sessions.length} sessions`;
+
+    renderSessions();
+  } catch (error) {
+    console.error("Failed to load sessions:", error);
+  }
+}
+
+function renderSessions() {
+  sessionList.innerHTML = "";
+
+  if (!sessions.length) {
+    sessionList.innerHTML = `
+      <div style="
+        padding: 30px 15px;
+        text-align: center;
+        color: #64748b;
+        font-size: 13px;
+      ">
+        尚無聊天室
+      </div>
+    `;
+
+    return;
+  }
+
+  sessions.forEach((sessionId) => {
+    const item = document.createElement("div");
+
+    item.className = "session-item";
+
+    if (sessionId === currentSessionId) {
+      item.classList.add("active");
+    }
+
+    item.innerHTML = `
+      <div class="session-item-avatar">
+        K
+      </div>
+
+      <div class="session-item-content">
+        <strong>${escapeHtml(sessionId)}</strong>
+        <span>Chat session</span>
+      </div>
+    `;
+
+    item.addEventListener("click", () => {
+      selectSession(sessionId);
+    });
+
+    sessionList.appendChild(item);
+  });
+}
+
+async function selectSession(sessionId) {
+  currentSessionId = sessionId;
+
+  currentSessionName.textContent = sessionId;
+  currentSessionStatus.textContent = "Conversation active";
+
+  deleteButton.disabled = false;
+
+  renderSessions();
+
+  await loadMessages(sessionId);
+}
+
+async function loadMessages(sessionId) {
+  try {
+    const response = await fetch(
+      `${API}/messages?sessionId=${encodeURIComponent(sessionId)}`
+    );
+
+    const data = await response.json();
+
+    renderMessages(Array.isArray(data) ? data : []);
+  } catch (error) {
+    console.error("Failed to load messages:", error);
+  }
+}
+
+function renderMessages(data) {
+  messages.innerHTML = "";
+
+  if (!data.length) {
+    messages.innerHTML = `
+      <div class="empty-messages">
+        <div>
+          <div style="
+            font-size: 32px;
+            margin-bottom: 10px;
+          ">
+            💬
+          </div>
+
+          <div>
+            尚無訊息
+          </div>
+        </div>
+      </div>
+    `;
+
+    return;
+  }
+
+  data.forEach((message) => {
+    const wrapper = document.createElement("div");
+
+    wrapper.className = "message";
+
+    const role = message.role === "admin"
+      ? "admin"
+      : "visitor";
+
+    wrapper.classList.add(role);
+
+    const bubble = document.createElement("div");
+
+    bubble.className = "message-bubble";
+
+    const name = message.name
+      ? `<div style="
+          font-size: 11px;
+          opacity: .6;
+          margin-bottom: 5px;
+        ">${escapeHtml(message.name)}</div>`
+      : "";
+
+    bubble.innerHTML = `
+      ${name}
+      <div>${escapeHtml(message.text || "")}</div>
+    `;
+
+    wrapper.appendChild(bubble);
+
+    messages.appendChild(wrapper);
+  });
+
+  messages.scrollTop = messages.scrollHeight;
+}
+
+async function sendMessage() {
+  const value = text.value.trim();
+
+  if (!value || !currentSessionId) {
+    return;
+  }
+
+  sendButton.disabled = true;
+
+  try {
+    const response = await fetch(`${API}/reply`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        text: value,
+        sessionId: currentSessionId
+      })
+    });
+
+    const result = await response.json();
+
+    if (!result.ok) {
+      throw new Error(
+        result.error || "Reply failed"
+      );
+    }
+
+    text.value = "";
+
+    await loadMessages(currentSessionId);
+  } catch (error) {
+    console.error("Failed to send message:", error);
+    alert("發送失敗");
+  } finally {
+    sendButton.disabled = false;
+    text.focus();
+  }
+}
+
+async function deleteCurrentSession() {
+  if (!currentSessionId) {
+    return;
+  }
+
+  const confirmed = confirm(
+    "確定要刪除這個聊天室的所有紀錄嗎？"
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  deleteButton.disabled = true;
+
+  try {
+    const response = await fetch(
+      `${API}/sessions?sessionId=${encodeURIComponent(currentSessionId)}`,
+      {
+        method: "DELETE"
+      }
+    );
+
+    const result = await response.json();
+
+    if (!result.ok) {
+      throw new Error(
+        result.error || "Delete failed"
+      );
+    }
+
+    sessions = sessions.filter(
+      (id) => id !== currentSessionId
+    );
+
+    currentSessionId = null;
+
+    currentSessionName.textContent =
+      "尚未選擇聊天室";
+
+    currentSessionStatus.textContent =
+      "Select a conversation";
+
+    messages.innerHTML = `
+      <div class="empty-messages">
+        <div>
+          <div style="
+            font-size: 32px;
+            margin-bottom: 10px;
+          ">
+            💬
+          </div>
+
+          <div>
+            請從左側選擇聊天室
+          </div>
+        </div>
+      </div>
+    `;
+
+    sessionCount.textContent =
+      `${sessions.length} sessions`;
+
+    renderSessions();
+  } catch (error) {
+    console.error("Failed to delete session:", error);
+
+    alert("刪除失敗");
+
+    deleteButton.disabled = false;
+  }
+}
+
+function escapeHtml(value) {
+  const div = document.createElement("div");
+  div.textContent = value;
+  return div.innerHTML;
+}
+
+sendButton.addEventListener(
+  "click",
+  sendMessage
+);
+
+deleteButton.addEventListener(
+  "click",
+  deleteCurrentSession
+);
+
+text.addEventListener(
+  "keydown",
+  (event) => {
+    if (
+      event.key === "Enter" &&
+      !event.shiftKey
+    ) {
+      event.preventDefault();
+      sendMessage();
+    }
+  }
+);
+
+loadSessions();
+
+setInterval(() => {
+  loadSessions();
+
+  if (currentSessionId) {
+    loadMessages(currentSessionId);
+  }
+}, 5000);
+</script>
+
+  
 </body>
 </html>
