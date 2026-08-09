@@ -1,1505 +1,1804 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>聊天室管理後台</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    html,
-    body {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-    }
-
-    body {
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        "Noto Sans TC",
-        "Microsoft JhengHei",
-        sans-serif;
-
-      background: #0b1328;
-      color: #e5e7eb;
-      overflow: hidden;
-    }
-
-    .topbar {
-      height: 92px;
-      padding: 0 38px;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      background: #0d172c;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
-    }
-
-    .brand h1 {
-      margin: 0;
-      color: #f8fafc;
-      font-size: 24px;
-      font-weight: 700;
-    }
-
-    .brand p {
-      margin: 7px 0 0;
-      color: #7183a3;
-      font-size: 14px;
-    }
-
-    .online-status {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-
-      padding: 9px 16px;
-
-      border: 1px solid rgba(34, 197, 94, 0.18);
-      border-radius: 999px;
-
-      background: rgba(34, 197, 94, 0.08);
-      color: #4ade80;
-
-      font-size: 13px;
-    }
-
-    .online-dot {
-      width: 8px;
-      height: 8px;
-
-      border-radius: 50%;
-      background: #22c55e;
-
-      box-shadow: 0 0 10px rgba(34, 197, 94, 0.65);
-    }
-
-    .dashboard {
-      height: calc(100vh - 92px);
-
-      display: flex;
-
-      min-width: 0;
-      min-height: 0;
-
-      overflow: hidden;
-    }
-
-    .sidebar {
-      width: 355px;
-      min-width: 355px;
-      height: 100%;
-
-      display: flex;
-      flex-direction: column;
-
-      background: #0b1428;
-      border-right: 1px solid rgba(148, 163, 184, 0.1);
-    }
-
-    .sidebar-header {
-      padding: 22px 24px;
-
-      border-bottom: 1px solid rgba(148, 163, 184, 0.08);
-    }
-
-    .sidebar-title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .sidebar-title strong {
-      color: #f8fafc;
-      font-size: 16px;
-    }
-
-    .session-count {
-      padding: 6px 11px;
-
-      border-radius: 999px;
-
-      background: #17243d;
-      color: #7890b5;
-
-      font-size: 12px;
-    }
-
-    #sessionList {
-      flex: 1;
-      min-height: 0;
-
-      padding: 12px;
-
-      overflow-y: auto;
-    }
-
-    .session {
-      width: 100%;
-
-      padding: 13px 12px;
-
-      border-radius: 10px;
-
-      cursor: pointer;
-
-      transition: 0.15s;
-    }
-
-    .session:hover {
-      background: #121f38;
-    }
-
-    .session.active {
-      background: #172a4a;
-    }
-
-    .session-name {
-      color: #e2e8f0;
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .session-id {
-      margin-top: 4px;
-
-      color: #64748b;
-      font-size: 11px;
-
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .empty-sessions {
-      padding: 30px 15px;
-
-      text-align: center;
-
-      color: #64748b;
-      font-size: 13px;
-    }
-
-    .chat-panel {
-      flex: 1;
-
-      width: 0;
-      min-width: 0;
-      min-height: 0;
-      height: 100%;
-
-      display: flex;
-      flex-direction: column;
-
-      background: #0f172a;
-
-      overflow: hidden;
-    }
-
-    .chat-header {
-      flex: 0 0 auto;
-
-      min-height: 86px;
-
-      padding: 16px 22px;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      gap: 20px;
-
-      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
-    }
-
-    .chat-user {
-      min-width: 0;
-
-      display: flex;
-      align-items: center;
-
-      gap: 14px;
-    }
-
-    .chat-avatar {
-      width: 46px;
-      height: 46px;
-
-      flex: 0 0 46px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 13px;
-
-      background: linear-gradient(
-        135deg,
-        #2563eb,
-        #7c3aed
-      );
-
-      color: #fff;
-
-      font-size: 20px;
-      font-weight: 700;
-    }
-
-    .chat-user > div:last-child {
-      min-width: 0;
-
-      display: flex;
-      flex-direction: column;
-    }
-
-    #currentSessionName {
-      color: #f8fafc;
-
-      font-size: 16px;
-      font-weight: 700;
-
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    #currentSessionStatus {
-      margin-top: 3px;
-
-      color: #64748b;
-
-      font-size: 12px;
-    }
-
-    .delete-button {
-      height: 40px;
-
-      padding: 0 14px;
-
-      flex: 0 0 auto;
-
-      border: 1px solid rgba(248, 113, 113, 0.2);
-      border-radius: 9px;
-
-      background: rgba(127, 29, 29, 0.12);
-
-      color: #f87171;
-
-      cursor: pointer;
-    }
-
-    .delete-button:hover:not(:disabled) {
-      background: rgba(127, 29, 29, 0.25);
-    }
-
-    .delete-button:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-    }
-
-    #messages {
-      flex: 1 1 auto;
-
-      width: 100%;
-
-      min-width: 0;
-      min-height: 0;
-
-      padding: 28px 30px;
-
-      display: flex;
-      flex-direction: column;
-
-      gap: 16px;
-
-      overflow-x: hidden;
-      overflow-y: auto;
-    }
-
-    .message {
-      width: 100%;
-      min-width: 0;
-
-      display: flex;
-      flex-direction: column;
-    }
-
-    .message.visitor {
-      align-items: flex-start;
-    }
-
-    .message.admin {
-      align-items: flex-end;
-    }
-
-    .message-name {
-      margin-bottom: 5px;
-
-      color: #64748b;
-
-      font-size: 11px;
-    }
-
-    .message.admin .message-name {
-      text-align: right;
-    }
-
-    .message > div:nth-child(2) {
-      width: fit-content;
-
-      max-width: min(720px, 75%);
-
-      padding: 13px 17px;
-
-      border-radius: 12px;
-
-      line-height: 1.65;
-
-      white-space: pre-wrap;
-
-      overflow-wrap: anywhere;
-      word-break: break-word;
-    }
-
-    .message.visitor > div:nth-child(2) {
-      background: #172554;
-
-      color: #e2e8f0;
-
-      border: 1px solid rgba(59, 130, 246, 0.16);
-
-      border-top-left-radius: 5px;
-    }
-
-    .message.admin > div:nth-child(2) {
-      background: #2563eb;
-
-      color: #fff;
-
-      border: 1px solid rgba(96, 165, 250, 0.18);
-
-      border-top-right-radius: 5px;
-    }
-
-    .message-time {
-      margin-top: 5px;
-
-      color: #475569;
-
-      font-size: 10px;
-    }
-
-    .message.admin .message-time {
-      text-align: right;
-    }
-
-    .empty-messages {
-      flex: 1;
-
-      width: 100%;
-      min-height: 100%;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      color: #64748b;
-
-      text-align: center;
-    }
-
-    .composer {
-      flex: 0 0 auto;
-
-      width: 100%;
-
-      padding: 16px 22px;
-
-      display: flex;
-      align-items: center;
-
-      gap: 10px;
-
-      border-top: 1px solid rgba(148, 163, 184, 0.1);
-    }
-
-    #text {
-      flex: 1;
-
-      width: 100%;
-      min-width: 0;
-
-      height: 46px;
-
-      padding: 0 15px;
-
-      border: 1px solid #263653;
-      border-radius: 10px;
-
-      outline: none;
-
-      background: #111c33;
-      color: #e2e8f0;
-
-      font-size: 14px;
-    }
-
-    #text:focus {
-      border-color: #3b82f6;
-
-      box-shadow:
-        0 0 0 3px rgba(59, 130, 246, 0.1);
-    }
-
-    #text::placeholder {
-      color: #64748b;
-    }
-
-    .send-button {
-      height: 46px;
-
-      padding: 0 20px;
-
-      flex: 0 0 auto;
-
-      border: 0;
-      border-radius: 10px;
-
-      background: #2563eb;
-
-      color: #fff;
-
-      font-size: 14px;
-      font-weight: 600;
-
-      cursor: pointer;
-    }
-
-    .send-button:hover:not(:disabled) {
-      background: #1d4ed8;
-    }
-
-    .send-button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    @media (max-width: 800px) {
-
-      .topbar {
-        height: 76px;
-        padding: 0 18px;
-      }
-
-      .brand h1 {
-        font-size: 19px;
-      }
-
-      .brand p {
-        font-size: 11px;
-      }
-
-      .dashboard {
-        height: calc(100vh - 76px);
-      }
-
-      .sidebar {
-        width: 280px;
-        min-width: 280px;
-      }
-
-      #messages {
-        padding: 20px 16px;
-      }
-
-      .message > div:nth-child(2) {
-        max-width: 85%;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>聊天室管理後台</title>
+
+<style>
+*{box-sizing:border-box}
+
+html,body{
+  margin:0;
+  padding:0;
+  width:100%;
+  height:100%;
+  font-family:Arial,"Noto Sans TC",sans-serif;
+  background:#07111f;
+  color:#e8f1ff;
+}
+
+body{
+  overflow:hidden;
+}
+
+button,input{
+  font:inherit;
+}
+
+.topbar{
+  height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 28px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  background:#0a1627;
+}
+
+.brand h1{
+  margin:0;
+  font-size:20px;
+}
+
+.brand p{
+  margin:5px 0 0;
+  color:#8293aa;
+  font-size:12px;
+}
+
+.online-status{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#7ee2a8;
+  font-size:13px;
+}
+
+.online-dot,
+.status-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#35e68b;
+  box-shadow:0 0 10px rgba(53,230,139,.8);
+}
+
+.dashboard{
+  height:calc(100vh - 76px);
+  display:flex;
+  min-height:0;
+}
+
+.sidebar{
+  width:320px;
+  flex-shrink:0;
+  border-right:1px solid rgba(255,255,255,.08);
+  background:#091525;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+}
+
+.sidebar-header{
+  padding:20px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.sidebar-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.sidebar-title strong{
+  font-size:15px;
+}
+
+.session-count{
+  color:#74859c;
+  font-size:12px;
+}
+
+#sessionList{
+  flex:1;
+  overflow-y:auto;
+  min-height:0;
+}
+
+.session{
+  position:relative;
+  padding:16px 18px;
+  border-bottom:1px solid rgba(255,255,255,.045);
+  cursor:pointer;
+  transition:background .15s;
+}
+
+.session:hover{
+  background:rgba(255,255,255,.035);
+}
+
+.session.active{
+  background:rgba(65,144,255,.12);
+  border-left:3px solid #4b9cff;
+  padding-left:15px;
+}
+
+.session.has-new{
+  background:rgba(38,211,112,.08);
+}
+
+.session.has-new::after{
+  content:"";
+  position:absolute;
+  right:16px;
+  top:19px;
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:#35e68b;
+  box-shadow:0 0 9px rgba(53,230,139,.8);
+}
+
+.session-name{
+  color:#fff;
+  font-weight:600;
+  font-size:14px;
+  padding-right:22px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.session-id{
+  margin-top:5px;
+  color:#65768d;
+  font-size:10px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.empty-sessions{
+  padding:30px 20px;
+  text-align:center;
+  color:#64758b;
+  font-size:13px;
+}
+
+.chat-panel{
+  flex:1;
+  min-width:0;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  background:#07111f;
+}
+
+.chat-header{
+  height:76px;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding:0 24px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  background:#0a1627;
+}
+
+.chat-user{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width:0;
+}
+
+.chat-avatar{
+  width:40px;
+  height:40px;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:12px;
+  background:linear-gradient(135deg,#3b82f6,#7c3aed);
+  color:#fff;
+  font-weight:700;
+}
+
+.chat-user>div:last-child{
+  min-width:0;
+}
+
+#currentSessionName{
+  display:block;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+#currentSessionStatus{
+  display:block;
+  margin-top:4px;
+  color:#71839a;
+  font-size:11px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.delete-button{
+  flex-shrink:0;
+  border:1px solid rgba(255,80,80,.25);
+  border-radius:8px;
+  padding:9px 13px;
+  color:#ff8d8d;
+  background:rgba(255,60,60,.08);
+  cursor:pointer;
+}
+
+.delete-button:hover:not(:disabled){
+  background:rgba(255,60,60,.16);
+}
+
+.delete-button:disabled{
+  opacity:.35;
+  cursor:not-allowed;
+}
+
+#messages{
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  padding:24px;
+  scroll-behavior:smooth;
+}
+
+.empty-messages{
+  width:100%;
+  height:100%;
+  min-height:200px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color:#65768c;
+}
+
+.message{
+  width:fit-content;
+  max-width:min(75%,700px);
+  margin-bottom:15px;
+  padding:12px 15px;
+  border-radius:14px;
+  line-height:1.6;
+  word-break:break-word;
+  animation:messageIn .18s ease-out;
+}
+
+@keyframes messageIn{
+  from{
+    opacity:0;
+    transform:translateY(5px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+.message.visitor{
+  margin-right:auto;
+  background:#122238;
+  border:1px solid rgba(90,130,180,.16);
+}
+
+.message.admin{
+  margin-left:auto;
+  background:#164b36;
+  border:1px solid rgba(53,230,139,.18);
+}
+
+.message.new-message{
+  border-color:#35e68b;
+  box-shadow:0 0 0 1px rgba(53,230,139,.16),0 0 18px rgba(53,230,139,.08);
+}
+
+.message-name{
+  margin-bottom:4px;
+  color:#7fa5d1;
+  font-size:11px;
+  font-weight:600;
+}
+
+.message.admin .message-name{
+  color:#75e2a8;
+}
+
+.message-time{
+  margin-top:6px;
+  color:#63758d;
+  font-size:10px;
+}
+
+.composer{
+  flex-shrink:0;
+  display:flex;
+  gap:10px;
+  padding:16px 24px;
+  border-top:1px solid rgba(255,255,255,.08);
+  background:#0a1627;
+}
+
+#text{
+  flex:1;
+  min-width:0;
+  height:44px;
+  padding:0 14px;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:9px;
+  outline:none;
+  color:#fff;
+  background:#07111f;
+}
+
+#text:focus{
+  border-color:#3989ff;
+}
+
+#text:disabled{
+  opacity:.5;
+}
+
+.send-button{
+  width:76px;
+  height:44px;
+  border:0;
+  border-radius:9px;
+  color:#fff;
+  background:#287bea;
+  cursor:pointer;
+}
+
+.send-button:hover:not(:disabled){
+  background:#3688f5;
+}
+
+.send-button:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+.mobile-back{
+  display:none;
+}
+
+@media(max-width:700px){
+
+  body{
+    overflow:hidden;
+  }
+
+  .topbar{
+    height:62px;
+    padding:0 15px;
+  }
+
+  .brand h1{
+    font-size:16px;
+  }
+
+  .brand p{
+    display:none;
+  }
+
+  .online-status{
+    font-size:11px;
+  }
+
+  .dashboard{
+    position:relative;
+    height:calc(100vh - 62px);
+  }
+
+  .sidebar{
+    position:absolute;
+    inset:0;
+    width:100%;
+    z-index:2;
+    border-right:0;
+    transition:transform .2s ease;
+  }
+
+  .chat-panel{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    width:100%;
+  }
+
+  .dashboard.chat-open .sidebar{
+    transform:translateX(-100%);
+  }
+
+  .dashboard.chat-open .chat-panel{
+    z-index:3;
+  }
+
+  .sidebar-header{
+    padding:16px;
+  }
+
+  .session{
+    padding:17px 16px;
+  }
+
+  .chat-header{
+    height:68px;
+    padding:0 12px;
+    gap:8px;
+  }
+
+  .chat-avatar{
+    width:36px;
+    height:36px;
+    border-radius:10px;
+  }
+
+  .chat-user{
+    flex:1;
+    min-width:0;
+  }
+
+  .delete-button{
+    padding:8px 9px;
+    font-size:12px;
+  }
+
+  .mobile-back{
+    display:block;
+    border:0;
+    padding:6px;
+    margin-right:3px;
+    color:#8fb8ef;
+    background:none;
+    cursor:pointer;
+    font-size:18px;
+  }
+
+  #messages{
+    padding:16px 12px;
+  }
+
+  .message{
+    max-width:88%;
+    padding:10px 12px;
+    font-size:14px;
+  }
+
+  .composer{
+    padding:10px 12px;
+    padding-bottom:calc(10px + env(safe-area-inset-bottom));
+    gap:7px;
+  }
+
+  #text{
+    height:42px;
+    font-size:14px;
+  }
+
+  .send-button{
+    width:58px;
+    height:42px;
+    font-size:13px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <header class="topbar">
+<header class="topbar">
 
-    <div class="brand">
+  <div class="brand">
+    <h1>聊天室管理後台</h1>
+    <p>Chat Administration · Kellan Resume Assistant</p>
+  </div>
 
-      <h1>聊天室管理後台</h1>
+  <div class="online-status">
+    <span class="online-dot"></span>
+    System Online
+  </div>
 
-      <p>
-        Chat Administration · Kellan Resume Assistant
-      </p>
+</header>
+
+<section class="dashboard">
+
+  <aside class="sidebar">
+
+    <div class="sidebar-header">
+
+      <div class="sidebar-title">
+        <strong>聊天室列表</strong>
+
+        <span
+          id="sessionCount"
+          class="session-count"
+        >
+          0 sessions
+        </span>
+      </div>
 
     </div>
 
-    <div class="online-status">
+    <div id="sessionList"></div>
 
-      <span class="online-dot"></span>
+  </aside>
 
-      System Online
+  <section class="chat-panel">
 
-    </div>
+    <header class="chat-header">
 
-  </header>
+      <div class="chat-user">
 
-  <section class="dashboard">
+        <button
+          id="mobileBackButton"
+          class="mobile-back"
+          type="button"
+          aria-label="返回聊天室列表"
+        >
+          ←
+        </button>
 
-    <aside class="sidebar">
+        <div class="chat-avatar">
+          K
+        </div>
 
-      <div class="sidebar-header">
+        <div>
 
-        <div class="sidebar-title">
-
-          <strong>
-            聊天室列表
+          <strong id="currentSessionName">
+            尚未選擇聊天室
           </strong>
 
-          <span
-            id="sessionCount"
-            class="session-count"
-          >
-            0 sessions
+          <span id="currentSessionStatus">
+            Select a conversation
           </span>
 
         </div>
 
       </div>
 
-      <div id="sessionList"></div>
+      <button
+        id="deleteButton"
+        class="delete-button"
+        type="button"
+        disabled
+      >
+        🗑 刪除紀錄
+      </button>
 
-    </aside>
+    </header>
 
-    <section class="chat-panel">
+    <div id="messages">
 
-      <header class="chat-header">
-
-        <div class="chat-user">
-
-          <div class="chat-avatar">
-            K
-          </div>
-
-          <div>
-
-            <strong id="currentSessionName">
-              尚未選擇聊天室
-            </strong>
-
-            <span id="currentSessionStatus">
-              Select a conversation
-            </span>
-
-          </div>
-
-        </div>
-
-        <button
-          id="deleteButton"
-          class="delete-button"
-          type="button"
-          disabled
-        >
-          🗑 刪除紀錄
-        </button>
-
-      </header>
-
-      <div id="messages">
-
-        <div class="empty-messages">
-
-          <div>
-
-            <div
-              style="
-                font-size:32px;
-                margin-bottom:10px;
-              "
-            >
-              💬
-            </div>
-
-            <div>
-              請從左側選擇聊天室
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <div class="composer">
-
-        <input
-          id="text"
-          type="text"
-          placeholder="輸入回覆後按 Enter..."
-          autocomplete="off"
-        />
-
-        <button
-          id="sendButton"
-          class="send-button"
-          type="button"
-        >
-          發送
-        </button>
-
-      </div>
-
-    </section>
-
-  </section>
-  
-  <script>
-  const WORKER =
-    "https://hung.kaekae939311.workers.dev";
-  
-  let currentSession = null;
-  
-  const sessionList =
-    document.getElementById("sessionList");
-  
-  const sessionCount =
-    document.getElementById("sessionCount");
-  
-  const messagesBox =
-    document.getElementById("messages");
-  
-  const textInput =
-    document.getElementById("text");
-  
-  const sendButton =
-    document.getElementById("sendButton");
-  
-  const deleteButton =
-    document.getElementById("deleteButton");
-  
-  const currentSessionName =
-    document.getElementById("currentSessionName");
-  
-  const currentSessionStatus =
-    document.getElementById("currentSessionStatus");
-  
-  let sessionCache = new Map();
-  
-  let messageCache = new Map();
-  
-  async function loadSessions() {
-    try {
-      const res =
-        await fetch(
-          `${WORKER}/sessions`,
-          {
-            cache: "no-store"
-          }
-        );
-  
-      if (!res.ok) {
-        throw new Error(
-          `Sessions request failed: ${res.status}`
-        );
-      }
-  
-      const sessions =
-        await res.json();
-  
-      sessionCount.textContent =
-        `${sessions.length} sessions`;
-  
-      if (!Array.isArray(sessions)) {
-        return;
-      }
-  
-      if (
-        currentSession &&
-        !sessions.includes(currentSession)
-      ) {
-        currentSession = null;
-        updateChatHeader();
-        showEmptyMessages(
-          "目前聊天室已被刪除"
-        );
-      }
-  
-      const sessionData =
-        await Promise.all(
-          sessions.map(async id => {
-            let displayName = "Anonymous";
-            let messages = [];
-  
-            try {
-              const messageRes =
-                await fetch(
-                  `${WORKER}/messages?sessionId=${encodeURIComponent(id)}`,
-                  {
-                    cache: "no-store"
-                  }
-                );
-  
-              if (messageRes.ok) {
-                const data =
-                  await messageRes.json();
-  
-                if (Array.isArray(data)) {
-                  messages = data;
-  
-                  const visitorMessage =
-                    data.find(
-                      message =>
-                        message.role === "visitor" &&
-                        message.name
-                    );
-  
-                  if (visitorMessage) {
-                    displayName =
-                      visitorMessage.name;
-                  }
-                }
-              }
-            } catch (error) {
-              console.error(
-                "load session data error:",
-                error
-              );
-            }
-  
-            return {
-              id,
-              displayName,
-              messages
-            };
-          })
-        );
-  
-      const newCache = new Map();
-  
-      sessionData.forEach(item => {
-        newCache.set(
-          item.id,
-          item
-        );
-      });
-  
-      sessionCache = newCache;
-  
-      updateSessionList(
-        sessions,
-        sessionData
-      );
-  
-      if (
-        currentSession &&
-        sessionCache.has(currentSession)
-      ) {
-        const current =
-          sessionCache.get(currentSession);
-  
-        messageCache.set(
-          currentSession,
-          current.messages
-        );
-      }
-  
-      if (!currentSession && sessions.length) {
-        currentSession = sessions[0];
-  
-        updateSessionActiveState();
-  
-        updateChatHeader();
-  
-        await loadMessages();
-      }
-    } catch (error) {
-      console.error(
-        "loadSessions error:",
-        error
-      );
-    }
-  }
-  
-  function updateSessionList(
-    sessions,
-    sessionData
-  ) {
-    const existing =
-      new Map();
-  
-    sessionList
-      .querySelectorAll(".session")
-      .forEach(element => {
-        existing.set(
-          element.dataset.sessionId,
-          element
-        );
-      });
-  
-    sessions.forEach(
-      (id, index) => {
-        const data =
-          sessionData.find(
-            item => item.id === id
-          );
-  
-        if (!data) {
-          return;
-        }
-  
-        let div =
-          existing.get(id);
-  
-        if (!div) {
-          div =
-            document.createElement("div");
-  
-          div.className =
-            "session";
-  
-          div.dataset.sessionId =
-            id;
-  
-          div.addEventListener(
-            "click",
-            async () => {
-              currentSession = id;
-  
-              updateSessionActiveState();
-  
-              updateChatHeader();
-  
-              await loadMessages();
-            }
-          );
-        }
-  
-        const lastMessage =
-          data.messages.length
-            ? data.messages[
-                data.messages.length - 1
-              ]
-            : null;
-  
-        const isUnread =
-          id !== currentSession &&
-          lastMessage &&
-          lastMessage.role === "visitor";
-  
-        let nameElement =
-          div.querySelector(
-            ".session-name"
-          );
-  
-        if (!nameElement) {
-          nameElement =
-            document.createElement("div");
-  
-          nameElement.className =
-            "session-name";
-  
-          div.appendChild(
-            nameElement
-          );
-        }
-  
-        nameElement.textContent =
-          data.displayName;
-  
-        let idElement =
-          div.querySelector(
-            ".session-id"
-          );
-  
-        if (!idElement) {
-          idElement =
-            document.createElement("div");
-  
-          idElement.className =
-            "session-id";
-  
-          div.appendChild(
-            idElement
-          );
-        }
-  
-        idElement.textContent =
-          id;
-  
-        let unread =
-          div.querySelector(
-            ".session-unread"
-          );
-  
-        if (isUnread) {
-          if (!unread) {
-            unread =
-              document.createElement("span");
-  
-            unread.className =
-              "session-unread";
-  
-            unread.style.display =
-              "inline-block";
-  
-            unread.style.width =
-              "9px";
-  
-            unread.style.height =
-              "9px";
-  
-            unread.style.marginLeft =
-              "8px";
-  
-            unread.style.borderRadius =
-              "50%";
-  
-            unread.style.background =
-              "#22c55e";
-  
-            unread.style.boxShadow =
-              "0 0 8px rgba(34,197,94,.8)";
-  
-            nameElement.appendChild(
-              unread
-            );
-          }
-        } else if (unread) {
-          unread.remove();
-        }
-  
-        if (
-          id === currentSession
-        ) {
-          div.classList.add(
-            "active"
-          );
-        } else {
-          div.classList.remove(
-            "active"
-          );
-        }
-  
-        const currentAtPosition =
-          sessionList.children[index];
-  
-        if (
-          currentAtPosition !== div
-        ) {
-          sessionList.insertBefore(
-            div,
-            currentAtPosition || null
-          );
-        }
-      });
-  
-    const validIds =
-      new Set(sessions);
-  
-    sessionList
-      .querySelectorAll(".session")
-      .forEach(element => {
-        if (
-          !validIds.has(
-            element.dataset.sessionId
-          )
-        ) {
-          element.remove();
-        }
-      });
-  }
-  
-  function updateSessionActiveState() {
-    sessionList
-      .querySelectorAll(".session")
-      .forEach(element => {
-        if (
-          element.dataset.sessionId ===
-          currentSession
-        ) {
-          element.classList.add(
-            "active"
-          );
-        } else {
-          element.classList.remove(
-            "active"
-          );
-        }
-      });
-  
-    if (currentSession) {
-      const active =
-        sessionList.querySelector(
-          `[data-session-id="${CSS.escape(
-            currentSession
-          )}"]`
-        );
-  
-      if (active) {
-        const unread =
-          active.querySelector(
-            ".session-unread"
-          );
-  
-        if (unread) {
-          unread.remove();
-        }
-      }
-    }
-  }
-  
-  async function loadMessages() {
-    if (!currentSession) {
-      showEmptyMessages(
-        "請從左側選擇聊天室"
-      );
-      return;
-    }
-  
-    try {
-      const res =
-        await fetch(
-          `${WORKER}/messages?sessionId=${encodeURIComponent(
-            currentSession
-          )}`,
-          {
-            cache: "no-store"
-          }
-        );
-  
-      if (!res.ok) {
-        throw new Error(
-          `Messages request failed: ${res.status}`
-        );
-      }
-  
-      const data =
-        await res.json();
-  
-      if (!Array.isArray(data)) {
-        return;
-      }
-  
-      messageCache.set(
-        currentSession,
-        data
-      );
-  
-      renderMessages(data);
-  
-      markCurrentSessionRead();
-    } catch (error) {
-      console.error(
-        "loadMessages error:",
-        error
-      );
-    }
-  }
-  
-  function renderMessages(data) {
-    messagesBox.innerHTML = "";
-  
-    if (!data.length) {
-      showEmptyMessages(
-        "這個聊天室目前沒有訊息"
-      );
-      return;
-    }
-  
-    data.forEach(message => {
-      const div =
-        document.createElement("div");
-  
-      div.className =
-        message.role === "admin"
-          ? "message admin"
-          : "message visitor";
-  
-      const name =
-        message.role === "admin"
-          ? "Kellan"
-          : (
-              message.name ||
-              "Visitor"
-            );
-  
-      const time =
-        message.time
-          ? formatTime(
-              message.time
-            )
-          : "";
-  
-      div.innerHTML = `
-        <div class="message-name">
-          ${escapeHtml(name)}
-        </div>
-  
-        <div>
-          ${escapeHtml(
-            message.text || ""
-          )}
-        </div>
-  
-        ${
-          time
-            ? `
-              <div class="message-time">
-                ${time}
-              </div>
-            `
-            : ""
-        }
-      `;
-  
-      messagesBox.appendChild(
-        div
-      );
-    });
-  
-    messagesBox.scrollTop =
-      messagesBox.scrollHeight;
-  }
-  
-  function markCurrentSessionRead() {
-    if (!currentSession) {
-      return;
-    }
-  
-    const active =
-      sessionList.querySelector(
-        `[data-session-id="${CSS.escape(
-          currentSession
-        )}"]`
-      );
-  
-    if (!active) {
-      return;
-    }
-  
-    const unread =
-      active.querySelector(
-        ".session-unread"
-      );
-  
-    if (unread) {
-      unread.remove();
-    }
-  }
-  
-  async function reply() {
-    if (!currentSession) {
-      alert(
-        "請先選擇聊天室"
-      );
-      return;
-    }
-  
-    const text =
-      textInput.value.trim();
-  
-    if (!text) {
-      return;
-    }
-  
-    sendButton.disabled =
-      true;
-  
-    try {
-      const res =
-        await fetch(
-          `${WORKER}/reply`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type":
-                "application/json"
-            },
-            body: JSON.stringify({
-              text,
-              sessionId:
-                currentSession
-            })
-          }
-        );
-  
-      if (!res.ok) {
-        throw new Error(
-          `Reply failed: ${res.status}`
-        );
-      }
-  
-      const data =
-        await res.json();
-  
-      if (!data.ok) {
-        throw new Error(
-          data.error ||
-          "Reply failed"
-        );
-      }
-  
-      textInput.value = "";
-  
-      await loadMessages();
-  
-      await loadSessions();
-  
-      textInput.focus();
-    } catch (error) {
-      console.error(
-        "reply error:",
-        error
-      );
-  
-      alert(
-        "發送失敗，請稍後再試。"
-      );
-    } finally {
-      sendButton.disabled =
-        false;
-    }
-  }
-  
-  async function deleteCurrentSession() {
-    if (!currentSession) {
-      return;
-    }
-  
-    const confirmed =
-      confirm(
-        "確定要刪除這個聊天室的所有紀錄嗎？\n\n此操作無法復原。"
-      );
-  
-    if (!confirmed) {
-      return;
-    }
-  
-    deleteButton.disabled =
-      true;
-  
-    const deletedSession =
-      currentSession;
-  
-    try {
-      const res =
-        await fetch(
-          `${WORKER}/sessions?sessionId=${encodeURIComponent(
-            deletedSession
-          )}`,
-          {
-            method: "DELETE"
-          }
-        );
-  
-      if (!res.ok) {
-        throw new Error(
-          `Delete failed: ${res.status}`
-        );
-      }
-  
-      const data =
-        await res.json();
-  
-      if (!data.ok) {
-        throw new Error(
-          data.error ||
-          "Delete failed"
-        );
-      }
-  
-      sessionCache.delete(
-        deletedSession
-      );
-  
-      messageCache.delete(
-        deletedSession
-      );
-  
-      currentSession =
-        null;
-  
-      messagesBox.innerHTML = `
-        <div class="empty-messages">
-          <div>
-            <div
-              style="
-                font-size:32px;
-                margin-bottom:10px;
-              "
-            >
-              🗑
-            </div>
-  
-            <div>
-              聊天紀錄已刪除
-            </div>
-          </div>
-        </div>
-      `;
-  
-      updateChatHeader();
-  
-      await loadSessions();
-    } catch (error) {
-      console.error(
-        "deleteCurrentSession error:",
-        error
-      );
-  
-      alert(
-        "刪除失敗，請確認 Worker DELETE 功能已部署。"
-      );
-    } finally {
-      deleteButton.disabled =
-        !currentSession;
-    }
-  }
-  
-  function updateChatHeader() {
-    if (!currentSession) {
-      currentSessionName.textContent =
-        "尚未選擇聊天室";
-  
-      currentSessionStatus.textContent =
-        "Select a conversation";
-  
-      deleteButton.disabled =
-        true;
-  
-      return;
-    }
-  
-    const data =
-      sessionCache.get(
-        currentSession
-      );
-  
-    currentSessionName.textContent =
-      data
-        ? data.displayName
-        : "聊天室";
-  
-    currentSessionStatus.textContent =
-      currentSession;
-  
-    deleteButton.disabled =
-      false;
-  }
-  
-  function showEmptyMessages(text) {
-    messagesBox.innerHTML = `
       <div class="empty-messages">
+
         <div>
-          <div
-            style="
-              font-size:32px;
-              margin-bottom:10px;
-            "
-          >
+
+          <div style="font-size:32px;margin-bottom:10px;">
             💬
           </div>
-  
+
           <div>
-            ${escapeHtml(text)}
+            請從左側選擇聊天室
           </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="composer">
+
+      <input
+        id="text"
+        type="text"
+        placeholder="輸入回覆後按 Enter..."
+        autocomplete="off"
+        disabled
+      />
+
+      <button
+        id="sendButton"
+        class="send-button"
+        type="button"
+        disabled
+      >
+        發送
+      </button>
+
+    </div>
+
+  </section>
+
+</section>
+
+<script>
+const WORKER =
+  "https://hung.kaekae939311.workers.dev";
+
+let currentSession = null;
+let sessionsCache = [];
+let messagesCache = [];
+let sessionMessageHashes = {};
+let sessionNames = {};
+let loadingSessions = false;
+let loadingMessages = false;
+
+const sessionList =
+  document.getElementById("sessionList");
+
+const sessionCount =
+  document.getElementById("sessionCount");
+
+const messagesBox =
+  document.getElementById("messages");
+
+const textInput =
+  document.getElementById("text");
+
+const sendButton =
+  document.getElementById("sendButton");
+
+const deleteButton =
+  document.getElementById("deleteButton");
+
+const currentSessionName =
+  document.getElementById("currentSessionName");
+
+const currentSessionStatus =
+  document.getElementById("currentSessionStatus");
+
+const dashboard =
+  document.querySelector(".dashboard");
+
+const mobileBackButton =
+  document.getElementById("mobileBackButton");
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function formatTime(timestamp) {
+  if (!timestamp) {
+    return "";
+  }
+
+  return new Date(timestamp).toLocaleString(
+    "zh-TW",
+    {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit"
+    }
+  );
+}
+
+function getMessageHash(messages) {
+  return JSON.stringify(
+    messages.map(message => [
+      message.role || "",
+      message.name || "",
+      message.text || "",
+      message.time || ""
+    ])
+  );
+}
+
+function getVisitorName(messages) {
+  const visitorMessage =
+    messages.find(
+      message =>
+        message.role === "visitor" &&
+        message.name
+    );
+
+  return visitorMessage
+    ? visitorMessage.name
+    : "Anonymous";
+}
+
+function updateChatHeader() {
+
+  if (!currentSession) {
+
+    currentSessionName.textContent =
+      "尚未選擇聊天室";
+
+    currentSessionStatus.textContent =
+      "Select a conversation";
+
+    deleteButton.disabled = true;
+    textInput.disabled = true;
+    sendButton.disabled = true;
+
+    return;
+  }
+
+  currentSessionName.textContent =
+    sessionNames[currentSession] ||
+    "Anonymous";
+
+  currentSessionStatus.textContent =
+    currentSession;
+
+  deleteButton.disabled = false;
+  textInput.disabled = false;
+  sendButton.disabled = false;
+}
+
+function showEmptyMessages(text) {
+
+  messagesBox.innerHTML = `
+    <div class="empty-messages">
+      <div>
+        <div style="font-size:32px;margin-bottom:10px;">
+          💬
+        </div>
+        <div>
+          ${escapeHtml(text)}
         </div>
       </div>
-    `;
+    </div>
+  `;
+}
+
+function renderMessages(messages, highlightLatest = false) {
+
+  messagesBox.innerHTML = "";
+
+  if (!messages.length) {
+    showEmptyMessages(
+      "這個聊天室目前沒有訊息"
+    );
+    return;
   }
-  
-  function formatTime(timestamp) {
-    const date =
-      new Date(timestamp);
-  
-    return date.toLocaleString(
-      "zh-TW",
+
+  messages.forEach((message, index) => {
+
+    const div =
+      document.createElement("div");
+
+    div.className =
+      message.role === "admin"
+        ? "message admin"
+        : "message visitor";
+
+    if (
+      highlightLatest &&
+      index === messages.length - 1 &&
+      message.role === "visitor"
+    ) {
+      div.classList.add("new-message");
+    }
+
+    const name =
+      message.role === "admin"
+        ? "Kellan"
+        : (message.name || "Anonymous");
+
+    const time =
+      message.time
+        ? formatTime(message.time)
+        : "";
+
+    div.innerHTML = `
+      <div class="message-name">
+        ${escapeHtml(name)}
+      </div>
+
+      <div>
+        ${escapeHtml(message.text || "")}
+      </div>
+
+      ${
+        time
+          ? `
+            <div class="message-time">
+              ${time}
+            </div>
+          `
+          : ""
+      }
+    `;
+
+    messagesBox.appendChild(div);
+  });
+
+  messagesBox.scrollTop =
+    messagesBox.scrollHeight;
+}
+
+async function fetchSessions() {
+
+  const response =
+    await fetch(
+      `${WORKER}/sessions`,
       {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit"
+        method: "GET",
+        cache: "no-store"
       }
     );
+
+  if (!response.ok) {
+    throw new Error(
+      `Sessions request failed: ${response.status}`
+    );
   }
-  
-  function escapeHtml(value) {
-    return String(value)
-      .replace(
-        /&/g,
-        "&amp;"
-      )
-      .replace(
-        /</g,
-        "&lt;"
-      )
-      .replace(
-        />/g,
-        "&gt;"
-      )
-      .replace(
-        /"/g,
-        "&quot;"
-      )
-      .replace(
-        /'/g,
-        "&#039;"
-      );
+
+  const data =
+    await response.json();
+
+  if (!Array.isArray(data)) {
+    throw new Error(
+      "Invalid sessions response."
+    );
   }
-  
-  sendButton.addEventListener(
+
+  return data;
+}
+
+async function fetchMessages(sessionId) {
+
+  const response =
+    await fetch(
+      `${WORKER}/messages?sessionId=${encodeURIComponent(
+        sessionId
+      )}`,
+      {
+        method: "GET",
+        cache: "no-store"
+      }
+    );
+
+  if (!response.ok) {
+    throw new Error(
+      `Messages request failed: ${response.status}`
+    );
+  }
+
+  const data =
+    await response.json();
+
+  if (!Array.isArray(data)) {
+    throw new Error(
+      "Invalid messages response."
+    );
+  }
+
+  return data;
+}
+
+async function loadSessionName(id) {
+
+  try {
+
+    const messages =
+      await fetchMessages(id);
+
+    const name =
+      getVisitorName(messages);
+
+    sessionNames[id] = name;
+
+    sessionMessageHashes[id] =
+      getMessageHash(messages);
+
+    return messages;
+
+  } catch (error) {
+
+    console.error(
+      "load session name error:",
+      error
+    );
+
+    return [];
+  }
+}
+
+function createSessionElement(id) {
+
+  const div =
+    document.createElement("div");
+
+  div.className = "session";
+  div.dataset.sessionId = id;
+
+  if (id === currentSession) {
+    div.classList.add("active");
+  }
+
+  const displayName =
+    sessionNames[id] || "Anonymous";
+
+  div.innerHTML = `
+    <div class="session-name">
+      ${escapeHtml(displayName)}
+    </div>
+
+    <div class="session-id">
+      ${escapeHtml(id)}
+    </div>
+  `;
+
+  div.addEventListener(
     "click",
-    reply
+    async () => {
+
+      await selectSession(id);
+
+    }
   );
-  
-  deleteButton.addEventListener(
-    "click",
-    deleteCurrentSession
+
+  return div;
+}
+
+function updateSessionElement(
+  element,
+  id,
+  hasNew
+) {
+
+  const displayName =
+    sessionNames[id] || "Anonymous";
+
+  const nameElement =
+    element.querySelector(".session-name");
+
+  if (nameElement) {
+    nameElement.textContent =
+      displayName;
+  }
+
+  element.classList.toggle(
+    "active",
+    id === currentSession
   );
-  
-  textInput.addEventListener(
-    "keydown",
-    event => {
+
+  element.classList.toggle(
+    "has-new",
+    hasNew
+  );
+}
+
+async function renderSessionList(
+  sessions,
+  loadNames = false
+) {
+
+  const existing =
+    new Map(
+      [...sessionList.children]
+        .filter(
+          element =>
+            element.dataset &&
+            element.dataset.sessionId
+        )
+        .map(
+          element =>
+            [
+              element.dataset.sessionId,
+              element
+            ]
+        )
+    );
+
+  const fragment =
+    document.createDocumentFragment();
+
+  for (const id of sessions) {
+
+    let element =
+      existing.get(id);
+
+    if (!element) {
+
       if (
-        event.key === "Enter" &&
-        !event.shiftKey
+        loadNames &&
+        !sessionNames[id]
       ) {
-        event.preventDefault();
-        reply();
+        await loadSessionName(id);
+      }
+
+      element =
+        createSessionElement(id);
+
+    } else if (
+      loadNames &&
+      !sessionNames[id]
+    ) {
+
+      await loadSessionName(id);
+
+    }
+
+    const oldHash =
+      sessionMessageHashes[id];
+
+    const hasNew =
+      id !== currentSession &&
+      !!oldHash &&
+      sessionMessageHashes[id] !== oldHash;
+
+    updateSessionElement(
+      element,
+      id,
+      false
+    );
+
+    fragment.appendChild(element);
+  }
+
+  sessionList.innerHTML = "";
+
+  if (!sessions.length) {
+
+    sessionList.innerHTML = `
+      <div class="empty-sessions">
+        目前沒有聊天室
+      </div>
+    `;
+
+  } else {
+
+    sessionList.appendChild(fragment);
+  }
+
+  sessionCount.textContent =
+    `${sessions.length} sessions`;
+}
+
+async function loadSessions(initial = false) {
+
+  if (loadingSessions) {
+    return;
+  }
+
+  loadingSessions = true;
+
+  try {
+
+    const sessions =
+      await fetchSessions();
+
+    sessionsCache =
+      sessions;
+
+    if (
+      currentSession &&
+      !sessions.includes(currentSession)
+    ) {
+
+      currentSession = null;
+      messagesCache = [];
+
+      updateChatHeader();
+
+      showEmptyMessages(
+        "聊天紀錄已刪除"
+      );
+
+      dashboard.classList.remove(
+        "chat-open"
+      );
+    }
+
+    if (initial) {
+
+      await renderSessionList(
+        sessions,
+        true
+      );
+
+    } else {
+
+      await updateSessionsWithoutJump(
+        sessions
+      );
+    }
+
+    if (
+      !currentSession &&
+      sessions.length > 0 &&
+      initial
+    ) {
+
+      await selectSession(
+        sessions[0],
+        false
+      );
+    }
+
+  } catch (error) {
+
+    console.error(
+      "loadSessions error:",
+      error
+    );
+
+  } finally {
+
+    loadingSessions = false;
+  }
+}
+
+async function updateSessionsWithoutJump(
+  sessions
+) {
+
+  const oldSessions =
+    [...sessionsCache];
+
+  const changed =
+    oldSessions.length !== sessions.length ||
+    oldSessions.some(
+      (id, index) =>
+        id !== sessions[index]
+    );
+
+  if (!changed) {
+
+    for (const id of sessions) {
+
+      const oldHash =
+        sessionMessageHashes[id];
+
+      try {
+
+        const messages =
+          await fetchMessages(id);
+
+        const newHash =
+          getMessageHash(messages);
+
+        if (newHash !== oldHash) {
+
+          sessionMessageHashes[id] =
+            newHash;
+
+          sessionNames[id] =
+            getVisitorName(messages);
+
+          const element =
+            sessionList.querySelector(
+              `[data-session-id="${CSS.escape(id)}"]`
+            );
+
+          if (element) {
+
+            const hasNew =
+              id !== currentSession &&
+              messages.length > 0 &&
+              messages[messages.length - 1].role ===
+                "visitor";
+
+            updateSessionElement(
+              element,
+              id,
+              hasNew
+            );
+          }
+        }
+
+      } catch (error) {
+
+        console.error(
+          "session update error:",
+          error
+        );
       }
     }
-  );
-  
-  async function refreshChat() {
-    if (!currentSession) {
-      await loadSessions();
+
+    return;
+  }
+
+  const oldMap =
+    new Map(
+      [...sessionList.children]
+        .filter(
+          element =>
+            element.dataset &&
+            element.dataset.sessionId
+        )
+        .map(
+          element =>
+            [
+              element.dataset.sessionId,
+              element
+            ]
+        )
+    );
+
+  const fragment =
+    document.createDocumentFragment();
+
+  for (const id of sessions) {
+
+    let element =
+      oldMap.get(id);
+
+    if (!element) {
+
+      await loadSessionName(id);
+
+      element =
+        createSessionElement(id);
+    }
+
+    updateSessionElement(
+      element,
+      id,
+      false
+    );
+
+    fragment.appendChild(element);
+  }
+
+  sessionList.innerHTML = "";
+
+  if (!sessions.length) {
+
+    sessionList.innerHTML = `
+      <div class="empty-sessions">
+        目前沒有聊天室
+      </div>
+    `;
+
+  } else {
+
+    sessionList.appendChild(fragment);
+  }
+
+  sessionCount.textContent =
+    `${sessions.length} sessions`;
+
+  sessionsCache =
+    [...sessions];
+}
+
+async function selectSession(
+  id,
+  openMobile = true
+) {
+
+  currentSession = id;
+
+  document
+    .querySelectorAll(".session")
+    .forEach(element => {
+
+      element.classList.toggle(
+        "active",
+        element.dataset.sessionId === id
+      );
+
+      if (
+        element.dataset.sessionId === id
+      ) {
+        element.classList.remove(
+          "has-new"
+        );
+      }
+    });
+
+  updateChatHeader();
+
+  if (openMobile) {
+    dashboard.classList.add(
+      "chat-open"
+    );
+  }
+
+  await loadMessages();
+}
+
+async function loadMessages() {
+
+  if (!currentSession) {
+
+    showEmptyMessages(
+      "請從左側選擇聊天室"
+    );
+
+    return;
+  }
+
+  if (loadingMessages) {
+    return;
+  }
+
+  loadingMessages = true;
+
+  try {
+
+    const id =
+      currentSession;
+
+    const data =
+      await fetchMessages(id);
+
+    const oldHash =
+      sessionMessageHashes[id] || "";
+
+    const newHash =
+      getMessageHash(data);
+
+    sessionNames[id] =
+      getVisitorName(data);
+
+    sessionMessageHashes[id] =
+      newHash;
+
+    const changed =
+      newHash !== oldHash;
+
+    messagesCache =
+      data;
+
+    updateChatHeader();
+
+    if (changed) {
+
+      const hasNewVisitor =
+        data.length > messagesCache.length &&
+        data[data.length - 1] &&
+        data[data.length - 1].role ===
+          "visitor";
+
+      renderMessages(
+        data,
+        hasNewVisitor
+      );
+
+    } else if (
+      messagesBox.querySelector(
+        ".empty-messages"
+      ) &&
+      data.length
+    ) {
+
+      renderMessages(
+        data,
+        false
+      );
+    }
+
+    const element =
+      sessionList.querySelector(
+        `[data-session-id="${CSS.escape(id)}"]`
+      );
+
+    if (element) {
+
+      updateSessionElement(
+        element,
+        id,
+        false
+      );
+    }
+
+  } catch (error) {
+
+    console.error(
+      "loadMessages error:",
+      error
+    );
+
+  } finally {
+
+    loadingMessages = false;
+  }
+}
+
+async function pollCurrentSession() {
+
+  if (!currentSession) {
+    return;
+  }
+
+  try {
+
+    const id =
+      currentSession;
+
+    const data =
+      await fetchMessages(id);
+
+    const oldHash =
+      sessionMessageHashes[id] || "";
+
+    const newHash =
+      getMessageHash(data);
+
+    if (newHash === oldHash) {
       return;
     }
-  
-    await loadMessages();
-    await loadSessions();
-  
-    updateSessionActiveState();
-    updateChatHeader();
+
+    const hadVisitorMessage =
+      messagesCache.some(
+        message =>
+          message.role === "visitor"
+      );
+
+    const newVisitorMessage =
+      data.length >
+        messagesCache.length &&
+      data
+        .slice(messagesCache.length)
+        .some(
+          message =>
+            message.role === "visitor"
+        );
+
+    messagesCache =
+      data;
+
+    sessionMessageHashes[id] =
+      newHash;
+
+    sessionNames[id] =
+      getVisitorName(data);
+
+    renderMessages(
+      data,
+      newVisitorMessage
+    );
+
+    const element =
+      sessionList.querySelector(
+        `[data-session-id="${CSS.escape(id)}"]`
+      );
+
+    if (element) {
+
+      updateSessionElement(
+        element,
+        id,
+        false
+      );
+    }
+
+  } catch (error) {
+
+    console.error(
+      "pollCurrentSession error:",
+      error
+    );
   }
-  
-  loadSessions();
-  
-  setInterval(
-    refreshChat,
-    2000
-  );
-  </script>
+}
+
+async function pollAllSessions() {
+
+  if (loadingSessions) {
+    return;
+  }
+
+  try {
+
+    const sessions =
+      await fetchSessions();
+
+    const oldSessions =
+      [...sessionsCache];
+
+    const sessionChanged =
+      oldSessions.length !== sessions.length ||
+      oldSessions.some(
+        (id, index) =>
+          id !== sessions[index]
+      );
+
+    sessionsCache =
+      sessions;
+
+    if (sessionChanged) {
+
+      await updateSessionsWithoutJump(
+        sessions
+      );
+    }
+
+    for (const id of sessions) {
+
+      if (id === currentSession) {
+        continue;
+      }
+
+      try {
+
+        const data =
+          await fetchMessages(id);
+
+        const oldHash =
+          sessionMessageHashes[id] || "";
+
+        const newHash =
+          getMessageHash(data);
+
+        if (newHash !== oldHash) {
+
+          sessionMessageHashes[id] =
+            newHash;
+
+          sessionNames[id] =
+            getVisitorName(data);
+
+          const element =
+            sessionList.querySelector(
+              `[data-session-id="${CSS.escape(id)}"]`
+            );
+
+          if (element) {
+
+            const last =
+              data[data.length - 1];
+
+            updateSessionElement(
+              element,
+              id,
+              !!last &&
+                last.role === "visitor"
+            );
+          }
+        }
+
+      } catch (error) {
+
+        console.error(
+          "poll session error:",
+          error
+        );
+      }
+    }
+
+    await pollCurrentSession();
+
+  } catch (error) {
+
+    console.error(
+      "pollAllSessions error:",
+      error
+    );
+  }
+}
+
+async function reply() {
+
+  if (!currentSession) {
+
+    alert(
+      "請先選擇聊天室"
+    );
+
+    return;
+  }
+
+  const text =
+    textInput.value.trim();
+
+  if (!text) {
+    return;
+  }
+
+  sendButton.disabled = true;
+
+  try {
+
+    const res =
+      await fetch(
+        `${WORKER}/reply`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+            text,
+            sessionId:
+              currentSession
+          })
+        }
+      );
+
+    if (!res.ok) {
+
+      throw new Error(
+        `Reply failed: ${res.status}`
+      );
+    }
+
+    const data =
+      await res.json();
+
+    if (!data.ok) {
+
+      throw new Error(
+        data.error ||
+        "Reply failed"
+      );
+    }
+
+    textInput.value = "";
+
+    await loadMessages();
+
+    textInput.focus();
+
+  } catch (error) {
+
+    console.error(
+      "reply error:",
+      error
+    );
+
+    alert(
+      "發送失敗，請稍後再試。"
+    );
+
+  } finally {
+
+    sendButton.disabled =
+      !currentSession;
+  }
+}
+
+async function deleteCurrentSession() {
+
+  if (!currentSession) {
+    return;
+  }
+
+  const sessionToDelete =
+    currentSession;
+
+  const confirmed =
+    confirm(
+      "確定要刪除這個聊天室的所有紀錄嗎？\n\n此操作無法復原。"
+    );
+
+  if (!confirmed) {
+    return;
+  }
+
+  deleteButton.disabled = true;
+
+  try {
+
+    const res =
+      await fetch(
+        `${WORKER}/sessions?sessionId=${encodeURIComponent(
+          sessionToDelete
+        )}`,
+        {
+          method: "DELETE"
+        }
+      );
+
+    if (!res.ok) {
+
+      throw new Error(
+        `Delete failed: ${res.status}`
+      );
+    }
+
+    const data =
+      await res.json();
+
+    if (!data.ok) {
+
+      throw new Error(
+        data.error ||
+        "Delete failed"
+      );
+    }
+
+    delete sessionNames[
+      sessionToDelete
+    ];
+
+    delete sessionMessageHashes[
+      sessionToDelete
+    ];
+
+    messagesCache = [];
+
+    currentSession = null;
+
+    showEmptyMessages(
+      "聊天紀錄已刪除"
+    );
+
+    updateChatHeader();
+
+    dashboard.classList.remove(
+      "chat-open"
+    );
+
+    await loadSessions(true);
+
+  } catch (error) {
+
+    console.error(
+      "deleteCurrentSession error:",
+      error
+    );
+
+    alert(
+      "刪除失敗，請確認 Worker DELETE 功能已部署。"
+    );
+
+    deleteButton.disabled =
+      !currentSession;
+  }
+}
+
+sendButton.addEventListener(
+  "click",
+  reply
+);
+
+deleteButton.addEventListener(
+  "click",
+  deleteCurrentSession
+);
+
+textInput.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key === "Enter" &&
+      !event.shiftKey
+    ) {
+
+      event.preventDefault();
+
+      reply();
+    }
+  }
+);
+
+mobileBackButton.addEventListener(
+  "click",
+  () => {
+
+    dashboard.classList.remove(
+      "chat-open"
+    );
+  }
+);
+
+loadSessions(true);
+
+setInterval(
+  pollAllSessions,
+  2000
+);
+</script>
 
 </body>
 </html>
