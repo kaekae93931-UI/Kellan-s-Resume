@@ -661,687 +661,844 @@
     </section>
 
   </section>
-
+  
   <script>
-    const WORKER =
-      "https://hung.kaekae939311.workers.dev";
-
-    let currentSession = null;
-
-    const sessionList =
-      document.getElementById("sessionList");
-
-    const sessionCount =
-      document.getElementById("sessionCount");
-
-    const messagesBox =
-      document.getElementById("messages");
-
-    const textInput =
-      document.getElementById("text");
-
-    const sendButton =
-      document.getElementById("sendButton");
-
-    const deleteButton =
-      document.getElementById("deleteButton");
-
-    const currentSessionName =
-      document.getElementById("currentSessionName");
-
-    const currentSessionStatus =
-      document.getElementById("currentSessionStatus");
-
-
-    async function loadSessions() {
-
-      try {
-
-        const res =
-          await fetch(`${WORKER}/sessions`);
-
-        if (!res.ok) {
-
-          throw new Error(
-            `Sessions request failed: ${res.status}`
+  const WORKER =
+    "https://hung.kaekae939311.workers.dev";
+  
+  let currentSession = null;
+  
+  const sessionList =
+    document.getElementById("sessionList");
+  
+  const sessionCount =
+    document.getElementById("sessionCount");
+  
+  const messagesBox =
+    document.getElementById("messages");
+  
+  const textInput =
+    document.getElementById("text");
+  
+  const sendButton =
+    document.getElementById("sendButton");
+  
+  const deleteButton =
+    document.getElementById("deleteButton");
+  
+  const currentSessionName =
+    document.getElementById("currentSessionName");
+  
+  const currentSessionStatus =
+    document.getElementById("currentSessionStatus");
+  
+  let sessionCache = new Map();
+  
+  let messageCache = new Map();
+  
+  async function loadSessions() {
+    try {
+      const res =
+        await fetch(
+          `${WORKER}/sessions`,
+          {
+            cache: "no-store"
+          }
+        );
+  
+      if (!res.ok) {
+        throw new Error(
+          `Sessions request failed: ${res.status}`
+        );
+      }
+  
+      const sessions =
+        await res.json();
+  
+      sessionCount.textContent =
+        `${sessions.length} sessions`;
+  
+      if (!Array.isArray(sessions)) {
+        return;
+      }
+  
+      if (
+        currentSession &&
+        !sessions.includes(currentSession)
+      ) {
+        currentSession = null;
+        updateChatHeader();
+        showEmptyMessages(
+          "目前聊天室已被刪除"
+        );
+      }
+  
+      const sessionData =
+        await Promise.all(
+          sessions.map(async id => {
+            let displayName = "Anonymous";
+            let messages = [];
+  
+            try {
+              const messageRes =
+                await fetch(
+                  `${WORKER}/messages?sessionId=${encodeURIComponent(id)}`,
+                  {
+                    cache: "no-store"
+                  }
+                );
+  
+              if (messageRes.ok) {
+                const data =
+                  await messageRes.json();
+  
+                if (Array.isArray(data)) {
+                  messages = data;
+  
+                  const visitorMessage =
+                    data.find(
+                      message =>
+                        message.role === "visitor" &&
+                        message.name
+                    );
+  
+                  if (visitorMessage) {
+                    displayName =
+                      visitorMessage.name;
+                  }
+                }
+              }
+            } catch (error) {
+              console.error(
+                "load session data error:",
+                error
+              );
+            }
+  
+            return {
+              id,
+              displayName,
+              messages
+            };
+          })
+        );
+  
+      const newCache = new Map();
+  
+      sessionData.forEach(item => {
+        newCache.set(
+          item.id,
+          item
+        );
+      });
+  
+      sessionCache = newCache;
+  
+      updateSessionList(
+        sessions,
+        sessionData
+      );
+  
+      if (
+        currentSession &&
+        sessionCache.has(currentSession)
+      ) {
+        const current =
+          sessionCache.get(currentSession);
+  
+        messageCache.set(
+          currentSession,
+          current.messages
+        );
+      }
+  
+      if (!currentSession && sessions.length) {
+        currentSession = sessions[0];
+  
+        updateSessionActiveState();
+  
+        updateChatHeader();
+  
+        await loadMessages();
+      }
+    } catch (error) {
+      console.error(
+        "loadSessions error:",
+        error
+      );
+    }
+  }
+  
+  function updateSessionList(
+    sessions,
+    sessionData
+  ) {
+    const existing =
+      new Map();
+  
+    sessionList
+      .querySelectorAll(".session")
+      .forEach(element => {
+        existing.set(
+          element.dataset.sessionId,
+          element
+        );
+      });
+  
+    sessions.forEach(
+      (id, index) => {
+        const data =
+          sessionData.find(
+            item => item.id === id
           );
-
-        }
-
-        const sessions =
-          await res.json();
-
-        sessionCount.textContent =
-          `${sessions.length} sessions`;
-
-        sessionList.innerHTML = "";
-
-        if (!sessions.length) {
-
-          sessionList.innerHTML = `
-            <div class="empty-sessions">
-              目前沒有聊天室
-            </div>
-          `;
-
-          currentSession = null;
-
-          updateChatHeader();
-
-          showEmptyMessages(
-            "目前沒有任何聊天室"
-          );
-
+  
+        if (!data) {
           return;
         }
-
-
-        if (
-          currentSession &&
-          !sessions.includes(currentSession)
-        ) {
-
-          currentSession = null;
-
-        }
-
-
-        sessions.forEach(async id => {
-
-          const div =
+  
+        let div =
+          existing.get(id);
+  
+        if (!div) {
+          div =
             document.createElement("div");
-
-          div.className = "session";
-
-          if (id === currentSession) {
-
-            div.classList.add("active");
-
-          }
-
-
-          let displayName =
-            "Anonymous";
-
-
-          try {
-
-            const messageRes =
-              await fetch(
-                `${WORKER}/messages?sessionId=${encodeURIComponent(
-                  id
-                )}`
-              );
-
-
-            if (messageRes.ok) {
-
-              const messageData =
-                await messageRes.json();
-
-
-              const visitorMessage =
-                messageData.find(
-                  message =>
-                    message.role === "visitor" &&
-                    message.name
-                );
-
-
-              if (visitorMessage) {
-
-                displayName =
-                  visitorMessage.name;
-
-              }
-
-            }
-
-          } catch (error) {
-
-            console.error(
-              "load session name error:",
-              error
-            );
-
-          }
-
-
-          div.innerHTML = `
-            <div class="session-name">
-              ${escapeHtml(displayName)}
-            </div>
-
-            <div class="session-id">
-              ${escapeHtml(id)}
-            </div>
-          `;
-
-
+  
+          div.className =
+            "session";
+  
+          div.dataset.sessionId =
+            id;
+  
           div.addEventListener(
             "click",
             async () => {
-
               currentSession = id;
-
-              document
-                .querySelectorAll(".session")
-                .forEach(el => {
-
-                  el.classList.remove("active");
-
-                });
-
-
-              div.classList.add("active");
-
+  
+              updateSessionActiveState();
+  
               updateChatHeader();
-
+  
               await loadMessages();
-
             }
           );
-
-
-          sessionList.appendChild(div);
-
-        });
-
-
-        if (
-          !currentSession &&
-          sessions.length > 0
-        ) {
-
-          currentSession =
-            sessions[0];
-
-
-          const first =
-            sessionList.querySelector(
-              ".session"
-            );
-
-
-          if (first) {
-
-            first.classList.add(
-              "active"
-            );
-
-          }
-
-
-          updateChatHeader();
-
-          await loadMessages();
-
         }
-
-      } catch (error) {
-
-        console.error(
-          "loadSessions error:",
-          error
-        );
-
-      }
-
-    }
-
-
-    async function loadMessages() {
-
-      if (!currentSession) {
-
-        showEmptyMessages(
-          "請從左側選擇聊天室"
-        );
-
-        return;
-
-      }
-
-
-      try {
-
-        const res =
-          await fetch(
-            `${WORKER}/messages?sessionId=${encodeURIComponent(
-              currentSession
-            )}`
+  
+        const lastMessage =
+          data.messages.length
+            ? data.messages[
+                data.messages.length - 1
+              ]
+            : null;
+  
+        const isUnread =
+          id !== currentSession &&
+          lastMessage &&
+          lastMessage.role === "visitor";
+  
+        let nameElement =
+          div.querySelector(
+            ".session-name"
           );
-
-
-        if (!res.ok) {
-
-          throw new Error(
-            `Messages request failed: ${res.status}`
-          );
-
-        }
-
-
-        const data =
-          await res.json();
-
-        messagesBox.innerHTML = "";
-
-
-        if (!data.length) {
-
-          showEmptyMessages(
-            "這個聊天室目前沒有訊息"
-          );
-
-          return;
-
-        }
-
-
-        data.forEach(message => {
-
-          const div =
+  
+        if (!nameElement) {
+          nameElement =
             document.createElement("div");
-
-
-          div.className =
-            message.role === "admin"
-              ? "message admin"
-              : "message visitor";
-
-
-          const name =
-            message.role === "admin"
-              ? "Kellan"
-              : (message.name || "Visitor");
-
-
-          const time =
-            message.time
-              ? formatTime(message.time)
-              : "";
-
-
-          div.innerHTML = `
-            <div class="message-name">
-              ${escapeHtml(name)}
-            </div>
-
-            <div>
-              ${escapeHtml(message.text)}
-            </div>
-
-            ${
-              time
-                ? `<div class="message-time">
-                     ${time}
-                   </div>`
-                : ""
-            }
-          `;
-
-
-          messagesBox.appendChild(div);
-
-        });
-
-
-        messagesBox.scrollTop =
-          messagesBox.scrollHeight;
-
-      } catch (error) {
-
-        console.error(
-          "loadMessages error:",
-          error
+  
+          nameElement.className =
+            "session-name";
+  
+          div.appendChild(
+            nameElement
+          );
+        }
+  
+        nameElement.textContent =
+          data.displayName;
+  
+        let idElement =
+          div.querySelector(
+            ".session-id"
+          );
+  
+        if (!idElement) {
+          idElement =
+            document.createElement("div");
+  
+          idElement.className =
+            "session-id";
+  
+          div.appendChild(
+            idElement
+          );
+        }
+  
+        idElement.textContent =
+          id;
+  
+        let unread =
+          div.querySelector(
+            ".session-unread"
+          );
+  
+        if (isUnread) {
+          if (!unread) {
+            unread =
+              document.createElement("span");
+  
+            unread.className =
+              "session-unread";
+  
+            unread.style.display =
+              "inline-block";
+  
+            unread.style.width =
+              "9px";
+  
+            unread.style.height =
+              "9px";
+  
+            unread.style.marginLeft =
+              "8px";
+  
+            unread.style.borderRadius =
+              "50%";
+  
+            unread.style.background =
+              "#22c55e";
+  
+            unread.style.boxShadow =
+              "0 0 8px rgba(34,197,94,.8)";
+  
+            nameElement.appendChild(
+              unread
+            );
+          }
+        } else if (unread) {
+          unread.remove();
+        }
+  
+        if (
+          id === currentSession
+        ) {
+          div.classList.add(
+            "active"
+          );
+        } else {
+          div.classList.remove(
+            "active"
+          );
+        }
+  
+        const currentAtPosition =
+          sessionList.children[index];
+  
+        if (
+          currentAtPosition !== div
+        ) {
+          sessionList.insertBefore(
+            div,
+            currentAtPosition || null
+          );
+        }
+      });
+  
+    const validIds =
+      new Set(sessions);
+  
+    sessionList
+      .querySelectorAll(".session")
+      .forEach(element => {
+        if (
+          !validIds.has(
+            element.dataset.sessionId
+          )
+        ) {
+          element.remove();
+        }
+      });
+  }
+  
+  function updateSessionActiveState() {
+    sessionList
+      .querySelectorAll(".session")
+      .forEach(element => {
+        if (
+          element.dataset.sessionId ===
+          currentSession
+        ) {
+          element.classList.add(
+            "active"
+          );
+        } else {
+          element.classList.remove(
+            "active"
+          );
+        }
+      });
+  
+    if (currentSession) {
+      const active =
+        sessionList.querySelector(
+          `[data-session-id="${CSS.escape(
+            currentSession
+          )}"]`
         );
-
+  
+      if (active) {
+        const unread =
+          active.querySelector(
+            ".session-unread"
+          );
+  
+        if (unread) {
+          unread.remove();
+        }
       }
-
     }
-
-
-    async function reply() {
-
-      if (!currentSession) {
-
-        alert(
-          "請先選擇聊天室"
-        );
-
-        return;
-
-      }
-
-
-      const text =
-        textInput.value.trim();
-
-
-      if (!text) {
-
-        return;
-
-      }
-
-
-      sendButton.disabled = true;
-
-
-      try {
-
-        const res =
-          await fetch(
-            `${WORKER}/reply`,
-            {
-              method: "POST",
-
-              headers: {
-                "Content-Type":
-                  "application/json"
-              },
-
-              body: JSON.stringify({
-                text,
-                sessionId:
-                  currentSession
-              })
-            }
-          );
-
-
-        if (!res.ok) {
-
-          throw new Error(
-            `Reply failed: ${res.status}`
-          );
-
-        }
-
-
-        const data =
-          await res.json();
-
-
-        if (!data.ok) {
-
-          throw new Error(
-            data.error ||
-            "Reply failed"
-          );
-
-        }
-
-
-        textInput.value = "";
-
-        await loadMessages();
-
-        textInput.focus();
-
-      } catch (error) {
-
-        console.error(
-          "reply error:",
-          error
-        );
-
-        alert(
-          "發送失敗，請稍後再試。"
-        );
-
-      } finally {
-
-        sendButton.disabled = false;
-
-      }
-
+  }
+  
+  async function loadMessages() {
+    if (!currentSession) {
+      showEmptyMessages(
+        "請從左側選擇聊天室"
+      );
+      return;
     }
-
-
-    async function deleteCurrentSession() {
-
-      if (!currentSession) {
-
-        return;
-
-      }
-
-
-      const confirmed =
-        confirm(
-          "確定要刪除這個聊天室的所有紀錄嗎？\n\n此操作無法復原。"
+  
+    try {
+      const res =
+        await fetch(
+          `${WORKER}/messages?sessionId=${encodeURIComponent(
+            currentSession
+          )}`,
+          {
+            cache: "no-store"
+          }
         );
-
-
-      if (!confirmed) {
-
-        return;
-
+  
+      if (!res.ok) {
+        throw new Error(
+          `Messages request failed: ${res.status}`
+        );
       }
-
-
-      deleteButton.disabled = true;
-
-
-      try {
-
-        const res =
-          await fetch(
-            `${WORKER}/sessions?sessionId=${encodeURIComponent(
-              currentSession
-            )}`,
-            {
-              method: "DELETE"
-            }
-          );
-
-
-        if (!res.ok) {
-
-          throw new Error(
-            `Delete failed: ${res.status}`
-          );
-
-        }
-
-
-        const data =
-          await res.json();
-
-
-        if (!data.ok) {
-
-          throw new Error(
-            data.error ||
-            "Delete failed"
-          );
-
-        }
-
-
-        currentSession = null;
-
-
-        messagesBox.innerHTML = `
-          <div class="empty-messages">
-            <div>
-
-              <div
-                style="
-                  font-size:32px;
-                  margin-bottom:10px;
-                "
-              >
-                🗑
+  
+      const data =
+        await res.json();
+  
+      if (!Array.isArray(data)) {
+        return;
+      }
+  
+      messageCache.set(
+        currentSession,
+        data
+      );
+  
+      renderMessages(data);
+  
+      markCurrentSessionRead();
+    } catch (error) {
+      console.error(
+        "loadMessages error:",
+        error
+      );
+    }
+  }
+  
+  function renderMessages(data) {
+    messagesBox.innerHTML = "";
+  
+    if (!data.length) {
+      showEmptyMessages(
+        "這個聊天室目前沒有訊息"
+      );
+      return;
+    }
+  
+    data.forEach(message => {
+      const div =
+        document.createElement("div");
+  
+      div.className =
+        message.role === "admin"
+          ? "message admin"
+          : "message visitor";
+  
+      const name =
+        message.role === "admin"
+          ? "Kellan"
+          : (
+              message.name ||
+              "Visitor"
+            );
+  
+      const time =
+        message.time
+          ? formatTime(
+              message.time
+            )
+          : "";
+  
+      div.innerHTML = `
+        <div class="message-name">
+          ${escapeHtml(name)}
+        </div>
+  
+        <div>
+          ${escapeHtml(
+            message.text || ""
+          )}
+        </div>
+  
+        ${
+          time
+            ? `
+              <div class="message-time">
+                ${time}
               </div>
-
-              <div>
-                聊天紀錄已刪除
-              </div>
-
-            </div>
-          </div>
-        `;
-
-
-        updateChatHeader();
-
-
-        await loadSessions();
-
-      } catch (error) {
-
-        console.error(
-          "deleteCurrentSession error:",
-          error
-        );
-
-        alert(
-          "刪除失敗，請確認 Worker DELETE 功能已部署。"
-        );
-
-      } finally {
-
-        deleteButton.disabled =
-          !currentSession;
-
-      }
-
+            `
+            : ""
+        }
+      `;
+  
+      messagesBox.appendChild(
+        div
+      );
+    });
+  
+    messagesBox.scrollTop =
+      messagesBox.scrollHeight;
+  }
+  
+  function markCurrentSessionRead() {
+    if (!currentSession) {
+      return;
     }
-
-
-    function updateChatHeader() {
-
-      if (!currentSession) {
-
-        currentSessionName.textContent =
-          "尚未選擇聊天室";
-
-        currentSessionStatus.textContent =
-          "Select a conversation";
-
-        deleteButton.disabled = true;
-
-        return;
-
-      }
-
-
-      currentSessionName.textContent =
-        "聊天室";
-
-      currentSessionStatus.textContent =
-        currentSession;
-
-      deleteButton.disabled = false;
-
+  
+    const active =
+      sessionList.querySelector(
+        `[data-session-id="${CSS.escape(
+          currentSession
+        )}"]`
+      );
+  
+    if (!active) {
+      return;
     }
-
-
-    function showEmptyMessages(text) {
-
+  
+    const unread =
+      active.querySelector(
+        ".session-unread"
+      );
+  
+    if (unread) {
+      unread.remove();
+    }
+  }
+  
+  async function reply() {
+    if (!currentSession) {
+      alert(
+        "請先選擇聊天室"
+      );
+      return;
+    }
+  
+    const text =
+      textInput.value.trim();
+  
+    if (!text) {
+      return;
+    }
+  
+    sendButton.disabled =
+      true;
+  
+    try {
+      const res =
+        await fetch(
+          `${WORKER}/reply`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+            body: JSON.stringify({
+              text,
+              sessionId:
+                currentSession
+            })
+          }
+        );
+  
+      if (!res.ok) {
+        throw new Error(
+          `Reply failed: ${res.status}`
+        );
+      }
+  
+      const data =
+        await res.json();
+  
+      if (!data.ok) {
+        throw new Error(
+          data.error ||
+          "Reply failed"
+        );
+      }
+  
+      textInput.value = "";
+  
+      await loadMessages();
+  
+      await loadSessions();
+  
+      textInput.focus();
+    } catch (error) {
+      console.error(
+        "reply error:",
+        error
+      );
+  
+      alert(
+        "發送失敗，請稍後再試。"
+      );
+    } finally {
+      sendButton.disabled =
+        false;
+    }
+  }
+  
+  async function deleteCurrentSession() {
+    if (!currentSession) {
+      return;
+    }
+  
+    const confirmed =
+      confirm(
+        "確定要刪除這個聊天室的所有紀錄嗎？\n\n此操作無法復原。"
+      );
+  
+    if (!confirmed) {
+      return;
+    }
+  
+    deleteButton.disabled =
+      true;
+  
+    const deletedSession =
+      currentSession;
+  
+    try {
+      const res =
+        await fetch(
+          `${WORKER}/sessions?sessionId=${encodeURIComponent(
+            deletedSession
+          )}`,
+          {
+            method: "DELETE"
+          }
+        );
+  
+      if (!res.ok) {
+        throw new Error(
+          `Delete failed: ${res.status}`
+        );
+      }
+  
+      const data =
+        await res.json();
+  
+      if (!data.ok) {
+        throw new Error(
+          data.error ||
+          "Delete failed"
+        );
+      }
+  
+      sessionCache.delete(
+        deletedSession
+      );
+  
+      messageCache.delete(
+        deletedSession
+      );
+  
+      currentSession =
+        null;
+  
       messagesBox.innerHTML = `
         <div class="empty-messages">
-
           <div>
-
             <div
               style="
                 font-size:32px;
                 margin-bottom:10px;
               "
             >
-              💬
+              🗑
             </div>
-
+  
             <div>
-              ${escapeHtml(text)}
+              聊天紀錄已刪除
             </div>
-
           </div>
-
         </div>
       `;
-
-    }
-
-
-    function formatTime(timestamp) {
-
-      const date =
-        new Date(timestamp);
-
-
-      return date.toLocaleString(
-        "zh-TW",
-        {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit"
-        }
+  
+      updateChatHeader();
+  
+      await loadSessions();
+    } catch (error) {
+      console.error(
+        "deleteCurrentSession error:",
+        error
       );
-
+  
+      alert(
+        "刪除失敗，請確認 Worker DELETE 功能已部署。"
+      );
+    } finally {
+      deleteButton.disabled =
+        !currentSession;
     }
-
-
-    function escapeHtml(value) {
-
-      return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
+  }
+  
+  function updateChatHeader() {
+    if (!currentSession) {
+      currentSessionName.textContent =
+        "尚未選擇聊天室";
+  
+      currentSessionStatus.textContent =
+        "Select a conversation";
+  
+      deleteButton.disabled =
+        true;
+  
+      return;
     }
-
-
-    sendButton.addEventListener(
-      "click",
-      reply
-    );
-
-
-    deleteButton.addEventListener(
-      "click",
-      deleteCurrentSession
-    );
-
-
-    textInput.addEventListener(
-      "keydown",
-      event => {
-
-        if (
-          event.key === "Enter" &&
-          !event.shiftKey
-        ) {
-
-          event.preventDefault();
-
-          reply();
-
-        }
-
+  
+    const data =
+      sessionCache.get(
+        currentSession
+      );
+  
+    currentSessionName.textContent =
+      data
+        ? data.displayName
+        : "聊天室";
+  
+    currentSessionStatus.textContent =
+      currentSession;
+  
+    deleteButton.disabled =
+      false;
+  }
+  
+  function showEmptyMessages(text) {
+    messagesBox.innerHTML = `
+      <div class="empty-messages">
+        <div>
+          <div
+            style="
+              font-size:32px;
+              margin-bottom:10px;
+            "
+          >
+            💬
+          </div>
+  
+          <div>
+            ${escapeHtml(text)}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  
+  function formatTime(timestamp) {
+    const date =
+      new Date(timestamp);
+  
+    return date.toLocaleString(
+      "zh-TW",
+      {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit"
       }
     );
-
-
-    loadSessions();
-
-
-    setInterval(
-      async () => {
-        if (currentSession) {
-          await loadMessages();
-        }
-      },
-      2000
-    );
+  }
+  
+  function escapeHtml(value) {
+    return String(value)
+      .replace(
+        /&/g,
+        "&amp;"
+      )
+      .replace(
+        /</g,
+        "&lt;"
+      )
+      .replace(
+        />/g,
+        "&gt;"
+      )
+      .replace(
+        /"/g,
+        "&quot;"
+      )
+      .replace(
+        /'/g,
+        "&#039;"
+      );
+  }
+  
+  sendButton.addEventListener(
+    "click",
+    reply
+  );
+  
+  deleteButton.addEventListener(
+    "click",
+    deleteCurrentSession
+  );
+  
+  textInput.addEventListener(
+    "keydown",
+    event => {
+      if (
+        event.key === "Enter" &&
+        !event.shiftKey
+      ) {
+        event.preventDefault();
+        reply();
+      }
+    }
+  );
+  
+  async function refreshChat() {
+    if (!currentSession) {
+      await loadSessions();
+      return;
+    }
+  
+    await loadMessages();
+    await loadSessions();
+  
+    updateSessionActiveState();
+    updateChatHeader();
+  }
+  
+  loadSessions();
+  
+  setInterval(
+    refreshChat,
+    2000
+  );
   </script>
 
 </body>
