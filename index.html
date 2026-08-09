@@ -2313,35 +2313,35 @@
         throw new Error("Worker rejected the message.");
       }
 
-  await syncMessages();
-
-  if (!firstMessageNotified) {
+    await syncMessages();
+  
+    if (!firstMessageNotified) {
+      addMessage(
+        "✅ 訊息已成功發送給 Kellan\nMessage sent successfully to Kellan.\n\n📱 Kellan 的 LINE 已收到通知，請等待回覆。\nKellan has been notified on LINE. Please wait for a reply.",
+        "bot",
+        "Kellan"
+      );
+  
+      firstMessageNotified = true;
+      localStorage.setItem("KELLAN_FIRST_MESSAGE_NOTIFIED", "true");
+    }
+  
+    if (shouldContactHuman(text)) {
+      chatInput.focus();
+    }
+  } catch (error) {
     addMessage(
-      "✅ 訊息已成功發送給 Kellan\nMessage sent successfully to Kellan.\n\n📱 Kellan 的 LINE 已收到通知，請等待回覆。\nKellan has been notified on LINE. Please wait for a reply.",
+      "❌ 訊息發送失敗，請稍後再試。\nFailed to send the message. Please try again later.",
       "bot",
       "Kellan"
     );
-
-    firstMessageNotified = true;
-    localStorage.setItem("KELLAN_FIRST_MESSAGE_NOTIFIED", "true");
-  }
-
-  if (shouldContactHuman(text)) {
+  
+    console.error("sendMessage error:", error);
+  } finally {
+    isSending = false;
+    chatSendButton.disabled = false;
     chatInput.focus();
   }
-} catch (error) {
-  addMessage(
-    "❌ 訊息發送失敗，請稍後再試。\nFailed to send the message. Please try again later.",
-    "bot",
-    "Kellan"
-  );
-
-  console.error("sendMessage error:", error);
-} finally {
-  isSending = false;
-  chatSendButton.disabled = false;
-  chatInput.focus();
-}
 
   function handleEnter(event) {
     if (event.key !== "Enter" || event.shiftKey) {
