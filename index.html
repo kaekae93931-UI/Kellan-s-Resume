@@ -2312,6 +2312,7 @@
         );
   
         firstMessageNotified = true;
+        localStorage.setItem("KELLAN_FIRST_MESSAGE_TEXT", "true");
         localStorage.setItem("KELLAN_FIRST_MESSAGE_NOTIFIED", "true");
       }
   
@@ -2378,6 +2379,14 @@
   
   loadHistory().finally(() => {
     syncMessages();
+  
+    if (localStorage.getItem("KELLAN_FIRST_MESSAGE_TEXT") === "true") {
+      addMessage(
+        "✅ 訊息已成功發送給 Kellan\nMessage sent successfully to Kellan.\n\n📱 Kellan 的 LINE 已收到通知，請等待回覆。\nKellan has been notified on LINE. Please wait for a reply.",
+        "bot",
+        "Kellan"
+      );
+    }
   
     window.setInterval(syncMessages, 2000);
   });
