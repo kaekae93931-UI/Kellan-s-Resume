@@ -2304,7 +2304,7 @@
   
       await syncMessages();
   
-      if (!firstMessageNotified) {
+      if (data.isNewSession || !firstMessageNotified) {
         addMessage(
           "✅ 訊息已成功發送給 Kellan\nMessage sent successfully to Kellan.\n\n📱 Kellan 的 LINE 已收到通知，請等待回覆。\nKellan has been notified on LINE. Please wait for a reply.",
           "bot",
