@@ -1056,7 +1056,7 @@ async function loadMessages() {
 
     messagesBox.scrollTop =
       messagesBox.scrollHeight;
-
+      messageInitialized = true;
   } catch (error) {
     console.error(
       "loadMessages error:",
