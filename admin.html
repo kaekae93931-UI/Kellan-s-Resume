@@ -605,80 +605,78 @@ async function loadSessions() {
       currentSession = null;
     }
 
-    sessions.forEach(id => {
-
+    sessions.forEach(async id => {
       const div =
         document.createElement("div");
-
+    
       div.className = "session";
-
+    
       if (id === currentSession) {
         div.classList.add("active");
       }
-
+    
+      let displayName = "Anonymous";
+    
+      try {
+        const messageRes =
+          await fetch(
+            `${WORKER}/messages?sessionId=${encodeURIComponent(id)}`
+          );
+    
+        if (messageRes.ok) {
+          const messageData =
+            await messageRes.json();
+    
+          const visitorMessage =
+            messageData.find(
+              message =>
+                message.role === "visitor" &&
+                message.name
+            );
+    
+          if (visitorMessage) {
+            displayName = visitorMessage.name;
+          }
+        }
+      } catch (error) {
+        console.error(
+          "load session name error:",
+          error
+        );
+      }
+    
       div.innerHTML = `
         <div class="session-name">
-          聊天室
+          ${escapeHtml(displayName)}
         </div>
-
+    
         <div class="session-id">
           ${escapeHtml(id)}
         </div>
       `;
-
+    
       div.addEventListener(
         "click",
         async () => {
-
+    
           currentSession = id;
-
+    
           document
             .querySelectorAll(".session")
             .forEach(el => {
               el.classList.remove("active");
             });
-
+    
           div.classList.add("active");
-
+    
           updateChatHeader();
-
+    
           await loadMessages();
         }
       );
-
+    
       sessionList.appendChild(div);
-
     });
-
-    if (
-      !currentSession &&
-      sessions.length > 0
-    ) {
-
-      currentSession = sessions[0];
-
-      const first =
-        sessionList.querySelector(".session");
-
-      if (first) {
-        first.classList.add("active");
-      }
-
-      updateChatHeader();
-
-      await loadMessages();
-
-    }
-
-  } catch (error) {
-
-    console.error(
-      "loadSessions error:",
-      error
-    );
-
-  }
-}
 
 async function loadMessages() {
 
