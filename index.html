@@ -28,6 +28,7 @@
   .container{width:min(calc(100% - 40px),var(--max-width));margin:0 auto}
   
   .section{position:relative;padding:13px 0}
+  .section + .section { position: relative; } .section + .section::before { content: ""; position: absolute; top: 0; left: 50%; width: min(100% - 40px, var(--max-width)); height: 1px; transform: translateX(-50%); background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.28), rgba(139, 92, 246, 0.2), transparent); }
   
   .section-dark{background:linear-gradient(180deg,rgba(255,255,255,.012),rgba(255,255,255,.02));border-top:1px solid rgba(148,163,184,.055);border-bottom:1px solid rgba(148,163,184,.055)}
   
