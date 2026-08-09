@@ -1336,15 +1336,9 @@
 
     setInterval(
       async () => {
-
-        await loadSessions();
-
         if (currentSession) {
-
           await loadMessages();
-
         }
-
       },
       2000
     );
