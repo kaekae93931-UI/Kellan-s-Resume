@@ -652,6 +652,7 @@
     }
   }
 #intro3d{
+background:#000;
 position:fixed;
 inset:0;
 z-index:5000;
@@ -939,9 +940,9 @@ opacity:0;
 }
 
 #intro3d.done{
-animation:intro3dOut .8s
-cubic-bezier(.65,0,.25,1)
-forwards;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 1.2s cubic-bezier(.22,1,.36,1);
 }
 
 @keyframes intro3dOut{
@@ -1918,10 +1919,10 @@ fn waterDepth(uv:vec2<f32>)->vec3<f32>{
   var col=vec3<f32>(0.);
   for(var i:i32=0;i<5;i++){
     let k=f32(i);
-    let y=.08+k*.15+sin(u.time*.25+k)*.025;
-    let d=abs(uv.y-y-sin(uv.x*4.+u.time*.3+k)*.018);
-    let line=smoothstep(.025,0.,d);
-    col+=line*vec3(.005,.08,.14)*(.7-k*.08);
+    let y=.08+k*.15+sin(u.time*.18+k)*.020;
+    let d=abs(uv.y-y-sin(uv.x*3.5+u.time*.22+k)*.014);
+    let line=smoothstep(.022,0.,d);
+    col+=line*vec3(.002,.035,.22)*(.55-k*.07);
   }
   return col;
 }
@@ -1942,7 +1943,7 @@ fn backbone(uv:vec2<f32>)->vec3<f32>{
   );
 
   let p=uv-center;
-  let rotation=u.time*.34+u.scroll*7.;
+  let rotation=u.time*.075+u.scroll*7.;
   let q=rot(p,rotation);
 
   let x=q.x;
@@ -1991,30 +1992,7 @@ fn backboneNodes(uv:vec2<f32>)->vec3<f32>{
   return col;
 }
 
-fn energyRings(uv:vec2<f32>)->vec3<f32>{
-  let center=vec2(
-    .5+u.mouseX*.025,
-    .40+u.scroll*.10+u.mouseY*.018
-  );
 
-  let p=uv-center;
-  var col=vec3<f32>(0.);
-
-  for(var i:i32=0;i<6;i++){
-    let k=f32(i);
-    let angle=u.time*(.14+k*.055)+u.scroll*(2.2+k*.7);
-    let q=rot(p,angle);
-    let r=length(q);
-    let a=atan2(q.y,q.x);
-    let radius=.14+k*.085+sin(a*(5.+k)+u.time*(.7+k*.08))* .009;
-    let line=smoothstep(.012,0.,abs(r-radius));
-    let glow=smoothstep(.055,0.,abs(r-radius));
-    col+=line*vec3(.015,.42,.78)*(.4+.6*sin(a*4.+u.time));
-    col+=glow*vec3(.005,.10,.18)*.25;
-  }
-
-  return col;
-}
 
 fn fish(uv:vec2<f32>,id:f32)->vec3<f32>{
   let a=hash21(vec2(id,3.17));
@@ -2151,16 +2129,12 @@ fn fragmentMain(input:VertexOutput)->@location(0)vec4<f32>{
 
   color+=fishGlow(uv);
 
-  for(var i:i32=0;i<6;i++){
-    color+=energyRings(uv);
-  }
+
 
   color+=backbone(uv);
   color+=backboneNodes(uv);
 
-  for(var i:i32=0;i<54;i++){
-    color+=fish(uv,f32(i));
-  }
+
 
   color+=scan(uv);
 
