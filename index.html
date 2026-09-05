@@ -1961,10 +1961,10 @@ fn backbone(uv:vec2<f32>)->vec3<f32>{
   let joints=smoothstep(.075,0.,segment)*smoothstep(.3,0.,abs(x));
 
   var col=vec3<f32>(0.);
-  col+=spine*vec3(.35,1.,1.);
-  col+=glow*vec3(.01,.20,.38);
-  col+=ribs*vec3(.02,.36,.65);
-  col+=joints*vec3(.18,.78,1.);
+  col+=spine*vec3(.08,.30,.36);
+  col+=glow*vec3(.003,.045,.08);
+  col+=ribs*vec3(.008,.11,.18);
+  col+=joints*vec3(.035,.20,.27);
 
   return col;
 }
