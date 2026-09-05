@@ -14,12 +14,10 @@
   
   html{scroll-behavior:smooth;scroll-padding-top:80px}
   
-  body{min-width:320px;background:radial-gradient(circle at 8% 8%,rgba(34,211,238,.09),transparent 28%),radial-gradient(circle at 92% 12%,rgba(139,92,246,.1),transparent 30%),radial-gradient(circle at 50% 80%,rgba(56,189,248,.035),transparent 35%),linear-gradient(180deg,#050816 0%,#070b18 48%,#040611 100%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6;overflow-x:hidden}
-  
-  body::before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:40px 40px;mask-image:linear-gradient(to bottom,black,transparent 88%);z-index:-1}
-  
-  body::after{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 0,rgba(34,211,238,.035),transparent 38%);z-index:-1}
-  
+  body{min-width:320px;background:#050816;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6;overflow-x:hidden}
+  #gpu-background{position:fixed;inset:0;width:100%;height:100%;display:block;pointer-events:none;z-index:-2;opacity:.92}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 18%,rgba(34,211,238,.055),transparent 36%),radial-gradient(circle at 85% 65%,rgba(139,92,246,.035),transparent 32%);z-index:-1}
+  body::after{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.34) 100%);z-index:-1}
   a{color:inherit;text-decoration:none}
   button,input{font:inherit}
   button{cursor:pointer}
@@ -672,7 +670,7 @@
     <div class="sea-floor"></div>
   </div>
 
-
+<canvas id="gpu-background" aria-hidden="true"></canvas>
 <header class="site-header">
   <div class="container nav-container">
     <a href="#top" class="brand" aria-label="Kellan Hung home">
@@ -1453,6 +1451,525 @@
 </footer>
 
 <script>
+
+(() => {
+  "use strict";
+
+  const canvas=document.getElementById("gpu-background");
+  if(!canvas)return;
+
+  const state={scroll:0,targetScroll:0,mouseX:0,mouseY:0,targetMouseX:0,targetMouseY:0,width:1,height:1,dpr:1,lastFrame:0};
+  const MAX_DPR=1.15;
+  const RENDER_SCALE=.68;
+  const FPS=48;
+
+  function updateScroll(){
+    const max=document.documentElement.scrollHeight-window.innerHeight;
+    state.targetScroll=max>0?window.scrollY/max:0;
+  }
+
+  window.addEventListener("scroll",updateScroll,{passive:true});
+  updateScroll();
+
+  window.addEventListener("pointermove",event=>{
+    state.targetMouseX=event.clientX/window.innerWidth-.5;
+    state.targetMouseY=event.clientY/window.innerHeight-.5;
+  },{passive:true});
+
+  function resize(){
+    state.dpr=Math.min(window.devicePixelRatio||1,MAX_DPR)*RENDER_SCALE;
+    state.width=Math.max(1,Math.floor(window.innerWidth*state.dpr));
+    state.height=Math.max(1,Math.floor(window.innerHeight*state.dpr));
+    canvas.width=state.width;
+    canvas.height=state.height;
+    canvas.style.width=window.innerWidth+"px";
+    canvas.style.height=window.innerHeight+"px";
+  }
+
+  window.addEventListener("resize",resize,{passive:true});
+  resize();
+
+  async function start(){
+    if(!navigator.gpu){
+      fallback();
+      return;
+    }
+
+    try{
+      const adapter=await navigator.gpu.requestAdapter({powerPreference:"low-power"});
+      if(!adapter){
+        fallback();
+        return;
+      }
+
+      const device=await adapter.requestDevice();
+      const context=canvas.getContext("webgpu");
+
+      if(!context){
+        fallback();
+        return;
+      }
+
+      const format=navigator.gpu.getPreferredCanvasFormat();
+
+      context.configure({
+        device,
+        format,
+        alphaMode:"premultiplied"
+      });
+
+      const uniformBuffer=device.createBuffer({
+        size:32,
+        usage:GPUBufferUsage.UNIFORM|GPUBufferUsage.COPY_DST
+      });
+
+      const shader=device.createShaderModule({
+        code:`
+
+struct Uniforms{
+  time:f32,
+  scroll:f32,
+  mouseX:f32,
+  mouseY:f32,
+  width:f32,
+  height:f32,
+  aspect:f32,
+  pad:f32
+};
+
+@group(0)@binding(0)
+var<uniform> u:Uniforms;
+
+fn hash21(p:vec2<f32>)->f32{
+  var q=fract(p*vec2<f32>(127.1,311.7));
+  q+=dot(q,q+19.19);
+  return fract(q.x*q.y);
+}
+
+fn rot(p:vec2<f32>,a:f32)->vec2<f32>{
+  let s=sin(a);
+  let c=cos(a);
+  return vec2<f32>(p.x*c-p.y*s,p.x*s+p.y*c);
+}
+
+fn starField(uv:vec2<f32>,scale:f32,depth:f32)->vec3<f32>{
+  let p=uv*scale;
+  let cell=floor(p);
+  let local=fract(p)-.5;
+  let rnd=hash21(cell+depth);
+  let size=mix(.004,.017,rnd);
+  let star=smoothstep(size,0.,length(local));
+  let pulse=.55+.45*sin(u.time*(.6+rnd*2.)+rnd*6.283);
+  return vec3(.04,.35,.65)*star*pulse*(.25+rnd*.75);
+}
+
+fn oceanLayer(uv:vec2<f32>)->vec3<f32>{
+  var col=vec3<f32>(0.);
+  for(var i:i32=0;i<10;i++){
+    let k=f32(i);
+    let y=-.52+k*.12;
+    let wave=sin(uv.x*(5.5+k*.7)+u.time*(.18+k*.035)+u.scroll*(8.+k*2.2)+sin(uv.x*3.+k)*.5)*(.012+k*.0015);
+    let line=smoothstep(.009,0.,abs(uv.y-y-wave));
+    let flow=sin(uv.x*12.-u.time*.35+k+u.scroll*9.)*.5+.5;
+    col+=line*vec3(.005,.16+k*.019,.31+k*.028)*(.35+flow*.65);
+  }
+  return col;
+}
+
+fn waterDepth(uv:vec2<f32>)->vec3<f32>{
+  var col=vec3<f32>(0.);
+  for(var i:i32=0;i<5;i++){
+    let k=f32(i);
+    let y=.08+k*.15+sin(u.time*.25+k)*.025;
+    let d=abs(uv.y-y-sin(uv.x*4.+u.time*.3+k)*.018);
+    let line=smoothstep(.025,0.,d);
+    col+=line*vec3(.005,.08,.14)*(.7-k*.08);
+  }
+  return col;
+}
+
+fn currentField(uv:vec2<f32>)->vec3<f32>{
+  let p=uv-vec2(.5,.42);
+  let r=length(p);
+  let a=atan2(p.y,p.x);
+  let swirl=sin(a*9.-r*32.-u.time*.65+u.scroll*20.);
+  let stream=pow(max(0.,swirl*.5+.5),5.);
+  return vec3(.01,.19,.32)*stream*smoothstep(.75,.03,r)*.22;
+}
+
+fn backbone(uv:vec2<f32>)->vec3<f32>{
+  let center=vec2(
+    .5+u.mouseX*.025,
+    .40+u.scroll*.10+u.mouseY*.018
+  );
+
+  let p=uv-center;
+  let rotation=u.time*.34+u.scroll*7.;
+  let q=rot(p,rotation);
+
+  let x=q.x;
+  let y=q.y;
+
+  let curve=sin(y*19.-u.time*1.25+u.scroll*23.)*.018;
+
+  let spine=smoothstep(.021,0.,abs(x-curve));
+  let glow=smoothstep(.24,0.,abs(x-curve));
+
+  let ribDistance=abs(abs(x)-(.075+sin(y*28.-u.time)*.018));
+  let ribs=smoothstep(.014,0.,ribDistance);
+
+  let segment=abs(fract(y*12.+u.scroll*5.)-.5);
+  let joints=smoothstep(.075,0.,segment)*smoothstep(.3,0.,abs(x));
+
+  var col=vec3<f32>(0.);
+  col+=spine*vec3(.35,1.,1.);
+  col+=glow*vec3(.01,.20,.38);
+  col+=ribs*vec3(.02,.36,.65);
+  col+=joints*vec3(.18,.78,1.);
+
+  return col;
+}
+
+fn backboneNodes(uv:vec2<f32>)->vec3<f32>{
+  let center=vec2(
+    .5+u.mouseX*.025,
+    .40+u.scroll*.10+u.mouseY*.018
+  );
+
+  let p=uv-center;
+  var col=vec3<f32>(0.);
+
+  for(var i:i32=0;i<19;i++){
+    let k=f32(i);
+    let y=fract(k/19.+u.scroll*.62)*1.22-.61;
+    let x=sin(y*14.+u.time*.65)*.028;
+    let d=length((p-vec2(x,y))*vec2(1.,1.65));
+    let node=smoothstep(.026,0.,d);
+    let glow=smoothstep(.13,0.,d);
+    col+=node*vec3(.35,.95,1.);
+    col+=glow*vec3(.01,.18,.34)*.18;
+  }
+
+  return col;
+}
+
+fn energyRings(uv:vec2<f32>)->vec3<f32>{
+  let center=vec2(
+    .5+u.mouseX*.025,
+    .40+u.scroll*.10+u.mouseY*.018
+  );
+
+  let p=uv-center;
+  var col=vec3<f32>(0.);
+
+  for(var i:i32=0;i<6;i++){
+    let k=f32(i);
+    let angle=u.time*(.14+k*.055)+u.scroll*(2.2+k*.7);
+    let q=rot(p,angle);
+    let r=length(q);
+    let a=atan2(q.y,q.x);
+    let radius=.14+k*.085+sin(a*(5.+k)+u.time*(.7+k*.08))* .009;
+    let line=smoothstep(.012,0.,abs(r-radius));
+    let glow=smoothstep(.055,0.,abs(r-radius));
+    col+=line*vec3(.015,.42,.78)*(.4+.6*sin(a*4.+u.time));
+    col+=glow*vec3(.005,.10,.18)*.25;
+  }
+
+  return col;
+}
+
+fn fish(uv:vec2<f32>,id:f32)->vec3<f32>{
+  let a=hash21(vec2(id,3.17));
+  let b=hash21(vec2(id*2.73,8.41));
+  let c=hash21(vec2(id*7.13,4.91));
+
+  let orbit=id*2.399+a*6.283;
+  let angle=orbit+u.time*(.12+a*.28)+u.scroll*(2.2+b*4.5);
+  let radius=.16+b*.48;
+
+  let depth=.25+.75*sin(angle+c*6.283);
+  let perspective=.78+depth*.48;
+
+  let center=vec2(
+    .5+sin(angle)*radius*perspective+u.mouseX*.035*depth,
+    .40+u.scroll*.10+cos(angle)*radius*.72*perspective+u.mouseY*.025*depth
+  );
+
+  let p=uv-center;
+  let q=rot(p,-(angle+1.57));
+
+  let body=exp(-(q.x*q.x/(.0022+depth*.0015)+q.y*q.y/(.00075+depth*.0005)));
+  let tail=exp(-((q.x+.052)*(q.x+.052)/(.0015+depth*.001)+q.y*q.y/(.001+depth*.0005)));
+  let fin=exp(-((q.x-.005)*(q.x-.005)/.0014+(abs(q.y)-.012)*(abs(q.y)-.012)/.00035));
+
+  let intensity=body+tail*.55+fin*.22;
+
+  let nearColor=vec3(.10,.78,1.);
+  let farColor=vec3(.008,.16,.30);
+
+  return mix(farColor,nearColor,depth)*intensity*(.32+depth*.7);
+}
+
+fn fishGlow(uv:vec2<f32>)->vec3<f32>{
+  let center=vec2(.5,.40+u.scroll*.10);
+  let p=uv-center;
+  let r=length(p);
+  let glow=smoothstep(.7,.08,r);
+  return vec3(.005,.04,.08)*glow;
+}
+
+fn bubbles(uv:vec2<f32>)->vec3<f32>{
+  var col=vec3<f32>(0.);
+  for(var i:i32=0;i<4;i++){
+    let k=f32(i);
+    let p=uv*vec2(16.+k*7.,25.+k*9.);
+    let cell=floor(p);
+    let local=fract(p)-.5;
+    let rnd=hash21(cell+k*13.);
+    let drift=sin(u.time*.35+rnd*6.)*.08;
+    let d=length(local+vec2(drift,fract(u.scroll*.8+rnd)-.5));
+    let bubble=smoothstep(.028,.0,d)*(.25+rnd*.5);
+    col+=bubble*vec3(.02,.25,.4);
+  }
+  return col;
+}
+
+fn scan(uv:vec2<f32>)->vec3<f32>{
+  let y=fract(u.scroll*.92+u.time*.018);
+  let d=abs(uv.y-y);
+  return vec3(.02,.32,.5)*smoothstep(.025,0.,d)*.035;
+}
+
+struct VertexOutput{
+  @builtin(position)position:vec4<f32>,
+  @location(0)uv:vec2<f32>
+};
+
+@vertex
+fn vertexMain(@builtin(vertex_index)index:u32)->VertexOutput{
+  var positions=array<vec2<f32>,3>(
+    vec2<f32>(-1.,-3.),
+    vec2<f32>(3.,1.),
+    vec2<f32>(-1.,1.)
+  );
+
+  var output:VertexOutput;
+  output.position=vec4<f32>(positions[index],0.,1.);
+  output.uv=positions[index]*.5+.5;
+
+  return output;
+}
+
+@fragment
+fn fragmentMain(input:VertexOutput)->@location(0)vec4<f32>{
+  var uv=input.uv;
+
+  uv.x=(uv.x-.5)*u.aspect+.5;
+
+  let cameraDepth=u.scroll*.16;
+
+  uv.y-=cameraDepth;
+
+  uv.x+=sin(uv.y*4.+u.scroll*8.)*.018*u.scroll;
+  uv.y+=sin(uv.x*3.+u.time*.18)*.008;
+
+  var color=vec3<f32>(
+    .001,
+    .004,
+    .014
+  );
+
+  color+=starField(
+    uv+vec2(
+      u.mouseX*.018,
+      -u.scroll*.18
+    ),
+    38.,
+    1.
+  );
+
+  color+=starField(
+    uv+vec2(
+      u.mouseX*.032,
+      -u.scroll*.34
+    ),
+    66.,
+    2.
+  );
+
+  color+=starField(
+    uv+vec2(
+      u.mouseX*.045,
+      -u.scroll*.52
+    ),
+    100.,
+    3.
+  );
+
+  color+=oceanLayer(uv);
+  color+=waterDepth(uv);
+  color+=currentField(uv);
+  color+=bubbles(uv);
+
+  color+=fishGlow(uv);
+
+  for(var i:i32=0;i<6;i++){
+    color+=energyRings(uv);
+  }
+
+  color+=backbone(uv);
+  color+=backboneNodes(uv);
+
+  for(var i:i32=0;i<54;i++){
+    color+=fish(uv,f32(i));
+  }
+
+  color+=scan(uv);
+
+  let centralGlow=smoothstep(
+    .58,
+    0.,
+    length(
+      uv-
+      vec2(
+        .5,
+        .40+u.scroll*.10
+      )
+    )
+  );
+
+  color+=vec3(
+    .003,
+    .045,
+    .085
+  )*centralGlow;
+
+  let vignette=smoothstep(
+    1.,
+    .16,
+    distance(
+      input.uv,
+      vec2(.5)
+    )
+  );
+
+  color*=.62+.38*vignette;
+
+  color=color/(1.+color);
+
+  return vec4(
+    color,
+    .96
+  );
+}
+`
+      });
+
+      const pipeline=device.createRenderPipeline({
+        layout:"auto",
+        vertex:{
+          module:shader,
+          entryPoint:"vertexMain"
+        },
+        fragment:{
+          module:shader,
+          entryPoint:"fragmentMain",
+          targets:[{format}]
+        },
+        primitive:{
+          topology:"triangle-list"
+        }
+      });
+
+      const bindGroup=device.createBindGroup({
+        layout:pipeline.getBindGroupLayout(0),
+        entries:[{
+          binding:0,
+          resource:{
+            buffer:uniformBuffer
+          }
+        }]
+      });
+
+      function render(timestamp){
+        const interval=1000/FPS;
+
+        if(timestamp-state.lastFrame<interval){
+          requestAnimationFrame(render);
+          return;
+        }
+
+        state.lastFrame=timestamp;
+
+        state.scroll+=(state.targetScroll-state.scroll)*.055;
+        state.mouseX+=(state.targetMouseX-state.mouseX)*.04;
+        state.mouseY+=(state.targetMouseY-state.mouseY)*.04;
+
+        device.queue.writeBuffer(
+          uniformBuffer,
+          0,
+          new Float32Array([
+            timestamp*.001,
+            state.scroll,
+            state.mouseX,
+            state.mouseY,
+            state.width,
+            state.height,
+            state.width/state.height,
+            0
+          ])
+        );
+
+        const encoder=device.createCommandEncoder();
+
+        const pass=encoder.beginRenderPass({
+          colorAttachments:[{
+            view:context.getCurrentTexture().createView(),
+            clearValue:{
+              r:.001,
+              g:.003,
+              b:.012,
+              a:1
+            },
+            loadOp:"clear",
+            storeOp:"store"
+          }]
+        });
+
+        pass.setPipeline(pipeline);
+        pass.setBindGroup(0,bindGroup);
+        pass.draw(3,1,0,0);
+        pass.end();
+
+        device.queue.submit([
+          encoder.finish()
+        ]);
+
+        requestAnimationFrame(render);
+      }
+
+      requestAnimationFrame(render);
+
+    }catch(error){
+      console.warn("WebGPU background failed:",error);
+      fallback();
+    }
+  }
+
+  function fallback(){
+    canvas.style.display="none";
+    document.body.classList.add("gpu-background-fallback");
+  }
+
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+    canvas.style.display="none";
+  }else{
+    start();
+  }
+
+})();
+
+
   const WORKER_URL = "https://hung.kaekae939311.workers.dev";
 
   const SESSION_STORAGE_KEY = "kellanChatSessionId";
