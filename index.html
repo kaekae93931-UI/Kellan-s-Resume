@@ -325,6 +325,334 @@
   }
 
 
+  /* ===== 3D DEEP SEA SCROLL BACKGROUND ===== */
+
+  .underwater-3d{
+    position:fixed;
+    inset:0;
+    z-index:-10;
+    overflow:hidden;
+    pointer-events:none;
+    perspective:1200px;
+    perspective-origin:50% 50%;
+    transform-style:preserve-3d;
+    background:
+      radial-gradient(circle at 50% -10%,rgba(34,211,238,.16),transparent 32%),
+      radial-gradient(circle at 20% 40%,rgba(59,130,246,.08),transparent 35%),
+      radial-gradient(circle at 80% 70%,rgba(99,102,241,.08),transparent 40%),
+      linear-gradient(180deg,#061525 0%,#04101f 38%,#020917 70%,#01040b 100%);
+  }
+
+  .underwater-3d::before{
+    content:"";
+    position:absolute;
+    inset:-20%;
+    background:
+      radial-gradient(ellipse at 50% 0%,rgba(125,211,252,.16),transparent 28%),
+      radial-gradient(ellipse at 30% 15%,rgba(34,211,238,.08),transparent 22%),
+      radial-gradient(ellipse at 75% 25%,rgba(59,130,246,.07),transparent 25%);
+    filter:blur(35px);
+    opacity:.9;
+    transform:translateZ(-400px);
+  }
+
+  .underwater-3d::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(circle at center,transparent 20%,rgba(0,0,0,.12) 55%,rgba(0,0,0,.62) 100%);
+    pointer-events:none;
+  }
+
+  .ocean-light{
+    position:absolute;
+    top:-25%;
+    left:50%;
+    width:110%;
+    height:75%;
+    transform:translateX(-50%) translateZ(-100px);
+    background:
+      conic-gradient(
+        from 180deg at 50% 0%,
+        transparent 15deg,
+        rgba(103,232,249,.12) 24deg,
+        transparent 36deg,
+        rgba(56,189,248,.08) 48deg,
+        transparent 62deg,
+        rgba(125,211,252,.1) 78deg,
+        transparent 92deg,
+        rgba(34,211,238,.08) 108deg,
+        transparent 125deg
+      );
+    filter:blur(18px);
+    opacity:.75;
+    animation:oceanLightMove 10s ease-in-out infinite alternate;
+  }
+
+  @keyframes oceanLightMove{
+    0%{
+      transform:translateX(-53%) translateZ(-100px) rotate(-2deg) scale(1);
+    }
+    100%{
+      transform:translateX(-47%) translateZ(-100px) rotate(2deg) scale(1.08);
+    }
+  }
+
+  .depth-layer{
+    position:absolute;
+    inset:-25%;
+    transform-style:preserve-3d;
+    will-change:transform;
+    opacity:.8;
+  }
+
+  .depth-layer-1{
+    transform:translateZ(-80px);
+    background:
+      radial-gradient(circle at 12% 18%,rgba(103,232,249,.25) 0 2px,transparent 3px),
+      radial-gradient(circle at 75% 12%,rgba(56,189,248,.2) 0 1px,transparent 2px),
+      radial-gradient(circle at 42% 35%,rgba(125,211,252,.2) 0 2px,transparent 3px),
+      radial-gradient(circle at 88% 45%,rgba(34,211,238,.2) 0 2px,transparent 3px);
+    background-size:260px 260px,340px 340px,410px 410px,300px 300px;
+    filter:blur(1px);
+  }
+
+  .depth-layer-2{
+    transform:translateZ(-240px);
+    background:
+      radial-gradient(ellipse at 15% 80%,rgba(8,145,178,.18),transparent 22%),
+      radial-gradient(ellipse at 88% 65%,rgba(37,99,235,.13),transparent 25%),
+      linear-gradient(105deg,transparent 40%,rgba(34,211,238,.035) 50%,transparent 60%);
+    filter:blur(2px);
+  }
+
+  .depth-layer-3{
+    transform:translateZ(-420px);
+    background:
+      radial-gradient(circle at 8% 45%,rgba(34,211,238,.28) 0 3px,transparent 5px),
+      radial-gradient(circle at 32% 18%,rgba(129,140,248,.2) 0 3px,transparent 5px),
+      radial-gradient(circle at 67% 58%,rgba(56,189,248,.2) 0 4px,transparent 6px),
+      radial-gradient(circle at 91% 30%,rgba(34,211,238,.2) 0 2px,transparent 5px);
+    background-size:480px 480px,620px 620px,540px 540px,700px 700px;
+    filter:blur(3px);
+  }
+
+  .depth-layer-4{
+    transform:translateZ(-650px);
+    background:
+      linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(34,211,238,.04) 20%,
+        transparent 35%,
+        rgba(99,102,241,.035) 55%,
+        transparent 70%
+      );
+    filter:blur(8px);
+  }
+
+  .depth-layer-5{
+    transform:translateZ(-900px);
+    background:
+      radial-gradient(ellipse at 50% 100%,rgba(8,47,73,.4),transparent 55%),
+      linear-gradient(180deg,transparent 45%,rgba(1,8,18,.8) 100%);
+  }
+
+  .bubble-field{
+    position:absolute;
+    inset:0;
+    transform-style:preserve-3d;
+    background-image:
+      radial-gradient(circle at 10% 80%,rgba(186,230,253,.24) 0 2px,transparent 4px),
+      radial-gradient(circle at 25% 55%,rgba(103,232,249,.2) 0 3px,transparent 5px),
+      radial-gradient(circle at 48% 90%,rgba(125,211,252,.2) 0 2px,transparent 4px),
+      radial-gradient(circle at 72% 60%,rgba(103,232,249,.22) 0 3px,transparent 5px),
+      radial-gradient(circle at 88% 82%,rgba(186,230,253,.18) 0 2px,transparent 4px);
+    background-size:
+      310px 520px,
+      430px 680px,
+      370px 610px,
+      520px 760px,
+      290px 490px;
+    animation:bubblesRise 18s linear infinite;
+    opacity:.55;
+    filter:blur(.3px);
+  }
+
+  @keyframes bubblesRise{
+    0%{
+      background-position:
+        0 100%,
+        100px 120%,
+        220px 110%,
+        360px 130%,
+        500px 115%;
+    }
+    100%{
+      background-position:
+        0 -520px,
+        100px -680px,
+        220px -610px,
+        360px -760px,
+        500px -490px;
+    }
+  }
+
+  .fish-field{
+    position:absolute;
+    inset:0;
+    transform-style:preserve-3d;
+    opacity:.45;
+  }
+
+  .fish-field::before,
+  .fish-field::after{
+    content:"";
+    position:absolute;
+    width:90px;
+    height:28px;
+    border-radius:70% 20% 60% 35%;
+    background:
+      linear-gradient(
+        90deg,
+        transparent 0 8%,
+        rgba(56,189,248,.5) 10%,
+        rgba(34,211,238,.28) 65%,
+        transparent 70%
+      );
+    filter:blur(1px) drop-shadow(0 0 12px rgba(34,211,238,.4));
+  }
+
+  .fish-field::before{
+    top:28%;
+    left:-120px;
+    transform:translateZ(-300px) rotate(-4deg);
+    animation:fishSwimOne 17s linear infinite;
+  }
+
+  .fish-field::after{
+    top:63%;
+    left:-160px;
+    width:55px;
+    height:17px;
+    transform:translateZ(-600px) rotate(5deg);
+    animation:fishSwimTwo 24s linear infinite 4s;
+  }
+
+  @keyframes fishSwimOne{
+    0%{
+      left:-140px;
+      transform:translateZ(-300px) rotate(-4deg);
+    }
+    45%{
+      transform:translateZ(-180px) rotate(3deg);
+    }
+    100%{
+      left:110%;
+      transform:translateZ(-420px) rotate(-2deg);
+    }
+  }
+
+  @keyframes fishSwimTwo{
+    0%{
+      left:-180px;
+      transform:translateZ(-600px) rotate(5deg);
+    }
+    50%{
+      transform:translateZ(-350px) rotate(-4deg);
+    }
+    100%{
+      left:110%;
+      transform:translateZ(-700px) rotate(3deg);
+    }
+  }
+
+  .sea-floor{
+    position:absolute;
+    left:-10%;
+    right:-10%;
+    bottom:-16%;
+    height:42%;
+    transform:perspective(700px) rotateX(62deg) translateZ(-250px);
+    transform-origin:center bottom;
+    background:
+      radial-gradient(ellipse at 20% 30%,rgba(14,116,144,.18),transparent 20%),
+      radial-gradient(ellipse at 70% 50%,rgba(30,64,175,.12),transparent 25%),
+      radial-gradient(ellipse at 45% 75%,rgba(6,78,59,.12),transparent 30%),
+      linear-gradient(180deg,transparent,rgba(1,12,20,.9));
+    box-shadow:
+      0 -25px 80px rgba(8,145,178,.08),
+      inset 0 40px 80px rgba(0,0,0,.4);
+    filter:blur(1px);
+  }
+
+  .sea-floor::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(ellipse at 10% 70%,rgba(34,211,238,.16) 0 1px,transparent 3px),
+      radial-gradient(ellipse at 30% 40%,rgba(99,102,241,.12) 0 2px,transparent 4px),
+      radial-gradient(ellipse at 58% 65%,rgba(34,211,238,.1) 0 2px,transparent 4px),
+      radial-gradient(ellipse at 82% 35%,rgba(56,189,248,.12) 0 1px,transparent 3px);
+      background-size:180px 140px,240px 190px,210px 160px,270px 180px;
+      opacity:.7;
+  }
+
+  /* 讓你的 Resume 內容浮在海底世界上 */
+  main,
+  .hero,
+  section,
+  footer{
+    position:relative;
+    z-index:1;
+  }
+
+  /* 深度霧化：越下面越有深海感 */
+  body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-5;
+    pointer-events:none;
+    background:
+      linear-gradient(
+        180deg,
+        transparent 0%,
+        transparent 35%,
+        rgba(1,8,18,.08) 55%,
+        rgba(0,3,10,.35) 100%
+      );
+    mix-blend-mode:multiply;
+  }
+
+  @media(max-width:820px){
+    .underwater-3d{
+      perspective:none;
+    }
+
+    .depth-layer{
+      transform:none!important;
+    }
+
+    .fish-field{
+      opacity:.25;
+    }
+
+    .ocean-light{
+      opacity:.45;
+    }
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    .ocean-light,
+    .bubble-field,
+    .fish-field::before,
+    .fish-field::after{
+      animation:none!important;
+    }
+  }
 
 
   
@@ -332,6 +660,18 @@
 </head>
 
 <body>
+  <div class="underwater-3d" aria-hidden="true">
+    <div class="ocean-light"></div>
+    <div class="depth-layer depth-layer-1"></div>
+    <div class="depth-layer depth-layer-2"></div>
+    <div class="depth-layer depth-layer-3"></div>
+    <div class="depth-layer depth-layer-4"></div>
+    <div class="depth-layer depth-layer-5"></div>
+    <div class="bubble-field"></div>
+    <div class="fish-field"></div>
+    <div class="sea-floor"></div>
+  </div>
+
 
 <header class="site-header">
   <div class="container nav-container">
@@ -1457,7 +1797,7 @@
         askQuestion(question);
       }
     });
-  });
+  })b;
   
   loadHistory().finally(() => {
     syncMessages();
@@ -1473,6 +1813,31 @@
     window.setInterval(syncMessages, 2000);
   });
 </script>
+  <script>
+    const underwater = document.querySelector('.underwater-3d');
+    const layers = document.querySelectorAll('.depth-layer');
+
+    window.addEventListener('scroll', () => {
+      const scroll = window.scrollY;
+
+      layers.forEach((layer, index) => {
+        const depth = (index + 1) * 0.12;
+        const y = scroll * depth;
+
+        layer.style.transform =
+          `translate3d(0, ${y}px, ${index * -180}px)`;
+      });
+
+      underwater.style.setProperty(
+        '--scroll-depth',
+        scroll
+      );
+    }, { passive: true });
+  </script>
+
+</body>
+
+
 
 </body>
 </html>
